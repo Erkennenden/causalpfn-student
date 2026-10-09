@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 import torch
 
-from random_lpe_prior import (
+from pfn_interference.prior import (
     FUNCTION_FAMILIES, PriorConfig, generate_tasks, original_formula_reference,
     sample_function, standard_normal_reference,
 )

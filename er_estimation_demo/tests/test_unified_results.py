@@ -8,10 +8,10 @@ import numpy as np
 import pytest
 import torch
 
-import train_local_network_interference as demo
-from baselines.ns_pcr import NSI_METHOD_NAME
-from baselines.tnet import TNET_METHOD_NAME
-from evaluation.unified import (
+import pfn_interference.model as demo
+from pfn_interference.baselines.ns_pcr import NSI_METHOD_NAME
+from pfn_interference.baselines.tnet import TNET_METHOD_NAME
+from pfn_interference.metrics.unified import (
     MAIN_ATE_METHODS,
     MAIN_ITE_METHODS,
     evaluate_unified_benchmark,
@@ -30,7 +30,7 @@ class LinearOraclePFN(torch.nn.Module):
         self.training = False
 
     def forward(self, tokens, queries, adjacency):
-        from estimands import arm_mean_exposure
+        from pfn_interference.estimands import arm_mean_exposure
         t,s=queries.unbind(-1)
         d=adjacency.sum(-1).cpu().numpy().astype(int)
         low=torch.tensor([[arm_mean_exposure(int(v),.5,0) for v in row] for row in d],device=t.device)
@@ -74,7 +74,7 @@ def test_main_method_sets_are_intentionally_small() -> None:
 def test_design_weight_tensors_support_real_64_by_300_batch_shape() -> None:
     # Regression coverage for the real evaluation shape that exposed a MUSA
     # advanced-indexing incompatibility: 64 graphs x 300 units.
-    from evaluation.unified import _design_weight_tensors
+    from pfn_interference.metrics.unified import _design_weight_tensors
 
     degree = torch.arange(1, 20, dtype=torch.float32).repeat(64 * 300 // 19 + 1)
     degree = degree[: 64 * 300].reshape(64, 300)
@@ -321,7 +321,7 @@ def test_save_unified_benchmark_writes_expected_files_and_columns(tmp_path: Path
 
 
 def test_summary_retains_truth_even_when_method_is_unsupported() -> None:
-    from evaluation.unified import _metric_rows
+    from pfn_interference.metrics.unified import _metric_rows
 
     rows = [
         {
@@ -374,7 +374,7 @@ def test_pfn_uses_binary_arm_mu_queries_and_shared_differences():
 
 
 def test_summary_carries_network_density_diagnostic() -> None:
-    from evaluation.unified import _metric_rows
+    from pfn_interference.metrics.unified import _metric_rows
 
     rows = [
         {"dataset_id": 1, "unit_id": 1, "effect": "direct", "method": "PFN with interference", "truth": 0.5, "estimate": 0.5, "degree": 6},

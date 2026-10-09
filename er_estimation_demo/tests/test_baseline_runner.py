@@ -3,9 +3,9 @@ from __future__ import annotations
 import pytest
 import torch
 
-import train_local_network_interference as demo
-from baselines.runner import ATE_METHOD_NAMES, MAIN_ATE_METHOD_NAMES, EFFECT_NAMES, run_ate_baselines_on_batch
-from baselines.tnet import TNET_METHOD_NAME, TNetConfig
+import pfn_interference.model as demo
+from pfn_interference.baselines.runner import ATE_METHOD_NAMES, MAIN_ATE_METHOD_NAMES, EFFECT_NAMES, run_ate_baselines_on_batch
+from pfn_interference.baselines.tnet import TNET_METHOD_NAME, TNetConfig
 
 
 def test_paper_facing_ate_runner_has_only_approved_method_names() -> None:

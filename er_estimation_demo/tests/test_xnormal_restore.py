@@ -4,9 +4,9 @@ from dataclasses import asdict
 import pytest
 import torch
 
-import train_local_network_interference as demo
-import csv_random_dgp as adapter
-import random_lpe_prior as prior
+import pfn_interference.model as demo
+import pfn_interference.simulation.csv_tasks as adapter
+import pfn_interference.prior as prior
 
 
 def config():
@@ -57,7 +57,7 @@ def test_old_random_checkpoint_config_is_not_silently_reinterpreted_as_new_x_law
 
 
 def test_matched_test_uses_the_same_direct_standard_normal_x_law():
-    from evaluate_matched_old_sampler import generate_matched_test_batch
+    from pfn_interference.experiments.evaluate_matched_old_sampler import generate_matched_test_batch
     batch = generate_matched_test_batch(config(), range(16), seed=2026)
     expected = torch.stack([torch.randn(24, generator=prior._task_generator(
         2026, adapter.BENCHMARK_STREAM, task_id, 'data/normal')) for task_id in range(16)])

@@ -11,7 +11,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from baselines.localized_walsh import (
+from pfn_interference.baselines.localized_walsh import (
     ITE_METHOD_NAME,
     LOCALIZED_METHOD_NAMES,
     _localized_weights,
@@ -21,7 +21,7 @@ from baselines.localized_walsh import (
     rooted_configuration_distance,
     summarize_effect_rows,
 )
-import train_local_network_interference as demo
+import pfn_interference.model as demo
 
 
 def _adjacency(n: int, edges: list[tuple[int, int]]) -> np.ndarray:

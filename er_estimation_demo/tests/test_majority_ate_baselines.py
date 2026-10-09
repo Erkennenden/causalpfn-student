@@ -4,9 +4,9 @@ import numpy as np
 import pytest
 import torch
 
-import train_local_network_interference as demo
-from baselines.tnet import TNET_METHOD_NAME, TNetConfig
-from baselines.runner import (
+import pfn_interference.model as demo
+from pfn_interference.baselines.tnet import TNET_METHOD_NAME, TNetConfig
+from pfn_interference.baselines.runner import (
     ATE_METHOD_NAMES,
     MAIN_ATE_METHOD_NAMES,
     majority_arm_propensities,

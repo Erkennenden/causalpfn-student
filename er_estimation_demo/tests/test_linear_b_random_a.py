@@ -3,9 +3,9 @@ import numpy as np
 import pytest
 import torch
 from functools import partial
-from linear_b_dgp import generate_task
-from causalfm_dgp_v1.dgp import generate_task as generic_task
-from causalfm_experiment.training import load_model
+from pfn_interference.dgp import generate_task
+from pfn_interference.simulation.dgp import generate_task as generic_task
+from pfn_interference.training import load_model
 
 
 def ring(n=12):

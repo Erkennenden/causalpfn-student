@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from baselines.core import (
+from pfn_interference.baselines.core import (
     build_degree_contrasts,
     enumerate_treatment_design,
     state_propensities,

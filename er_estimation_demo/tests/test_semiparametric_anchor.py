@@ -1,6 +1,6 @@
 import numpy as np
 
-from baselines.semiparametric import (
+from pfn_interference.baselines.semiparametric import (
     oracle_effect_eif,
     oracle_majority_arm_nuisance,
     oracle_semiparametric_anchor,

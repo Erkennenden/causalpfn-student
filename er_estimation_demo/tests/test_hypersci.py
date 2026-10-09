@@ -3,7 +3,7 @@ import numpy as np
 import pytest
 import torch
 
-from baselines.hypersci import (pair_incidence, make_model, build_pair_cache,
+from pfn_interference.baselines.hypersci import (pair_incidence, make_model, build_pair_cache,
                             predict_root_samples, conditional_assignments,
                             integrate_majority)
 
@@ -95,7 +95,7 @@ def test_sampler_uses_supplied_randomization_probability(probability):
 
 
 def test_fit_predict_is_deterministic_and_preserves_effect_identity():
-    from baselines.hypersci import fit_predict_hypersci_ite
+    from pfn_interference.baselines.hypersci import fit_predict_hypersci_ite
     a=fixture_graph().numpy()
     kwargs=dict(adjacency=a,x=np.arange(5,dtype=float),treatment=np.array([0,1,0,1,0]),
                 outcomes=np.array([.3,2.,.1,1.,-.5]), treatment_prob=.3, epochs=2,
@@ -110,7 +110,7 @@ def test_fit_predict_is_deterministic_and_preserves_effect_identity():
 
 
 def test_single_member_treatment_group_has_finite_wasserstein_loss():
-    from baselines.hypersci import fit_hyper
+    from pfn_interference.baselines.hypersci import fit_hyper
     a=fixture_graph().numpy()
     _,_,_,_,history=fit_hyper(a,np.arange(5,dtype=float),np.array([1,0,0,0,0]),
                             np.arange(5,dtype=float),epochs=2,hidden_dim=8)
@@ -118,6 +118,6 @@ def test_single_member_treatment_group_has_finite_wasserstein_loss():
 
 
 def test_missing_treatment_group_is_rejected():
-    from baselines.hypersci import fit_hyper
+    from pfn_interference.baselines.hypersci import fit_hyper
     with pytest.raises(ValueError,match='both treatment groups'):
         fit_hyper(fixture_graph(),np.arange(5),np.zeros(5),np.arange(5),epochs=1)

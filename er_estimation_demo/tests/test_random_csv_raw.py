@@ -9,7 +9,7 @@ from types import SimpleNamespace
 
 import pytest
 import torch
-import train_local_network_interference as demo
+import pfn_interference.model as demo
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -74,7 +74,7 @@ def test_random_dgp_has_correct_raw_inputs_and_effects():
 
 
 def test_fixed_task_ids_do_not_depend_on_generation_chunk():
-    import csv_random_dgp as adapter
+    import pfn_interference.simulation.csv_tasks as adapter
     one=adapter.generate_random_batch(cfg(),task_ids=range(9),seed=77,stream='test')
     parts=[adapter.generate_random_batch(cfg(),task_ids=range(i,min(i+4,9)),seed=77,stream='test') for i in range(0,9,4)]
     for key in one:
@@ -93,7 +93,7 @@ def test_csv_roundtrip_preserves_all_observed_and_label_tensors(tmp_path):
 
 def test_random_csv_manifest_roundtrip_and_reuse_without_generation(tmp_path,monkeypatch):
     prepared=make_csv(tmp_path)
-    import csv_random_dgp as adapter
+    import pfn_interference.simulation.csv_tasks as adapter
     mp=adapter.manifest_path(tmp_path/'episodes.csv')
     m=json.loads(mp.read_text())
     assert m['data_config']['dgp_version']=='random_lpe_v1'
@@ -123,7 +123,7 @@ def test_random_csv_rejects_mismatched_identity(tmp_path,changed):
 
 def test_random_csv_rejects_missing_or_truncated_manifest(tmp_path):
     make_csv(tmp_path)
-    import csv_random_dgp as adapter
+    import pfn_interference.simulation.csv_tasks as adapter
     mp=adapter.manifest_path(tmp_path/'episodes.csv')
     mp.unlink()
     with pytest.raises(ValueError,match='manifest'):
@@ -185,8 +185,8 @@ def test_cli_exposes_dgp_and_uses_requested_ten_layer_default(monkeypatch):
 
 def test_benchmark_paired_errors_use_same_supported_units():
     import importlib.util
-    assert importlib.util.find_spec('evaluate_random_csv_tables') is not None, 'Missing frozen raw-model evaluation entry'
-    from evaluate_random_csv_tables import paired_comparisons
+    assert importlib.util.find_spec('pfn_interference.experiments.evaluate_random_csv_tables') is not None, 'Missing frozen raw-model evaluation entry'
+    from pfn_interference.experiments.evaluate_random_csv_tables import paired_comparisons
     rows=[dict(dataset_id=1,unit_id=i,effect='direct',method=m,truth=0.,estimate=x,supported=s)
           for i,m,x,s in [(1,'PFN with interference',1.,True),(2,'PFN with interference',2.,True),
                           (1,'B',3.,True),(2,'B',999.,False)]]

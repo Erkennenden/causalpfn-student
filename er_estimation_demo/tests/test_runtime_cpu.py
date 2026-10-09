@@ -7,7 +7,7 @@ from pathlib import Path
 
 import numpy as np
 
-from training_runtime import MetricAccumulator, read_csv_arrays, validation_indices
+from pfn_interference.runtime import MetricAccumulator, read_csv_arrays, validation_indices
 
 
 class RuntimeCPUTests(unittest.TestCase):

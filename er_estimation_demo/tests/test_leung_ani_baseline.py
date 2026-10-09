@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from baselines.leung_ani.estimator import estimate_ht, network_hac_se
+from pfn_interference.baselines.leung_ani.estimator import estimate_ht, network_hac_se
 
 
 def test_ht_estimator_matches_hand_computation() -> None:

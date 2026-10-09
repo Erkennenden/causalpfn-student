@@ -4,9 +4,9 @@ import json
 import numpy as np
 import pytest
 import torch
-import train_local_network_interference as demo
-from csv_random_dgp import generate_random_batch, select_two_regime_split_ids
-from evaluate_matched_old_sampler import evaluation_config, generate_matched_test_batch
+import pfn_interference.model as demo
+from pfn_interference.simulation.csv_tasks import generate_random_batch, select_two_regime_split_ids
+from pfn_interference.experiments.evaluate_matched_old_sampler import evaluation_config, generate_matched_test_batch
 
 
 def config(**kwargs):
@@ -93,9 +93,9 @@ def test_exact_40960_training_5120_validation_split():
 
 @pytest.mark.parametrize('strength',[None,0,3])
 def test_evaluator_manifest_does_not_label_random_coefficients_as_lambda_one(tmp_path,monkeypatch,strength):
-    import baselines.causalpfn_direct as causal
-    import evaluation.unified as unified
-    import evaluate_matched_old_sampler as entry
+    import pfn_interference.baselines.causalpfn_direct as causal
+    import pfn_interference.metrics.unified as unified
+    import pfn_interference.experiments.evaluate_matched_old_sampler as entry
     cfg=config();model=torch.nn.Linear(1,1)
     ckpt=tmp_path/'model.pt';ckpt.write_bytes(b'loader boundary fixture')
     metadata=dict(data_config=asdict(cfg),model_config={},epoch=1,monitor_name='point',prediction_protocol=demo.PREDICTION_PROTOCOL)

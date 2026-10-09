@@ -5,9 +5,9 @@ import json
 import pytest
 import torch
 
-import train_local_network_interference as demo
-from csv_random_dgp import generate_random_batch
-from evaluate_matched_old_sampler import evaluation_config, generate_matched_test_batch, build_arg_parser
+import pfn_interference.model as demo
+from pfn_interference.simulation.csv_tasks import generate_random_batch
+from pfn_interference.experiments.evaluate_matched_old_sampler import evaluation_config, generate_matched_test_batch, build_arg_parser
 
 
 def config(**kwargs):
@@ -119,7 +119,7 @@ def test_prepare_only_cli_and_ddp_shards_preserve_random_gamma(tmp_path):
     from pathlib import Path
     root=Path(__file__).resolve().parents[1]
     bank=tmp_path/'gamma.csv'
-    cmd=[sys.executable,str(root/'train_local_network_interference.py'),
+    cmd=[sys.executable,'-m','pfn_interference.model',
          '--prepare-data-only','--device','cpu','--dgp-version','a_group_random_gamma_v1',
          '--n-units','24','--er-edge-probability','.25','--fixed-graph-file',str(tmp_path/'graph.json'),
          '--data-csv',str(bank),'--csv-datasets','8','--validation-fraction','.25',

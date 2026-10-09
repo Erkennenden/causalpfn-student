@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 import torch
 
-from estimands import (
+from pfn_interference.estimands import (
     arm_mean_exposure,
     conditional_count_weights,
     oracle_ate,

@@ -1,13 +1,13 @@
 import numpy as np
 import torch
 
-import train_local_network_interference as demo
-from baselines.ite_standard import (
+import pfn_interference.model as demo
+from pfn_interference.baselines.ite_standard import (
     LITERATURE_ITE_METHOD_NAMES,
     evaluate_literature_ite_baselines_on_batch,
     integrate_majority_ite,
 )
-from estimands import arm_mean_exposure
+from pfn_interference.estimands import arm_mean_exposure
 
 
 def test_literature_ite_method_names_are_stable() -> None:

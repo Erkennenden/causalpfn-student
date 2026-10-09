@@ -10,7 +10,7 @@ from types import SimpleNamespace
 import pytest
 import torch
 
-import train_local_network_interference as demo
+import pfn_interference.model as demo
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -66,7 +66,7 @@ def test_ddp_loader_uses_cpu_control_group_for_verification_collective(tmp_path,
 
 @pytest.mark.parametrize('corrupt', [False, True])
 def test_ddp_ranks_share_csv_verification_result(tmp_path, monkeypatch, corrupt):
-    import csv_random_dgp as adapter
+    import pfn_interference.simulation.csv_tasks as adapter
     config, args = prepared_csv(tmp_path)
     if corrupt:
         change_label_without_changing_file_size(args.data_csv)

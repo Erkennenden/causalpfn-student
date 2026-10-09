@@ -10,8 +10,8 @@ from types import SimpleNamespace
 import pytest
 import torch
 
-import train_local_network_interference as demo
-import csv_random_dgp as random_csv
+import pfn_interference.model as demo
+import pfn_interference.simulation.csv_tasks as random_csv
 
 
 def cfg() -> demo.DataConfig:

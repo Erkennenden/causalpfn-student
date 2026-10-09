@@ -9,8 +9,8 @@ import torch
 
 def api():
     # Keep a missing implementation an explicit failed requirement during RED.
-    assert importlib.util.find_spec("causalfm_dgp_v1") is not None, "network DGP is not implemented"
-    return importlib.import_module("causalfm_dgp_v1")
+    assert importlib.util.find_spec("pfn_interference.simulation") is not None, "network DGP is not implemented"
+    return importlib.import_module("pfn_interference.simulation")
 
 
 def triangle():
@@ -78,7 +78,7 @@ def test_same_task_is_reproducible_and_noise_does_not_change_truth():
 
 def test_vectorized_function_matches_original_forward_and_keeps_rng_state():
     dgp = api()
-    from causalfm_dgp_v1._upstream_outcome import OutcomeGenerator
+    from pfn_interference.simulation._upstream_outcome import OutcomeGenerator
     state = np.random.get_state()
     function = dgp.sample_outcome_function(2026, family="standard")
     after = np.random.get_state()
@@ -113,7 +113,7 @@ def test_task_query_labels_and_aggregated_labels_use_same_function():
 
 
 def test_batch_runs_existing_transformer_backward():
-    from train_local_network_interference import LocalNetworkQueryTransformer, ModelConfig, compute_training_losses
+    from pfn_interference.model import LocalNetworkQueryTransformer, ModelConfig, compute_training_losses
     batch = api().generate_task(triangle(), seed=17).batch
     model = LocalNetworkQueryTransformer(ModelConfig(d_model=16, num_heads=4, num_layers=1, ffn_dim=32))
     predictions = model(batch["tokens"], batch["queries"], batch["adjacency"])
@@ -146,13 +146,13 @@ def test_demo_exports_factual_data_truth_and_reusable_batch(tmp_path):
     import subprocess
     import sys
     from pathlib import Path
-    from fixed_er_graph import adjacency_sha256
+    from pfn_interference.graph import adjacency_sha256
 
-    assert importlib.util.find_spec("causalfm_dgp_v1.demo") is not None, "demo is not implemented"
+    assert importlib.util.find_spec("pfn_interference.simulation.demo") is not None, "demo is not implemented"
     graph_file = tmp_path / "graph.json"
     graph_file.write_text(json.dumps(dict(n_units=3, upper_hex="e0", adjacency_sha256=adjacency_sha256(triangle()))))
     output = tmp_path / "output"
-    subprocess.run([sys.executable, "-m", "causalfm_dgp_v1.demo", "--graph-file", str(graph_file),
+    subprocess.run([sys.executable, "-m", "pfn_interference.simulation.demo", "--graph-file", str(graph_file),
                     "--tasks", "2", "--output", str(output)], check=True,
                    cwd=Path(__file__).resolve().parents[1], capture_output=True, text=True)
     batch = torch.load(output / "batch.pt", weights_only=True)

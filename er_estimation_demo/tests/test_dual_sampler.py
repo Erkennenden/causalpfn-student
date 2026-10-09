@@ -12,20 +12,20 @@ import sys
 import pytest
 import torch
 
-import train_local_network_interference as demo
+import pfn_interference.model as demo
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def module(name):
     assert importlib.util.find_spec(name) is not None, f'Missing dual-test component: {name}'
-    return __import__(name)
+    return importlib.import_module(name)
 
 
 def test_matched_test_uses_training_sampler_and_isolates_configuration_shift():
-    matched = module('evaluate_matched_old_sampler')
-    from csv_random_dgp import BENCHMARK_STREAM, TRAIN_STREAM, generate_random_batch, prior_from_data
-    from benchmark_reference.prior import PriorConfig, generate_tasks
+    matched = module('pfn_interference.experiments.evaluate_matched_old_sampler')
+    from pfn_interference.simulation.csv_tasks import BENCHMARK_STREAM, TRAIN_STREAM, generate_random_batch, prior_from_data
+    from pfn_interference.experiments.reference.prior import PriorConfig, generate_tasks
     from dataclasses import asdict
     config = demo.DataConfig(n_units=24, graph_family='mixed', dgp_version='random_lpe_v1')
     old = matched.generate_matched_test_batch(config, range(16), seed=2026, device='cpu')
@@ -49,7 +49,7 @@ def test_matched_test_uses_training_sampler_and_isolates_configuration_shift():
 
 
 def test_family_summaries_pool_errors_and_keep_unsupported_targets():
-    reporting = module('dual_sampler_reporting')
+    reporting = module('pfn_interference.experiments.dual_sampler_reporting')
     rows=[]
     for dataset in range(1,65):
         configuration=(dataset-1)//4 % 4 == 1
@@ -74,7 +74,7 @@ def test_family_summaries_pool_errors_and_keep_unsupported_targets():
 
 
 def test_family_ate_summary_uses_saved_whole_graph_ate():
-    reporting = module('dual_sampler_reporting')
+    reporting = module('pfn_interference.experiments.dual_sampler_reporting')
     rows=[dict(dataset_id=i,method='PFN with interference',effect='direct',truth=0.,estimate=float(i),supported=True)
           for i in range(1,17)]
     summaries,_=reporting.summarize_rows(rows,graph_count=16,level='ate',sampler='historical_c')
@@ -85,7 +85,7 @@ def test_family_ate_summary_uses_saved_whole_graph_ate():
 
 @pytest.mark.parametrize('count',[0,4,63,65])
 def test_dual_evaluation_rejects_unbalanced_graph_counts(count):
-    dual = module('evaluate_dual_sampler')
+    dual = module('pfn_interference.experiments.evaluate_dual_sampler')
     with pytest.raises(ValueError,match='16'):
         dual.validate_graph_count(count)
 
@@ -95,7 +95,7 @@ def test_dual_evaluation_rejects_unbalanced_graph_counts(count):
 
 
 def test_dual_manifest_comparison_rejects_different_checkpoints():
-    reporting=module('dual_sampler_reporting')
+    reporting=module('pfn_interference.experiments.dual_sampler_reporting')
     old=dict(checkpoint_sha256='checkpoint-A',model_config={},data_config={},prior_config={},
         graphs=64,seed=2026,stream='test-stream',balanced=True,function_shift=False,
         causalpfn={'checkpoint_sha256':'causal-A'})
@@ -105,5 +105,4 @@ def test_dual_manifest_comparison_rejects_different_checkpoints():
     historical={**old,'causalpfn':{'checkpoint_sha256':'causal-B'}}
     with pytest.raises(ValueError,match='CausalPFN'):
         reporting.validate_pair_manifests(old,historical)
-
 

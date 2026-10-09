@@ -5,15 +5,15 @@ import sys
 
 
 def test_evaluation_cli_applies_and_saves_localized_overrides(tmp_path):
-    from causalfm_experiment.training import RunConfig, train
-    from fixed_er_graph import load_or_create_graph
+    from pfn_interference.training import RunConfig, train
+    from pfn_interference.graph import load_or_create_graph
     graph=tmp_path/'graph.json'
     load_or_create_graph(graph,n_units=12,edge_probability=.4,seed=12)
     cfg=RunConfig(graph_file=str(graph),cache_dir=str(tmp_path/'cache'),device='cpu',
         train_tasks=2,validation_tasks=1,epochs=1,batch_size=1,num_layers=1,d_model=8,num_heads=2)
     checkpoint=train(cfg,tmp_path/'training')
     output=tmp_path/'evaluation'
-    completed=subprocess.run([sys.executable,'-m','causalfm_experiment','evaluate',
+    completed=subprocess.run([sys.executable,'-m','pfn_interference','evaluate',
         '--checkpoint',str(checkpoint),'--output',str(output),'--device','cpu',
         '--baseline-epochs','1','--tnet-epochs','1','--hypersci-arm-samples','16',
         '--localized-bandwidth','1.5','--localized-arm-samples','3',

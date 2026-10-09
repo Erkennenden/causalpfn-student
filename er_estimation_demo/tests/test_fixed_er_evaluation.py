@@ -7,15 +7,15 @@ import torch
 
 
 def _fixed_config():
-    from train_local_network_interference import DataConfig
+    from pfn_interference.model import DataConfig
     return DataConfig(n_units=24, graph_family='er', graph_protocol='fixed_er_v1',
                       fixed_graph_seed=731, er_edge_probability=.25,
                       dgp_version='a_group_fixed_v1')
 
 
 def test_test_stream_reuses_training_network_but_refreshes_data():
-    from csv_random_dgp import TRAIN_STREAM, generate_random_batch
-    from evaluate_matched_old_sampler import generate_matched_test_batch
+    from pfn_interference.simulation.csv_tasks import TRAIN_STREAM, generate_random_batch
+    from pfn_interference.experiments.evaluate_matched_old_sampler import generate_matched_test_batch
 
     config = _fixed_config()
     train = generate_random_batch(config, task_ids=[1, 20, 53], seed=17, stream=TRAIN_STREAM)
@@ -31,8 +31,8 @@ def test_test_stream_reuses_training_network_but_refreshes_data():
 
 @pytest.mark.parametrize('change', ['edge', 'fractional'])
 def test_evaluator_rejects_changed_adjacency_before_scoring(change):
-    from evaluate_matched_old_sampler import validate_fixed_graph_batch
-    from csv_random_dgp import generate_random_batch
+    from pfn_interference.experiments.evaluate_matched_old_sampler import validate_fixed_graph_batch
+    from pfn_interference.simulation.csv_tasks import generate_random_batch
 
     config = _fixed_config()
     batch = generate_random_batch(config, task_ids=[0, 1], seed=2026)
@@ -45,7 +45,7 @@ def test_evaluator_rejects_changed_adjacency_before_scoring(change):
 
 
 def test_cli_accepts_episode_alias_before_loading_checkpoint(tmp_path):
-    from evaluate_matched_old_sampler import main
+    from pfn_interference.experiments.evaluate_matched_old_sampler import main
 
     with pytest.raises(FileNotFoundError):
         main(['--device', 'cpu', '--episodes', '1', '--checkpoint', str(tmp_path/'missing.pt'),
@@ -53,7 +53,7 @@ def test_cli_accepts_episode_alias_before_loading_checkpoint(tmp_path):
 
 
 def _write_result(output_dir, *, episodes=3, graph_hashes=None):
-    from evaluation.unified import _write_csv
+    from pfn_interference.metrics.unified import _write_csv
 
     graph_hashes = graph_hashes or ['fixed-network'] * episodes
     result = dict(
@@ -77,7 +77,7 @@ def _write_result(output_dir, *, episodes=3, graph_hashes=None):
 
 
 def test_fixed_er_reports_count_repeats_without_fabricated_families(tmp_path):
-    from dual_sampler_reporting import write_family_reports
+    from pfn_interference.experiments.dual_sampler_reporting import write_family_reports
 
     _write_result(tmp_path)
     report = write_family_reports(tmp_path, sampler='matched_old_sampler')
@@ -105,7 +105,7 @@ def test_fixed_er_reports_count_repeats_without_fabricated_families(tmp_path):
 
 
 def test_fixed_er_reporting_rejects_a_changed_network(tmp_path):
-    from dual_sampler_reporting import write_family_reports
+    from pfn_interference.experiments.dual_sampler_reporting import write_family_reports
 
     _write_result(tmp_path, graph_hashes=['fixed-network', 'other-network', 'fixed-network'])
     with pytest.raises(ValueError, match='adjacency'):
@@ -114,13 +114,13 @@ def test_fixed_er_reporting_rejects_a_changed_network(tmp_path):
 
 @pytest.mark.parametrize('episodes', [1, 3, 64])
 def test_fixed_er_allows_any_positive_episode_count(episodes):
-    from evaluate_dual_sampler import validate_graph_count
+    from pfn_interference.experiments.evaluate_dual_sampler import validate_graph_count
 
     validate_graph_count(episodes, graph_protocol='fixed_er_v1')
 
 
 def test_fixed_er_rejects_empty_evaluation():
-    from evaluate_dual_sampler import validate_graph_count
+    from pfn_interference.experiments.evaluate_dual_sampler import validate_graph_count
 
     with pytest.raises(ValueError, match='positive'):
         validate_graph_count(0, graph_protocol='fixed_er_v1')
@@ -132,10 +132,10 @@ def test_main_evaluator_keeps_other_baselines_and_forwards_localized_settings(tm
     from dataclasses import asdict
     import pytest
     import torch
-    import train_local_network_interference as demo
-    import baselines.causalpfn_direct as causal
-    import evaluation.unified as unified
-    import evaluate_matched_old_sampler as entry
+    import pfn_interference.model as demo
+    import pfn_interference.baselines.causalpfn_direct as causal
+    import pfn_interference.metrics.unified as unified
+    import pfn_interference.experiments.evaluate_matched_old_sampler as entry
     cfg = demo.DataConfig(n_units=24, er_edge_probability=.25, graph_protocol='fixed_er_v1',
                           dgp_version='a_group_fixed_v1')
     checkpoint = tmp_path/'model.pt'

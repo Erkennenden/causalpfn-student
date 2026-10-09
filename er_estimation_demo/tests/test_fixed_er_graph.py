@@ -5,8 +5,8 @@ import json
 import pytest
 import torch
 
-import train_local_network_interference as demo
-from csv_random_dgp import generate_random_batch
+import pfn_interference.model as demo
+from pfn_interference.simulation.csv_tasks import generate_random_batch
 
 
 def fixed_config(**overrides):
@@ -70,7 +70,7 @@ def test_serialized_config_restores_graph_without_sampling(monkeypatch):
 
 
 def test_graph_file_is_reused_and_rejects_mismatched_parameters(tmp_path, monkeypatch):
-    from fixed_er_graph import load_or_create_graph
+    from pfn_interference.graph import load_or_create_graph
     path = tmp_path/'graph.json'
     first = load_or_create_graph(path, n_units=24, edge_probability=.25, seed=731)
     before = path.read_bytes()
@@ -122,7 +122,7 @@ def test_fixed_protocol_rejects_other_families_and_invalid_graphs():
 
 def test_release_network_has_1000_nodes_and_survives_train_test_stream_changes(monkeypatch):
     from pathlib import Path
-    from fixed_er_graph import load_or_create_graph, adjacency_sha256
+    from pfn_interference.graph import load_or_create_graph, adjacency_sha256
     path = Path(__file__).resolve().parents[1]/'data/fixed_er_N1000_p0.02_seed12345.json'
     def forbidden(*args, **kwargs):
         raise AssertionError('The release network must not be resampled')

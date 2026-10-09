@@ -5,9 +5,9 @@ import json
 import pytest
 import torch
 
-import train_local_network_interference as demo
-from csv_random_dgp import generate_random_batch
-from evaluate_matched_old_sampler import generate_matched_test_batch, build_arg_parser
+import pfn_interference.model as demo
+from pfn_interference.simulation.csv_tasks import generate_random_batch
+from pfn_interference.experiments.evaluate_matched_old_sampler import generate_matched_test_batch, build_arg_parser
 
 
 def config(**kwargs):
@@ -82,7 +82,7 @@ def test_csv_roundtrip_and_cache_separation(tmp_path):
 
 
 def test_test_lambda_override_preserves_training_config_and_graph():
-    from evaluate_matched_old_sampler import evaluation_config
+    from pfn_interference.experiments.evaluate_matched_old_sampler import evaluation_config
     train = config(interference_lambda=1.)
     for strength in (1., 2., 3.):
         test = evaluation_config(train, strength)

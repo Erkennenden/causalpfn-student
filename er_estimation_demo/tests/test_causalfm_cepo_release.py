@@ -5,8 +5,8 @@ import pytest
 import torch
 from pathlib import Path
 
-from causalfm_dgp_v1 import generate_task
-from cepo import cepo_targets, effects_from_mu
+from pfn_interference.simulation import generate_task
+from pfn_interference.cepo import cepo_targets, effects_from_mu
 
 
 def test_json_cache_identity_is_atomic_for_concurrent_rank_writers(tmp_path, monkeypatch):
@@ -14,7 +14,7 @@ def test_json_cache_identity_is_atomic_for_concurrent_rank_writers(tmp_path, mon
     import threading
     import os
     import json
-    from causalfm_experiment.data import write_json
+    from pfn_interference.data import write_json
     barrier = threading.Barrier(2)
     real_replace = os.replace
     def replace(source, target):
@@ -32,10 +32,11 @@ def test_json_cache_identity_is_atomic_for_concurrent_rank_writers(tmp_path, mon
 
 def test_docker_launcher_propagates_immediate_training_failure(tmp_path):
     import subprocess
-    source = (Path(__file__).resolve().parents[1]/'launch_causalfm_docker.sh').read_text()
+    source = (Path(__file__).resolve().parents[1]/'scripts/launch_musa.sh').read_text()
     inside = source.split("<<'INSIDE'\n", 1)[1].rsplit('\nINSIDE', 1)[0]
     inside = inside.replace('/workspace/latest_causalfm_project.txt', str(tmp_path/'latest.txt'))
-    (tmp_path/'run_causalfm.sh').write_text('exit 42\n')
+    (tmp_path/'scripts').mkdir()
+    (tmp_path/'scripts/train.sh').write_text('exit 42\n')
     result = subprocess.run(['bash', '-s', '--', str(tmp_path)], input=inside, text=True, capture_output=True)
     assert result.returncode == 42, result.stdout + result.stderr
     assert (tmp_path/'.host_exit_code').read_text().strip() == '42'
@@ -77,8 +78,8 @@ def test_external_noise_never_enters_cepo_and_function_shared_with_factual_data(
 
 
 def test_ate_baselines_accept_exact_nonlinear_arm_means_without_fake_linear_parameters():
-    from baselines.runner import run_ate_baselines_on_batch
-    from baselines.tnet import TNetConfig
+    from pfn_interference.baselines.runner import run_ate_baselines_on_batch
+    from pfn_interference.baselines.tnet import TNetConfig
     b = generate_task(ring(24), seed=2026, outcome=nonlinear).batch
     result = run_ate_baselines_on_batch(batch=b, treatment_prob=.5, bandwidth=1, ridge=1e-3,
         tnet_config=TNetConfig(epochs=1, hidden_dim=4))
@@ -87,9 +88,9 @@ def test_ate_baselines_accept_exact_nonlinear_arm_means_without_fake_linear_para
 
 
 def test_task_bank_preserves_cepo_and_split_reproducibility(tmp_path):
-    assert importlib.util.find_spec('causalfm_experiment') is not None, 'new CEPO experiment entry is missing'
-    from causalfm_experiment.data import TaskBank
-    from fixed_er_graph import load_or_create_graph
+    assert importlib.util.find_spec('pfn_interference') is not None, 'new CEPO experiment entry is missing'
+    from pfn_interference.data import TaskBank
+    from pfn_interference.graph import load_or_create_graph
     graph = tmp_path/'graph.json'
     load_or_create_graph(graph, n_units=12, edge_probability=.4, seed=12)
     bank = TaskBank(graph, tmp_path/'cache', data_seed=5)
@@ -102,9 +103,9 @@ def test_task_bank_preserves_cepo_and_split_reproducibility(tmp_path):
 
 
 def test_train_resume_and_checkpoint_inference_are_cepo_consistent(tmp_path):
-    assert importlib.util.find_spec('causalfm_experiment.training') is not None, 'CEPO trainer missing'
-    from causalfm_experiment.training import RunConfig, train, load_model
-    from fixed_er_graph import load_or_create_graph
+    assert importlib.util.find_spec('pfn_interference.training') is not None, 'CEPO trainer missing'
+    from pfn_interference.training import RunConfig, train, load_model
+    from pfn_interference.graph import load_or_create_graph
     from dataclasses import replace
     graph=tmp_path/'g.json'
     load_or_create_graph(graph,n_units=12,edge_probability=.4,seed=12)
@@ -129,11 +130,11 @@ def test_train_resume_and_checkpoint_inference_are_cepo_consistent(tmp_path):
 @pytest.mark.parametrize('entry', ['python', 'cli'])
 @pytest.mark.parametrize('legacy', [False, True])
 def test_evaluation_exports_same_test_datasets_for_ate_and_ite(tmp_path, entry, legacy):
-    assert importlib.util.find_spec('causalfm_experiment.evaluation') is not None, 'new evaluator missing'
-    from causalfm_experiment.training import RunConfig, train
-    from causalfm_experiment.evaluation import evaluate
-    from causalfm_experiment.data import TaskBank
-    from fixed_er_graph import load_or_create_graph
+    assert importlib.util.find_spec('pfn_interference.evaluation') is not None, 'new evaluator missing'
+    from pfn_interference.training import RunConfig, train
+    from pfn_interference.evaluation import evaluate
+    from pfn_interference.data import TaskBank
+    from pfn_interference.graph import load_or_create_graph
     graph=tmp_path/'g.json';load_or_create_graph(graph,n_units=12,edge_probability=.4,seed=12)
     cfg=RunConfig(graph_file=str(graph),cache_dir=str(tmp_path/'cache'),device='cpu',
         train_tasks=2,validation_tasks=1,epochs=1,batch_size=1,num_layers=1,d_model=8,num_heads=2)
@@ -146,7 +147,7 @@ def test_evaluation_exports_same_test_datasets_for_ate_and_ite(tmp_path, entry, 
         result=evaluate(path,tmp_path/'eval',device='cpu',baselines=False,**options)
     else:
         import subprocess, sys, json
-        subprocess.run([sys.executable,'-m','causalfm_experiment','evaluate',
+        subprocess.run([sys.executable,'-m','pfn_interference','evaluate',
             '--checkpoint',str(path),'--output',str(tmp_path/'eval'),
             '--device','cpu','--pfn-only']+(['--test-seed','2026','--test-tasks','1'] if legacy else []),
             check=True,capture_output=True,text=True)

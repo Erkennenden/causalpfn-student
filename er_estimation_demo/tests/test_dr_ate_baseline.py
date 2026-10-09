@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from baselines.dr import (
+from pfn_interference.baselines.dr import (
     aipw_arm_means,
     estimate_oracle_dr_arm_means,
     network_hac_variance,

@@ -2,7 +2,7 @@ import numpy as np
 import torch
 import pytest
 
-from baselines.tnet import (
+from pfn_interference.baselines.tnet import (
     TNetConfig,
     TNetModel,
     _build_tnet_optimizers,
@@ -121,7 +121,7 @@ def test_fitted_tnet_returns_finite_majority_effects():
 
 def test_default_epoch_performs_fifty_real_targeted_optimizer_updates(monkeypatch):
     # Guard against collapsing the author's inner optimization loop to one step.
-    import baselines.tnet as module
+    import pfn_interference.baselines.tnet as module
     optimizers = []
     build = module._build_tnet_optimizers
     def capture(model, config):

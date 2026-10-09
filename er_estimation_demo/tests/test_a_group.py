@@ -6,7 +6,7 @@ import math
 import pytest
 import torch
 
-import train_local_network_interference as demo
+import pfn_interference.model as demo
 
 
 def config():
@@ -15,7 +15,7 @@ def config():
 
 @pytest.mark.parametrize('balanced', [False, True])
 def test_a_formula_noise_and_three_effects(balanced):
-    from csv_random_dgp import generate_random_batch
+    from pfn_interference.simulation.csv_tasks import generate_random_batch
     b = generate_random_batch(config(), task_ids=range(16), seed=2026, balanced=balanced)
     x, t, e = b['x'], b['observed_treatment'], b['observed_exposure']
     tau = 6 + .2 * x.exp()
@@ -44,7 +44,7 @@ def test_a_formula_noise_and_three_effects(balanced):
 
 @pytest.mark.parametrize('balanced', [False, True])
 def test_only_outcome_changes_and_chunking_is_stable(balanced):
-    from csv_random_dgp import generate_random_batch
+    from pfn_interference.simulation.csv_tasks import generate_random_batch
     a = generate_random_batch(config(), task_ids=range(16), seed=41, balanced=balanced)
     old = generate_random_batch(replace(config(), dgp_version='random_lpe_v1'),
                                 task_ids=range(16), seed=41, balanced=balanced)
@@ -85,8 +85,8 @@ def test_a_csv_roundtrip_and_rejects_old_bank(tmp_path):
 
 
 def test_normal_test_uses_a_formula_on_all_four_families():
-    from evaluate_matched_old_sampler import generate_matched_test_batch
-    from csv_random_dgp import BENCHMARK_STREAM, generate_random_batch
+    from pfn_interference.experiments.evaluate_matched_old_sampler import generate_matched_test_batch
+    from pfn_interference.simulation.csv_tasks import BENCHMARK_STREAM, generate_random_batch
     actual = generate_matched_test_batch(config(), range(16), seed=2026)
     expected = generate_random_batch(config(), task_ids=range(16), seed=2026,
                                      stream=BENCHMARK_STREAM, balanced=True)
@@ -97,8 +97,8 @@ def test_normal_test_uses_a_formula_on_all_four_families():
 
 
 def test_reports_accept_a_group_without_inventing_null_tasks(tmp_path):
-    from dual_sampler_reporting import write_family_reports
-    from evaluation.unified import _write_csv
+    from pfn_interference.experiments.dual_sampler_reporting import write_family_reports
+    from pfn_interference.metrics.unified import _write_csv
     result = dict(manifest=dict(graphs=16, balanced=True, seed=2026,
         data_config=dict(graph_family='mixed', dgp_version='a_group_fixed_v1'),
         task_ids=list(range(16)), checkpoint_sha256='test'),
@@ -116,10 +116,10 @@ def test_reports_accept_a_group_without_inventing_null_tasks(tmp_path):
     assert (tmp_path/'family_tables/configuration/ite_table.tex').exists()
 
 
-@pytest.mark.parametrize('entry', ['evaluate_dual_sampler', 'evaluate_random_csv_tables'])
+@pytest.mark.parametrize('entry', ['pfn_interference.experiments.evaluate_dual_sampler', 'pfn_interference.experiments.evaluate_random_csv_tables'])
 def test_old_test_entry_names_execute_only_normal_evaluator(entry, monkeypatch):
     import importlib
-    import evaluate_matched_old_sampler
+    import pfn_interference.experiments.evaluate_matched_old_sampler as evaluate_matched_old_sampler
     calls = []
     monkeypatch.setattr(evaluate_matched_old_sampler, 'main', lambda argv: calls.append(argv))
     argv = ['--checkpoint', 'a.pt', '--output-dir', 'normal-results']

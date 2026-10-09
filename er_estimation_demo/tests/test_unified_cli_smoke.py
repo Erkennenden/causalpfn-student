@@ -8,7 +8,7 @@ from pathlib import Path
 
 import torch
 
-import train_local_network_interference as demo
+import pfn_interference.model as demo
 
 
 def test_test_only_cli_writes_unified_benchmark_outputs(tmp_path: Path) -> None:
@@ -46,7 +46,7 @@ def test_test_only_cli_writes_unified_benchmark_outputs(tmp_path: Path) -> None:
     output_dir = tmp_path / "results"
     command = [
         sys.executable,
-        "train_local_network_interference.py",
+        "-m", "pfn_interference.model",
         "--test-only",
         "--device",
         "cpu",
@@ -138,7 +138,7 @@ def test_test_only_cli_writes_unified_benchmark_outputs(tmp_path: Path) -> None:
 
 
 def test_causalpfn_cli_defaults(monkeypatch) -> None:
-    monkeypatch.setattr(sys, "argv", ["train_local_network_interference.py"])
+    monkeypatch.setattr(sys, "argv", ["pfn_interference/model.py"])
     args = demo.parse_args()
     assert args.causalpfn_checkpoint == Path("checkpoints/causalpfn_v0.pt")
     assert args.nsi_pcr_rank_max == 6

@@ -18,7 +18,7 @@ def complete_report():
 
 
 def test_complete_inventory_keeps_unsupported_predictions_and_direct_only_causalpfn():
-    from baseline_completeness import validate_baseline_results
+    from pfn_interference.baselines.validation import validate_baseline_results
     inventory = validate_baseline_results(complete_report(), n_units=3)
     assert len(inventory) == 38  # 16 ITE method/effect pairs + 22 ATE pairs.
     nsi = [r for r in inventory if r['method'] == 'NSI']
@@ -28,7 +28,7 @@ def test_complete_inventory_keeps_unsupported_predictions_and_direct_only_causal
 
 @pytest.mark.parametrize('damage', ['missing_method', 'missing_effect', 'missing_unit', 'duplicate_unit'])
 def test_incomplete_baseline_results_fail_instead_of_silent_success(damage):
-    from baseline_completeness import validate_baseline_results
+    from pfn_interference.baselines.validation import validate_baseline_results
     report = complete_report()
     if damage == 'missing_method':
         report['ate_graph_results'] = [r for r in report['ate_graph_results'] if r['method'] != 'HT']
@@ -45,7 +45,7 @@ def test_incomplete_baseline_results_fail_instead_of_silent_success(damage):
 
 @pytest.mark.parametrize('value', [float('nan'), float('inf'), -float('inf')])
 def test_supported_nonfinite_estimates_are_computation_failures(value):
-    from baseline_completeness import validate_baseline_results
+    from pfn_interference.baselines.validation import validate_baseline_results
     report = complete_report()
     report['ite_unit_results'][0]['estimate'] = value
     assert report['ite_unit_results'][0]['supported'] is True

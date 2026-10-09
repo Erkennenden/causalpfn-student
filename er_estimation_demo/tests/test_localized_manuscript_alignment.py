@@ -3,9 +3,9 @@ import numpy as np
 import pytest
 import torch
 
-import train_local_network_interference as demo
-import evaluate_matched_old_sampler as matched
-from baselines.localized_walsh import (
+import pfn_interference.model as demo
+import pfn_interference.experiments.evaluate_matched_old_sampler as matched
+from pfn_interference.baselines.localized_walsh import (
     ITE_METHOD_NAME, PaperLocalizedWalshEstimator, _localized_weights,
     evaluate_localized_dr_lasso_majority_ite,
 )
@@ -30,7 +30,7 @@ def test_heldout_outcomes_cannot_enter_nuisance_shrinkage_mean():
 
 
 def test_explicit_compact_bandwidth_does_not_pool_nonisomorphic_configurations(monkeypatch):
-    monkeypatch.setattr('sys.argv', ['train_local_network_interference.py', '--localized-bandwidth', '.24'])
+    monkeypatch.setattr('sys.argv', ['pfn_interference/model.py', '--localized-bandwidth', '.24'])
     args = demo.parse_args()
     result = _localized_weights(np.array([0., .25, .25]), bandwidth=args.localized_bandwidth,
                                 min_neighbors=args.localized_min_neighbors, mode=args.localized_mode)

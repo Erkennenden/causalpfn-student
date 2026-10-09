@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 import torch
 
-from causalfm_dgp_v1 import generate_task, sample_outcome_function
+from pfn_interference.simulation import generate_task, sample_outcome_function
 
 FAMILIES = ("standard", "dense", "composition")
 
@@ -19,9 +19,9 @@ def sample(seed, family):
 
 def source_reference(seed, family, rows):
     """Use original node-by-node forward calls; no vectorized adapter helpers."""
-    from causalfm_dgp_v1._upstream_outcome import OutcomeGenerator
-    from causalfm_dgp_v1._upstream_base import BaseMLPGenerator
-    from causalfm_dgp_v1._upstream_frontdoor import MediatorGenerator, OutcomeGeneratorWithMediator
+    from pfn_interference.simulation._upstream_outcome import OutcomeGenerator
+    from pfn_interference.simulation._upstream_base import BaseMLPGenerator
+    from pfn_interference.simulation._upstream_frontdoor import MediatorGenerator, OutcomeGeneratorWithMediator
 
     def dense(generator, n_inputs):
         layers = max(3, generator.prior_layers())

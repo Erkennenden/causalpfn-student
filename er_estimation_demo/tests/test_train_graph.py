@@ -12,9 +12,9 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-import train_local_network_interference as demo  # noqa: E402
+import pfn_interference.model as demo  # noqa: E402
 
-from train_local_network_interference import (  # noqa: E402
+from pfn_interference.model import (  # noqa: E402
     ER_GRAPH,
     CONFIGURATION_GRAPH,
     QUERY_DIRECT,
@@ -953,7 +953,7 @@ def test_cepo_predictions_share_a_query_conditioned_head():
 
 def test_transformer_layer_has_no_graph_bias_and_ignores_adjacency() -> None:
     config = small_model_config()
-    layer = demo.GraphBiasedTransformerEncoderLayer(config).eval()
+    layer = demo.TransformerEncoderLayer(config).eval()
     src = torch.randn(2, 10, config.d_model)
     empty = torch.zeros(2, 10, 10)
     complete = torch.ones_like(empty)
@@ -1597,7 +1597,7 @@ def test_current_source_has_no_v5_schema_or_undefined_paper_name_residue() -> No
     assert "PAPER_EFFECT_NAMES" not in source
 
 def test_parse_args_exposes_er_only_and_paper_baseline_controls(monkeypatch) -> None:
-    monkeypatch.setattr(sys, "argv", ["train_local_network_interference.py"])
+    monkeypatch.setattr(sys, "argv", ["pfn_interference/model.py"])
 
     args = demo.parse_args()
 
@@ -1626,7 +1626,7 @@ def test_parse_args_exposes_er_only_and_paper_baseline_controls(monkeypatch) -> 
     assert args.baseline_datasets == 64
     assert args.baseline_bandwidth == 3
     assert args.baseline_ridge == pytest.approx(0.0)
-    monkeypatch.setattr(sys,"argv",["train_local_network_interference.py","--direct-loss-weight","2"])
+    monkeypatch.setattr(sys,"argv",["pfn_interference/model.py","--direct-loss-weight","2"])
     with pytest.raises(SystemExit):
         demo.parse_args()
 
@@ -1642,7 +1642,7 @@ def test_removed_graph_cli_flags_are_rejected(monkeypatch) -> None:
         monkeypatch.setattr(
             sys,
             "argv",
-            ["train_local_network_interference.py", flag, "1.0"],
+            ["pfn_interference/model.py", flag, "1.0"],
         )
         with pytest.raises(SystemExit):
             demo.parse_args()

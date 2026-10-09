@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 import torch
 
-from baselines.ns_pcr import (
+from pfn_interference.baselines.ns_pcr import (
     NSIConfig,
     NSI_METHOD_NAME,
     _psi_matrix,

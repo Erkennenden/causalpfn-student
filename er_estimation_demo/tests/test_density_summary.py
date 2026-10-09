@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from baselines.tnet import TNET_METHOD_NAME
-from evaluation.density import select_density_summary_rows
+from pfn_interference.baselines.tnet import TNET_METHOD_NAME
+from pfn_interference.metrics.density import select_density_summary_rows
 
 
 def test_ite_density_keeps_primary_rows_and_causalpfn_direct_only() -> None:

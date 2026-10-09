@@ -1,4 +1,4 @@
-"""Test independent dataset scheduling and pooled ATE/ITE evaluation."""
+"""Test independent dataset scheduling and pooled ATE/ITE pfn_interference.metrics."""
 import json
 import math
 import os
@@ -8,7 +8,7 @@ import sys
 
 import pytest
 
-from causalfm_experiment.evaluation import evaluate, summarize_rows
+from pfn_interference.evaluation import evaluate, summarize_rows
 
 
 @pytest.mark.parametrize('options', [
@@ -48,12 +48,12 @@ def test_evaluation_only_script_passes_schedule_without_training(tmp_path, selec
     stub.chmod(0o755)
     env={k:v for k,v in os.environ.items() if k not in ('TEST_SEED','TEST_SEEDS','TEST_TASKS')}
     env.update(PYTHON=str(stub),DEVICE='cpu',**selection)
-    completed=subprocess.run(['bash',str(root/'evaluate_causalfm.sh'),
+    completed=subprocess.run(['bash',str(root/'scripts/evaluate.sh'),
                               'checkpoint with spaces.pt','output with spaces'],
                              env=env,capture_output=True,text=True)
     assert completed.returncode==0, completed.stdout+completed.stderr
     args=json.loads(capture.read_text())
-    assert args[:3]==['-m','causalfm_experiment','evaluate']
+    assert args[:3]==['-m','pfn_interference','evaluate']
     pos=args.index(expected[0])
     assert args[pos:pos+len(expected)]==expected
     assert args[args.index('--test-tasks')+1]==selection.get('TEST_TASKS','2')
@@ -61,7 +61,7 @@ def test_evaluation_only_script_passes_schedule_without_training(tmp_path, selec
 
 
 def test_cli_rejects_ambiguous_seed_arguments(tmp_path):
-    result=subprocess.run([sys.executable,'-m','causalfm_experiment','evaluate',
+    result=subprocess.run([sys.executable,'-m','pfn_interference','evaluate',
         '--checkpoint','missing.pt','--output',str(tmp_path/'out'),
         '--test-seed','2026','--test-seeds','2025','2026'],capture_output=True,text=True)
     assert result.returncode==2

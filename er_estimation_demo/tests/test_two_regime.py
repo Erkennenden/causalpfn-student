@@ -6,8 +6,8 @@ from dataclasses import asdict
 
 import pytest
 import torch
-import csv_random_dgp as adapter
-import train_local_network_interference as demo
+import pfn_interference.simulation.csv_tasks as adapter
+import pfn_interference.model as demo
 
 
 def config():
@@ -45,8 +45,8 @@ def test_training_and_validation_each_remain_half_after_csv_preparation_and_resp
 
 
 def test_both_evaluators_have_half_of_each_regime_inside_every_family():
-    from evaluate_matched_old_sampler import generate_matched_test_batch
-    from benchmark_reference.prior import PriorConfig, generate_tasks
+    from pfn_interference.experiments.evaluate_matched_old_sampler import generate_matched_test_batch
+    from pfn_interference.experiments.reference.prior import PriorConfig, generate_tasks
     cfg=config()
     matched=generate_matched_test_batch(cfg,range(64),seed=2026)
     other=generate_tasks(PriorConfig(**asdict(adapter.prior_from_data(cfg))),range(64),
@@ -63,7 +63,7 @@ def test_old_independent_gate_checkpoint_is_not_silently_loaded():
 
 
 def test_regime_reports_use_actual_task_metadata_and_keep_common_support(tmp_path):
-    from dual_sampler_reporting import write_family_reports
+    from pfn_interference.experiments.dual_sampler_reporting import write_family_reports
     # Deliberately reverse the usual regime order: metadata, not ID parity, is authoritative.
     regimes={i:(3 if i%2==0 else 0) for i in range(16)}
     manifest=dict(graphs=16,balanced=True,data_config={'graph_family':'mixed'},

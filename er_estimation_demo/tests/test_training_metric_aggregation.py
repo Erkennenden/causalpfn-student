@@ -4,7 +4,7 @@ import math
 import pytest
 import torch
 
-import train_local_network_interference as demo
+import pfn_interference.model as demo
 
 
 class KnownErrorModel(torch.nn.Module):

@@ -2,12 +2,12 @@ from __future__ import annotations
 
 import numpy as np
 
-from baselines.auxiliary_adjustment.features import (
+from pfn_interference.baselines.auxiliary_adjustment.features import (
     build_g1,
     build_g2,
     normalize_phi0,
 )
-from baselines.auxiliary_adjustment.estimators import (
+from pfn_interference.baselines.auxiliary_adjustment.estimators import (
     estimate_weighted_regression,
     solve_network_adjustment,
 )
@@ -147,7 +147,7 @@ def test_reg_net_matches_raw_ipw_hajek_variance_formula():
 
 
 def test_majority_phi0_g2_matches_exact_design_expectation() -> None:
-    from baselines.auxiliary_adjustment import features as feature_module
+    from pfn_interference.baselines.auxiliary_adjustment import features as feature_module
 
     assert hasattr(feature_module, "build_majority_phi0_g2_exact")
 

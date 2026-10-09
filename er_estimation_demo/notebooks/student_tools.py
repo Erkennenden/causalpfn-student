@@ -1,11 +1,11 @@
-"""Display and lightweight teaching baselines; original research sources stay unchanged."""
+"""Display helpers and lightweight baselines for the code walkthrough."""
 from pathlib import Path
 import html
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from IPython.display import HTML, display
-from estimands import arm_mean_exposure
+from pfn_interference.estimands import arm_mean_exposure
 
 COLORS = ['#117c83', '#df8a39', '#5766ac', '#b34e65']
 ARM_LABELS = ['00', '01', '10', '11']

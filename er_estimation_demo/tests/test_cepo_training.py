@@ -2,7 +2,7 @@ import math
 from dataclasses import asdict
 import pytest
 import torch
-import train_local_network_interference as m
+import pfn_interference.model as m
 
 def fixture():
     return {"tokens":torch.zeros(1,2,5), "design_treatment_prob":torch.tensor([.5]), "degree":torch.tensor([[1.,2.]]),
@@ -32,7 +32,7 @@ def test_mu_nll_uses_absolute_cepo_levels_and_not_effect_labels():
     shifted.backward(); assert torch.all(mean.grad<0)
 
 def test_model_and_benchmark_reuse_four_mu_means_for_all_effects():
-    from evaluation.unified import predict_pfn_majority_ite
+    from pfn_interference.metrics.unified import predict_pfn_majority_ite
     assert hasattr(m,'cepo_queries'), 'CEPO query interface is missing'
     b=m.generate_batch(m.DataConfig(n_units=10,er_edge_probability=.4),2,seed=91,device=torch.device('cpu'))
     model=m.LocalNetworkQueryTransformer(m.ModelConfig(d_model=8,num_heads=2,num_layers=1,ffn_dim=16)).eval()

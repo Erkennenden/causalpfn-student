@@ -4,7 +4,7 @@ import sys
 
 
 def test_vendored_causalpfn_model_imports_without_optional_estimator_dependencies() -> None:
-    from third_party.causalpfn.models import InContextModel
+    from pfn_interference.third_party.causalpfn.models import InContextModel
 
     assert InContextModel is not None
     assert "faiss" not in sys.modules
@@ -14,7 +14,7 @@ from pathlib import Path
 
 import torch
 
-from baselines.causalpfn_direct import load_causalpfn_checkpoint
+from pfn_interference.baselines.causalpfn_direct import load_causalpfn_checkpoint
 
 
 def test_local_checkpoint_loads_and_predicts_finite_cepo() -> None:
@@ -44,7 +44,7 @@ def test_local_checkpoint_loads_and_predicts_finite_cepo() -> None:
     assert prediction.shape == (1, 1, 2)
     assert torch.isfinite(prediction).all()
 
-from baselines.causalpfn_direct import predict_causalpfn_direct_on_batch
+from pfn_interference.baselines.causalpfn_direct import predict_causalpfn_direct_on_batch
 
 
 class CovariateSurface:

@@ -9,12 +9,12 @@ import numpy as np
 import pytest
 import torch
 
-from cepo import cepo_queries, cepo_targets, compute_cepo_losses, effects_from_mu
-from causalfm_experiment.data import TaskBank
-from causalfm_experiment.training import RunConfig, train, load_model
-from causalfm_experiment.evaluation import evaluate, pfn_rows
-from fixed_er_graph import adjacency_sha256
-from train_local_network_interference import ModelConfig, LocalNetworkQueryTransformer
+from pfn_interference.cepo import cepo_queries, cepo_targets, compute_cepo_losses, effects_from_mu
+from pfn_interference.data import TaskBank
+from pfn_interference.training import RunConfig, train, load_model
+from pfn_interference.evaluation import evaluate, pfn_rows
+from pfn_interference.graph import adjacency_sha256
+from pfn_interference.model import ModelConfig, LocalNetworkQueryTransformer
 
 
 def cached_a(bank,split,task_id):
@@ -48,7 +48,7 @@ def test_default_pipeline_uses_one_frozen_er_1000_node_graph(tmp_path, monkeypat
     torch.testing.assert_close(bank.graph,expected)
     def forbidden(*args, **kwargs):
         raise AssertionError('A saved graph must never be redrawn for a data task')
-    monkeypatch.setattr('train_local_network_interference._generate_er_adjacency', forbidden)
+    monkeypatch.setattr('pfn_interference.model._generate_er_adjacency', forbidden)
     for seed in (12345,2025,2029):
         other = TaskBank(RunConfig().graph_file, tmp_path / 'cache', data_seed=seed)
         for split in ('train','validation','test'):
@@ -189,7 +189,7 @@ def test_train_validation_and_ten_task_export_use_all_four_gmms(tmp_path):
 
 
 def test_three_arm_checkpoint_is_rejected(tmp_path):
-    from causalfm_experiment.training import VERSION
+    from pfn_interference.training import VERSION
     path = tmp_path / 'old.pt'
     torch.save(dict(version=VERSION, prediction_protocol='majority_cepo_gmm_v1'), path)
     with pytest.raises(ValueError, match='checkpoint|Checkpoint'):

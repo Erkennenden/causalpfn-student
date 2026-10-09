@@ -7373,11 +7373,10 @@ main{max-width:1220px;margin:20px auto 60px!important;background:#fff;border-rad
 </div>
 <p>这家公司向部分销售员开放 AI 助手。销售员会与合作伙伴交流，因此业绩同时受自己的处理和同伴处理影响。
 我们观察网络、特征、处理和连续业绩，用 PFN 估计四种处理／暴露状态下的平均响应，再与模拟器提供的真值比较。</p>
-<p><strong>这份教学本直接调用附件的 DGP、真值计算、模型和训练入口。</strong> 原研究源码未改动。新增的内容是解释、绘图、简单教学基线和可运行示例。</p>
+<p><strong>本 Notebook 直接调用项目的 DGP、真值计算、模型和训练入口，并配合文字、图表和简单基线解释计算过程。</strong></p>
 <blockquote>
-<p><strong>当前保存的 PFN 结果来自教学小模型</strong>：同一张 ER1000 图，32 个训练任务、8 个验证任务、6 个 epoch、2 层、32 维。
-它用于展示完整计算过程，不能代表原计划中 10 层、128 维、40,960 个训练任务的正式模型表现。
-附件中的 <code>checkpoints/causalpfn_v0.pt</code> 是比较用的 causalPFN 基线，不是本项目主模型。</p>
+<p><strong>当前训练代码统一使用 10 层、128 维 PFN。</strong> 本文件保留的图表是此前 2 层、32 维模型的流程示例（32 个训练任务、8 个验证任务、6 个 epoch），尚未用新配置重跑。运行第 09 节起的模型计算需要提供匹配的 10 层权重，或主动开启训练。
+<code>checkpoints/causalpfn_v0.pt</code> 是比较用的 CausalPFN 基线权重。</p>
 </blockquote>
 <p><strong>阅读说明</strong></p>
 <p>本 Notebook 以讲解代码流程为主，文字、公式和图表均可直接阅读，无需重新运行或训练模型。
@@ -7822,14 +7821,21 @@ main{max-width:1220px;margin:20px auto 60px!important;background:#fff;border-rad
 <div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">DATA_SEED</span> <span class="o">=</span> <span class="mi">2026</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">DATA_SEED</span> <span class="o">=</span> <span class="mi">2026</span>  <span class="c1"># 单份数据讲解用；训练 data_seed 固定为 12345</span>
 <span class="n">TASK_ID</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">FOCAL_NODE</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">DEVICE</span> <span class="o">=</span> <span class="s2">"cpu"</span>
-<span class="n">CHECKPOINT_PATH</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># 例如 Path("/你的正式运行目录/training/model_best.pt")</span>
+<span class="n">DEVICE</span> <span class="o">=</span> <span class="s2">"cpu"</span>  <span class="c1"># 推断可用 CPU；训练时按机器选择 cpu / cuda / musa</span>
 <span class="n">RUN_TRAINING</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">GRAPH_FILE</span> <span class="o">=</span> <span class="n">PROJECT</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"fixed_er_N1000_p0.02_seed12345.json"</span>
-<span class="n">TEACHING_DIR</span> <span class="o">=</span> <span class="n">NOTEBOOK_DIR</span> <span class="o">/</span> <span class="s2">"assets"</span> <span class="o">/</span> <span class="s2">"teaching_training"</span>
+<span class="n">CHECKPOINT_PATH</span> <span class="o">=</span> <span class="n">PROJECT</span> <span class="o">/</span> <span class="s2">"runs"</span> <span class="o">/</span> <span class="s2">"training"</span> <span class="o">/</span> <span class="s2">"model_best.pt"</span>
+
+<span class="c1"># 与正式训练入口一致；不会在缺少权重时自动开始训练。</span>
+<span class="n">TRAIN_CONFIG</span> <span class="o">=</span> <span class="n">RunConfig</span><span class="p">(</span>
+    <span class="n">graph_file</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">GRAPH_FILE</span><span class="p">),</span> <span class="n">cache_dir</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">CACHE</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">DEVICE</span><span class="p">,</span>
+    <span class="n">num_layers</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">d_model</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">num_heads</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">train_tasks</span><span class="o">=</span><span class="mi">40960</span><span class="p">,</span> <span class="n">validation_tasks</span><span class="o">=</span><span class="mi">5120</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">125</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">data_seed</span><span class="o">=</span><span class="mi">12345</span><span class="p">,</span> <span class="n">train_seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">noise_sd</span><span class="o">=</span><span class="mf">4.</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -9286,7 +9292,9 @@ $$
 \mathcal N\big(\mu_i^{\rm truth}(t,s);m_{i,t,s,h},\sigma_{i,t,s,h}^2\big)\right],
 $$
 然后对任务和节点取平均。训练标签是无观测噪声的目标响应，观测噪声仍保留在输入 $Y$ 中。</p>
-<p>下面的代码直接调用原项目训练入口。默认跳过训练并加载已保存的教学权重；把开头的 <code>RUN_TRAINING</code> 改为 <code>True</code>，才会新建一个独立目录重新训练小模型。</p>
+<p>下面直接调用项目训练入口，模型为 <strong>10 层、128 维、4 heads、FFN=512</strong>，训练配置集中在开头的 <code>TRAIN_CONFIG</code>。</p>
+<p>默认 <code>RUN_TRAINING=False</code>，从 <code>CHECKPOINT_PATH</code> 加载你训练好的权重；仓库未附带这个主模型的 10 层权重。需要训练时，先设置 <code>DEVICE</code>，再改为 <code>RUN_TRAINING=True</code>，训练结果写入该权重所在目录。目录非空时程序会提示更换目录，避免覆盖已有实验。仅阅读图表时无需运行。</p>
+<p><strong>下面保留的模型配置表、曲线和预测图来自此前的小模型运行；重新运行会按实际权重更新。</strong></p>
 </div>
 </div>
 </div>
@@ -9298,37 +9306,36 @@ $$
 <div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">RUN_TRAINING</span><span class="p">:</span>
-    <span class="n">run_dir</span> <span class="o">=</span> <span class="n">NOTEBOOK_DIR</span> <span class="o">/</span> <span class="s1">'runs'</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">'teaching_</span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time_ns</span><span class="p">()</span><span class="si">}</span><span class="s1">'</span>
-    <span class="n">small_config</span> <span class="o">=</span> <span class="n">RunConfig</span><span class="p">(</span><span class="n">graph_file</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">GRAPH_FILE</span><span class="p">),</span> <span class="n">cache_dir</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">CACHE</span><span class="p">),</span>
-                            <span class="n">device</span><span class="o">=</span><span class="n">DEVICE</span><span class="p">,</span> <span class="n">train_tasks</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">validation_tasks</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
-                            <span class="n">epochs</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_layers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">d_model</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
-                            <span class="n">num_heads</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">data_seed</span><span class="o">=</span><span class="mi">12345</span><span class="p">,</span> <span class="n">train_seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">selected_checkpoint</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span><span class="n">small_config</span><span class="p">,</span> <span class="n">run_dir</span><span class="p">)</span>
-<span class="k">elif</span> <span class="n">CHECKPOINT_PATH</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">selected_checkpoint</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">CHECKPOINT_PATH</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">selected_checkpoint</span> <span class="o">=</span> <span class="n">TEACHING_DIR</span> <span class="o">/</span> <span class="s1">'model_best.pt'</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">selected_checkpoint</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">CHECKPOINT_PATH</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">RUN_TRAINING</span><span class="p">:</span>
+    <span class="n">selected_checkpoint</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span><span class="n">TRAIN_CONFIG</span><span class="p">,</span> <span class="n">selected_checkpoint</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="ow">not</span> <span class="n">selected_checkpoint</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-    <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s1">'未找到主模型；保留教学 assets，或填写本版正式训练 checkpoint 路径。'</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"未找到 10 层、128 维主模型：</span><span class="si">{</span><span class="n">selected_checkpoint</span><span class="si">}</span><span class="s2">。"</span>
+        <span class="s2">"请在开头填写已训练的 CHECKPOINT_PATH；或设置 DEVICE 后开启 RUN_TRAINING。"</span>
+        <span class="s2">"只阅读时无需运行本单元格及后续模型计算。"</span>
+    <span class="p">)</span>
 <span class="n">model</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">selected_checkpoint</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">DEVICE</span><span class="p">)</span>
+<span class="n">model_config</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s1">'model_config'</span><span class="p">]</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'num_layers'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'d_model'</span><span class="p">:</span> <span class="mi">128</span><span class="p">,</span> <span class="s1">'num_heads'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">'ffn_dim'</span><span class="p">:</span> <span class="mi">512</span><span class="p">}</span>
+<span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">model_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">!=</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">expected</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'权重结构不匹配：本例使用 10 层、128 维、4 heads、FFN=512 的主模型。'</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">state</span><span class="p">[</span><span class="s1">'graph_record'</span><span class="p">][</span><span class="s1">'adjacency_sha256'</span><span class="p">]</span> <span class="o">==</span> <span class="n">graph_record</span><span class="p">[</span><span class="s1">'adjacency_sha256'</span><span class="p">],</span> \
-       <span class="s1">'此教学主线要求同一张 ER1000 图；请勿把 ER300 或其他图的权重混入。'</span>
+       <span class="s1">'此主线要求同一张 ER1000 图；请勿把 ER300 或其他图的权重混入。'</span>
 <span class="k">assert</span> <span class="nb">float</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s1">'config'</span><span class="p">][</span><span class="s1">'noise_sd'</span><span class="p">])</span> <span class="o">==</span> <span class="mf">4.</span><span class="p">,</span> <span class="s1">'请核对 checkpoint 的 DGP 与噪声设置。'</span>
 <span class="c1"># 按原评测入口核对数据／源码指纹，拒绝混用不匹配的数据机制。</span>
-<span class="n">model_bank</span> <span class="o">=</span> <span class="n">TaskBank</span><span class="p">(</span><span class="n">GRAPH_FILE</span><span class="p">,</span><span class="n">CACHE</span><span class="p">,</span><span class="n">data_seed</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="s1">'config'</span><span class="p">][</span><span class="s1">'data_seed'</span><span class="p">],</span><span class="n">noise_sd</span><span class="o">=</span><span class="mf">4.</span><span class="p">)</span>
+<span class="n">model_bank</span> <span class="o">=</span> <span class="n">TaskBank</span><span class="p">(</span><span class="n">GRAPH_FILE</span><span class="p">,</span> <span class="n">CACHE</span><span class="p">,</span> <span class="n">data_seed</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="s1">'config'</span><span class="p">][</span><span class="s1">'data_seed'</span><span class="p">],</span> <span class="n">noise_sd</span><span class="o">=</span><span class="mf">4.</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">model_bank</span><span class="o">.</span><span class="n">fingerprint</span> <span class="o">==</span> <span class="n">state</span><span class="p">[</span><span class="s1">'data_identity'</span><span class="p">],</span> <span class="s1">'Checkpoint 与本版 DGP / 代码指纹不一致。'</span>
 <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-<span class="n">model_config</span><span class="o">=</span><span class="n">state</span><span class="p">[</span><span class="s1">'model_config'</span><span class="p">]</span>
-<span class="n">model_label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"PFN (</span><span class="si">{</span><span class="n">model_config</span><span class="p">[</span><span class="s1">'num_layers'</span><span class="p">]</span><span class="si">}</span><span class="s2"> layers, </span><span class="si">{</span><span class="n">model_config</span><span class="p">[</span><span class="s1">'d_model'</span><span class="p">]</span><span class="si">}</span><span class="s2"> dims)"</span>
-<span class="n">formal</span><span class="o">=</span><span class="n">RunConfig</span><span class="p">()</span>
+<span class="n">model_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"PFN (</span><span class="si">{</span><span class="n">model_config</span><span class="p">[</span><span class="s1">'num_layers'</span><span class="p">]</span><span class="si">}</span><span class="s2"> layers, </span><span class="si">{</span><span class="n">model_config</span><span class="p">[</span><span class="s1">'d_model'</span><span class="p">]</span><span class="si">}</span><span class="s2"> dims)"</span>
 <span class="n">table</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span>
-    <span class="p">{</span><span class="s1">'设置'</span><span class="p">:</span><span class="n">field</span><span class="p">,</span><span class="s1">'当前权重'</span><span class="p">:</span><span class="n">state</span><span class="p">[</span><span class="s1">'config'</span><span class="p">][</span><span class="n">field</span><span class="p">],</span><span class="s1">'原项目正式默认'</span><span class="p">:</span><span class="nb">getattr</span><span class="p">(</span><span class="n">formal</span><span class="p">,</span><span class="n">field</span><span class="p">)}</span>
-    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'train_tasks'</span><span class="p">,</span><span class="s1">'validation_tasks'</span><span class="p">,</span><span class="s1">'epochs'</span><span class="p">,</span><span class="s1">'num_layers'</span><span class="p">,</span><span class="s1">'d_model'</span><span class="p">,</span><span class="s1">'num_heads'</span><span class="p">]</span>
+    <span class="p">{</span><span class="s1">'设置'</span><span class="p">:</span> <span class="n">field</span><span class="p">,</span> <span class="s1">'当前权重'</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s1">'config'</span><span class="p">][</span><span class="n">field</span><span class="p">],</span> <span class="s1">'本例训练配置'</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">TRAIN_CONFIG</span><span class="p">,</span> <span class="n">field</span><span class="p">)}</span>
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'train_tasks'</span><span class="p">,</span> <span class="s1">'validation_tasks'</span><span class="p">,</span> <span class="s1">'epochs'</span><span class="p">,</span> <span class="s1">'num_layers'</span><span class="p">,</span> <span class="s1">'d_model'</span><span class="p">,</span>
+                  <span class="s1">'num_heads'</span><span class="p">,</span> <span class="s1">'batch_size'</span><span class="p">,</span> <span class="s1">'data_seed'</span><span class="p">,</span> <span class="s1">'train_seed'</span><span class="p">]</span>
 <span class="p">]))</span>
-<span class="n">cards</span><span class="p">([(</span><span class="s1">'本次载入模型'</span><span class="p">,</span><span class="n">model_label</span><span class="p">),(</span><span class="s1">'选中的 epoch'</span><span class="p">,</span><span class="n">state</span><span class="p">[</span><span class="s1">'best_epoch'</span><span class="p">]),</span>
-       <span class="p">(</span><span class="s1">'参数量'</span><span class="p">,</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)])</span>
+<span class="n">cards</span><span class="p">([(</span><span class="s1">'本次载入模型'</span><span class="p">,</span> <span class="n">model_label</span><span class="p">),</span> <span class="p">(</span><span class="s1">'选中的 epoch'</span><span class="p">,</span> <span class="n">state</span><span class="p">[</span><span class="s1">'best_epoch'</span><span class="p">]),</span>
+       <span class="p">(</span><span class="s1">'参数量'</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)])</span>
 </pre></div>
 </div>
 </div>
@@ -9460,7 +9467,7 @@ $$
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><strong>读曲线时注意：</strong> checkpoint 按 validation NLL 选取，不按测试 RMSE 选取。
-NLL 衡量整个预测分布；RMSE 衡量点预测，两者不是同一个指标。教学模型只经过很少的训练，后面的误差必须如实报告。</p>
+NLL 衡量整个预测分布；RMSE 衡量点预测，两者不是同一个指标。这里保留的是历史运行曲线；重新运行后，曲线来自当前权重旁的训练记录。</p>
 </div>
 </div>
 </div>
@@ -9939,7 +9946,7 @@ $$
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><strong>不要预设 PFN 一定排第一。</strong> 本例给回归提供了匹配 DGP 的特征，而教学 PFN 只训练了很少的任务。
+<p><strong>不要预设 PFN 一定排第一。</strong> 本例给回归提供了匹配 DGP 的特征，而当前保存的历史 PFN 图表只对应少量任务的训练。
 这些结果回答的是“计算流程是否清楚、比较是否同目标”，正式性能结论需要正式训练和相应对照实验。</p>
 </div>
 </div>
@@ -10170,7 +10177,7 @@ RMSE 从原始误差计算，不是把各数据集 RMSE 简单平均。</p>
 <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'ITE'</span><span class="p">,</span> <span class="s1">'ATE'</span><span class="p">]:</span>
     <span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="sa">f</span><span class="s1">'### </span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s1"> 教学演示汇总：'</span> <span class="o">+</span>
                      <span class="p">(</span><span class="s1">'10,000 个节点级结果'</span> <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s1">'ITE'</span> <span class="k">else</span> <span class="s1">'10 个任务级结果'</span><span class="p">)</span> <span class="o">+</span>
-                     <span class="s1">'（PFN：2 层、32 维）'</span><span class="p">))</span>
+                     <span class="sa">f</span><span class="s2">"（PFN：</span><span class="si">{</span><span class="n">model_config</span><span class="p">[</span><span class="s1">'num_layers'</span><span class="p">]</span><span class="si">}</span><span class="s2"> 层、</span><span class="si">{</span><span class="n">model_config</span><span class="p">[</span><span class="s1">'d_model'</span><span class="p">]</span><span class="si">}</span><span class="s2"> 维）"</span><span class="p">))</span>
     <span class="n">display_report</span> <span class="o">=</span> <span class="n">report</span><span class="p">[</span><span class="n">report</span><span class="p">[</span><span class="s1">'Level'</span><span class="p">]</span> <span class="o">==</span> <span class="n">level</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
         <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'Mean truth'</span><span class="p">:</span> <span class="s1">'Mean Truth'</span><span class="p">,</span> <span class="s1">'Mean pred'</span><span class="p">:</span> <span class="s1">'Mean Pred'</span><span class="p">})</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">display_report</span><span class="p">[</span><span class="s1">'Method'</span><span class="p">]</span> <span class="o">=</span> <span class="n">display_report</span><span class="p">[</span><span class="s1">'Method'</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="n">model_label</span><span class="p">:</span> <span class="s1">'PFN with interference'</span><span class="p">})</span>
@@ -10459,7 +10466,7 @@ RMSE 从原始误差计算，不是把各数据集 RMSE 简单平均。</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>以上展示表与后面的结果示例使用同一组列名。这里的 <code>PFN with interference</code> 指前面载入的 <strong>2 层、32 维教学模型</strong>；<code>State means</code> 和 <code>Outcome regression</code> 是两个教学检查基线。</p>
+<p>以上展示表与后面的结果示例使用同一组列名。运行时，<code>PFN with interference</code> 指前面实际载入的模型，结构会显示在表格标题中。当前保存的表格仍来自此前的 <strong>2 层、32 维模型</strong>；<code>State means</code> 和 <code>Outcome regression</code> 是两个教学检查基线。</p>
 <p>原始文件 <code>results/teaching_ite_ate_summary.csv</code> 还保留 <strong>Valid / total</strong>，仅表示有有限数值输出的评测记录数量。
 它不等于总体正值性，也不意味着所有节点条件查询都有充足的观测覆盖。
 不同方法若存在缺失预测，应同时报告覆盖范围，再在共同支持记录上补充比较。</p>
@@ -10879,12 +10886,12 @@ $$</p>
 <li><strong>新图训练</strong>：新建图文件和输出目录，使用该图重新生成 train / validation / test，训练对应模型。先沿用现有训练程序。</li>
 <li><strong>旧模型迁移</strong>：保持已训练模型不变，在新图上测试，评价跨图泛化。当前正式 <code>evaluate</code> 会从 checkpoint 读回训练图；迁移评测需要显式增加新图入口，不能只改测试 seed 就当作换图。</li>
 </ol>
-<p>可以先用新图完成小规模训练，再决定正式预算。例如在项目根目录运行：</p>
+<p>可以先用新图和少量任务检查训练流程，模型仍采用 10 层、128 维，再扩大任务数与训练轮数。例如在项目根目录运行：</p>
 <div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>causalfm_experiment<span class="w"> </span>train<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--graph-file<span class="w"> </span>notebooks/results/example_sbm_N40.json<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--output<span class="w"> </span>runs/sbm40_first_try<span class="w"> </span>--cache-dir<span class="w"> </span>runs/sbm_cache<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--device<span class="w"> </span>cpu<span class="w"> </span>--train-tasks<span class="w"> </span><span class="m">32</span><span class="w"> </span>--validation-tasks<span class="w"> </span><span class="m">8</span><span class="w"> </span>--epochs<span class="w"> </span><span class="m">6</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--batch-size<span class="w"> </span><span class="m">2</span><span class="w"> </span>--num-layers<span class="w"> </span><span class="m">2</span><span class="w"> </span>--d-model<span class="w"> </span><span class="m">32</span><span class="w"> </span>--num-heads<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--batch-size<span class="w"> </span><span class="m">2</span><span class="w"> </span>--num-layers<span class="w"> </span><span class="m">10</span><span class="w"> </span>--d-model<span class="w"> </span><span class="m">128</span><span class="w"> </span>--num-heads<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--data-seed<span class="w"> </span><span class="m">12345</span><span class="w"> </span>--train-seed<span class="w"> </span><span class="m">0</span>
 </pre></div>
 <p>换图后需要重新计算邻居特征、暴露与真值，并核对缓存和模型来源。
@@ -10899,94 +10906,75 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="16-%C2%B7-%E5%AE%9E%E9%AA%8C%E9%85%8D%E7%BD%AE%E4%B8%8E%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6">16 · 实验配置与结果文件<a class="anchor-link" href="#16-%C2%B7-%E5%AE%9E%E9%AA%8C%E9%85%8D%E7%BD%AE%E4%B8%8E%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6">¶</a></h2><h3 id="%E5%BD%93%E5%89%8D-ER1000-%E4%BB%A3%E7%A0%81%E9%87%87%E7%94%A8%E7%9A%84%E9%85%8D%E7%BD%AE">当前 ER1000 代码采用的配置<a class="anchor-link" href="#%E5%BD%93%E5%89%8D-ER1000-%E4%BB%A3%E7%A0%81%E9%87%87%E7%94%A8%E7%9A%84%E9%85%8D%E7%BD%AE">¶</a></h3><p>下面区分原程序的默认完整训练配置与 Notebook 已载入的小模型配置。两者沿用相同的图和 DGP，但训练预算不同，结果不能混写为同一次实验。</p>
+<h2 id="16-%C2%B7-%E5%AE%9E%E9%AA%8C%E9%85%8D%E7%BD%AE%E4%B8%8E%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6">16 · 实验配置与结果文件<a class="anchor-link" href="#16-%C2%B7-%E5%AE%9E%E9%AA%8C%E9%85%8D%E7%BD%AE%E4%B8%8E%E7%BB%93%E6%9E%9C%E6%96%87%E4%BB%B6">¶</a></h2><h3 id="%E5%BD%93%E5%89%8D-ER1000-%E4%BB%A3%E7%A0%81%E9%87%87%E7%94%A8%E7%9A%84%E9%85%8D%E7%BD%AE">当前 ER1000 代码采用的配置<a class="anchor-link" href="#%E5%BD%93%E5%89%8D-ER1000-%E4%BB%A3%E7%A0%81%E9%87%87%E7%94%A8%E7%9A%84%E9%85%8D%E7%BD%AE">¶</a></h3><p>Notebook 的训练代码与主入口统一使用下列配置。</p>
 <table>
 <thead>
 <tr>
 <th>项目</th>
-<th>原程序默认完整配置</th>
-<th>Notebook 当前演示配置</th>
+<th>当前训练与评测配置</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>固定图</td>
-<td>ER，1000 节点，连边概率 0.02</td>
-<td>同一图文件</td>
-</tr>
-<tr>
-<td>图种子</td>
-<td>12345</td>
-<td>12345</td>
+<td>ER，1000 节点，连边概率 0.02，图 seed=12345</td>
 </tr>
 <tr>
 <td>处理设计</td>
 <td>独立 Bernoulli(0.5)</td>
-<td>相同</td>
 </tr>
 <tr>
 <td>连续结果 DGP</td>
 <td><code>linear_b_random_a</code>，每任务 <code>a ~ Uniform(4,8)</code>，噪声标准差 4</td>
-<td>相同</td>
 </tr>
 <tr>
 <td>暴露状态</td>
 <td>比例不超过一半为低，严格超过一半为高</td>
-<td>相同</td>
 </tr>
 <tr>
 <td>Transformer</td>
 <td>10 层、128 维、4 heads、FFN=512</td>
-<td>2 层、32 维、4 heads、FFN=128</td>
 </tr>
 <tr>
 <td>GMM</td>
 <td>四状态各 5 个分量</td>
-<td>相同</td>
 </tr>
 <tr>
 <td>训练 / 验证任务数</td>
 <td>40960 / 5120</td>
-<td>32 / 8</td>
 </tr>
 <tr>
 <td>训练 epoch</td>
 <td>125</td>
-<td>6</td>
 </tr>
 <tr>
 <td>batch size</td>
-<td>每进程 16；默认启动器使用 8 个 MUSA 进程</td>
-<td>单 CPU 进程，2</td>
+<td>每进程 16；Notebook 单进程，服务器脚本默认 8 个 MUSA 进程</td>
 </tr>
 <tr>
 <td>数据种子 <code>data_seed</code></td>
-<td>12345</td>
 <td>12345</td>
 </tr>
 <tr>
 <td>模型训练种子 <code>train_seed</code></td>
 <td>0</td>
-<td>0</td>
 </tr>
 <tr>
 <td>测试种子</td>
 <td>2025、2026、2027、2028、2029</td>
-<td>相同</td>
 </tr>
 <tr>
 <td>每个测试种子的任务</td>
 <td><code>task_id=0,1</code>，共 10 份数据</td>
-<td>相同</td>
 </tr>
 <tr>
 <td>选模</td>
 <td>验证集四状态平均 NLL 最小</td>
-<td>相同；演示权重选中第 5 个 epoch</td>
 </tr>
 </tbody>
 </table>
-<p>配置依据：<code>run_causalfm.sh</code>、<code>evaluate_causalfm.sh</code>、<code>causalfm_experiment/training.py</code>，以及 <code>assets/teaching_training/manifest.json</code>。这里的完整配置是源代码默认值；外部实验实际使用了什么，以对应运行的 <code>manifest.json</code> 和 <code>test_datasets.csv</code> 为准。</p>
+<p>这是代码配置，并不表示已完成该次训练。当前保存的流程图表来自此前 2 层、32 维、32 / 8 个训练 / 验证任务、6 个 epoch 的运行；其配置和记录保留在 <code>assets/teaching_training/manifest.json</code> 与 <code>history.jsonl</code>。第 14 节的 ITE / ATE 表是另行提供的结果示例。</p>
+<p>配置依据：<code>run_causalfm.sh</code>、<code>evaluate_causalfm.sh</code>、<code>causalfm_experiment/training.py</code>。每次实验实际配置以运行目录中的 <code>manifest.json</code> 和 <code>test_datasets.csv</code> 为准。</p>
 <h3 id="%E8%BE%93%E5%87%BA%E6%96%87%E4%BB%B6%E7%9A%84%E4%BD%9C%E7%94%A8">输出文件的作用<a class="anchor-link" href="#%E8%BE%93%E5%87%BA%E6%96%87%E4%BB%B6%E7%9A%84%E4%BD%9C%E7%94%A8">¶</a></h3><table>
 <thead>
 <tr>
@@ -11021,7 +11009,7 @@ $$</p>
 </tr>
 </tbody>
 </table>
-<p>上述 <code>training/</code> 和 <code>evaluation/</code> 位于对应实验运行目录中。Notebook 的演示图表位于 <code>figures/</code>，演示比较数据位于 <code>results/</code>，演示权重与训练记录位于 <code>assets/teaching_training/</code>。</p>
+<p>上述 <code>training/</code> 和 <code>evaluation/</code> 位于对应实验运行目录中。Notebook 的演示图表位于 <code>figures/</code>，演示比较数据位于 <code>results/</code>，历史训练配置与记录位于 <code>assets/teaching_training/</code>；旧小模型权重已移除。</p>
 </div>
 </div>
 </div>

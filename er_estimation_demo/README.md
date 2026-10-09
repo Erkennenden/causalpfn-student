@@ -15,10 +15,12 @@
 | 处理分配 | 各节点独立 Bernoulli(0.5) |
 | 结果 | 连续型；每份数据的处理系数 a ~ Uniform(4,8)，噪声标准差 4 |
 | 同伴状态 | 接受处理的邻居超过一半为高暴露，否则为低暴露 |
+| 模型 | 10 层、128 维、4 heads、FFN=512；四状态各 5 个 GMM 分量 |
+| 训练 | 40960 个任务、5120 个验证任务、125 个 epoch，每进程 batch size=16 |
 | 随机种子 | 数据 seed=12345，训练 seed=0；测试 seeds=2025–2029，每个生成 2 份数据 |
 | 输出 | 四状态响应，以及 Direct、Spillover、Total 的 ITE / ATE 与误差指标 |
 
-Notebook 默认载入已训练的教学小模型：2 层、32 维，32 个训练任务、8 个验证任务、6 个 epoch。完整训练默认采用 10 层、128 维模型；两者配置在 Notebook 中分别说明。第 14 节另附固定系数 a=6 的结果展示示例。
+Notebook 与主训练入口统一使用 10 层、128 维模型。当前保存的图表来自此前的 2 层、32 维运行，仅供理解流程；尚未按新配置重新训练。第 14 节另附固定系数 a=6 的结果展示示例。
 
 ## 需要运行时
 
@@ -31,13 +33,23 @@ python -m pip install -r requirements-notebook.txt
 python -m jupyterlab
 ```
 
-Windows 将激活命令换成 `.venv\Scripts\Activate.ps1`。也可以用 VS Code 打开 Notebook，选择上述 `.venv` 环境，从上到下运行。默认使用 CPU 并加载配套权重；重新训练由 Notebook 中的开关控制。运行完整文献基线时，另外安装 `requirements.txt`。
+Windows 将激活命令换成 `.venv\Scripts\Activate.ps1`。也可以用 VS Code 打开 Notebook，选择上述 `.venv` 环境，从上到下运行。Notebook 默认使用 CPU，跳过训练，从 `CHECKPOINT_PATH` 加载主模型；默认路径为 `runs/training/model_best.pt`。仓库未附带 10 层主模型权重，需要提供匹配权重，或设置设备后开启 `RUN_TRAINING`。仅阅读已保存的图表无需运行。运行完整文献基线时，另外安装 `requirements.txt`。
+
+也可在项目根目录启动训练与评测（以下使用 CUDA；按机器改成 `cpu` 或 `musa`）：
+
+```bash
+python -m causalfm_experiment train --device cuda --output runs/training
+python -m causalfm_experiment evaluate --device cuda \
+  --checkpoint runs/training/model_best.pt --output runs/evaluation
+```
+
+Notebook 与命令行使用相同的模型、任务数和种子默认配置；不同进程数会改变有效 batch size。
 
 ## 主要文件
 
 | 文件／目录 | 作用 |
 | --- | --- |
-| `notebooks/` | 完整讲解、图表、结果和教学权重 |
+| `notebooks/` | 完整讲解、图表、结果及历史训练记录 |
 | `data/`、`fixed_er_graph.py` | 固定网络与图读取 |
 | `linear_b_dgp.py` | 连续结果 DGP 与模拟真值 |
 | `estimands.py`、`cepo.py` | 暴露状态、四状态响应与效应计算 |

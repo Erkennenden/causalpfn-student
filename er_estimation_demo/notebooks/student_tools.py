@@ -1,4 +1,4 @@
-"""Display helpers and lightweight baselines for the code walkthrough."""
+"""Display helpers for the code walkthrough."""
 from pathlib import Path
 import html
 import numpy as np
@@ -8,7 +8,6 @@ from IPython.display import HTML, display
 from pfn_interference.estimands import arm_mean_exposure
 
 COLORS = ['#117c83', '#df8a39', '#5766ac', '#b34e65']
-ARM_LABELS = ['00', '01', '10', '11']
 EFFECT_LABELS = ['Direct', 'Spillover', 'Total']
 
 
@@ -76,48 +75,7 @@ def factual_frame(batch):
                          'degree_norm': degree_norm})
 
 
-def teaching_baselines(observed):
-    """Fit to factual Y only. Inputs are a factual-only dataframe."""
-    n = len(observed)
-    state = np.full((n, 4), np.nan)
-    for j, (t, s) in enumerate([(0, 0), (0, 1), (1, 0), (1, 1)]):
-        selected = observed[observed['T'] == t]
-        selected = selected[selected['S'] == s]
-        if len(selected):
-            state[:, j] = selected['Y'].mean()
-
-    x = observed['X'].to_numpy()
-    nx = observed['neighbor_X'].to_numpy()
-    t = observed['T'].to_numpy()
-    e = observed['E'].to_numpy()
-    def features(treatment, exposure):
-        return np.column_stack([np.ones(n), x, nx, np.full(n, treatment)
-                                if np.isscalar(treatment) else treatment,
-                                np.exp(x)*treatment, exposure])
-    # Known functional feature family, unknown coefficients fitted from observed Y.
-    beta = np.linalg.lstsq(features(t, e), observed['Y'].to_numpy(), rcond=None)[0]
-    exposure_by_state = conditional_exposures(observed['degree'])
-    regression = np.column_stack([features(ti, exposure_by_state[:, si]) @ beta
-                                  for ti, si in [(0, 0), (0, 1), (1, 0), (1, 1)]])
-    return {'State means': state, 'Outcome regression': regression}, beta
-
-
 def effects(mu):
     mu = np.asarray(mu)
     assert mu.ndim == 2 and mu.shape[1] == 4
     return np.column_stack([mu[:, 2]-mu[:, 0], mu[:, 3]-mu[:, 2], mu[:, 3]-mu[:, 0]])
-
-
-def summary(frame):
-    rows = []
-    for (level, method, effect), group in frame.groupby(['level', 'method', 'effect'], sort=False):
-        ok = np.isfinite(group['prediction']) & np.isfinite(group['truth'])
-        pred, truth = group.loc[ok, 'prediction'], group.loc[ok, 'truth']
-        err = pred.to_numpy()-truth.to_numpy()
-        rows.append({'Level': level, 'Method': method, 'Effect': effect,
-                     'MAE': np.mean(np.abs(err)) if len(err) else np.nan,
-                     'RMSE': np.sqrt(np.mean(err**2)) if len(err) else np.nan,
-                     'Bias': np.mean(err) if len(err) else np.nan,
-                     'Mean truth': truth.mean(), 'Mean pred': pred.mean(),
-                     'Valid / total': f'{int(ok.sum())}/{len(group)}'})
-    return pd.DataFrame(rows)

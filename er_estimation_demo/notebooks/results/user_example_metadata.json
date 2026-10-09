@@ -10,5 +10,5 @@
   "train_seed": null,
   "test_seeds": null,
   "architecture": null,
-  "relationship_to_notebook": "Separate fixed-a result example. Notebook teaching run uses random a~Uniform(4,8)."
+  "relationship_to_notebook": "Separate fixed-a result example. The current ER1000 code uses random a~Uniform(4,8); these tables are supplied results, not outputs of this notebook."
 }

@@ -38,6 +38,8 @@
 
 Notebook 与主训练入口统一使用 10 层、128 维模型，保留网络与 DGP 图解；模型输出需加载匹配权重后运行生成。第 13 节另附固定系数 a=6 的结果展示示例，不是当前 Notebook 运行产生的结果。
 
+`data/` 只保存当前使用的固定 ER1000 图 `fixed_er_N1000_p0.02_seed12345.json`。训练、验证和测试的 X、T、Y 由同一张图和相应随机种子生成，命令行运行的缓存及新实验结果默认写入 `runs/`；`notebooks/results/` 只保留上述 ITE／ATE 展示示例。
+
 ## 需要运行时
 
 使用 Python 3.11，在项目根目录执行：
@@ -86,7 +88,7 @@ er_estimation_demo/
 │   ├── experiments/    # 其他实验工具；主流程无需从这里开始
 │   └── third_party/    # 第三方代码与许可证
 ├── scripts/            # 服务器启动脚本
-├── data/               # 固定图
+├── data/               # 当前使用的固定 ER1000 图
 ├── checkpoints/        # CausalPFN 比较基线的权重
 ├── tests/              # 程序校验
 └── runs/               # 运行后生成的缓存、主模型权重和结果，不提交 Git

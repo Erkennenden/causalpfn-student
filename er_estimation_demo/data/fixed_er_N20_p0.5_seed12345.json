@@ -1,0 +1,12 @@
+{
+  "protocol": "fixed_er_v1",
+  "n_units": 20,
+  "edge_probability": 0.5,
+  "seed": 12345,
+  "upper_hex": "1ee72ebaf6d65e90f02bbdf40d5b9e83b0a88d03d1d933ec",
+  "adjacency_sha256": "338f39f3e50483ad0b1a9f0bf35498db0c612d3bb9e385bdc93ed0b62f98da0d",
+  "unique_graph_count": 1,
+  "realized_mean_degree": 10.199999809265137,
+  "edge_count": 102,
+  "no_isolates": true
+}

@@ -1,0 +1,8 @@
+numpy
+scipy
+torch
+pytest
+networkx
+scikit-learn
+matplotlib>=3.7,<4
+torch-geometric==2.6.1

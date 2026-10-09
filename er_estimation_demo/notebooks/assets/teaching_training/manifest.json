@@ -1,0 +1,70 @@
+{
+  "version": "er_estimation_demo_linear_b_random_a_four_gmm_v1",
+  "prediction_protocol": "majority_cepo_four_gmm_v2",
+  "config": {
+    "graph_file": "/Users/xuchengdongdegongzuozhan/.codex/.chatgpt-projects/g-p-6aac35cdd3488191876c8730ad5c3a8b/output/er1000_student_notebook_20261009/er_estimation_demo/data/fixed_er_N1000_p0.02_seed12345.json",
+    "cache_dir": "notebooks/.cache/teaching_tasks",
+    "device": "cpu",
+    "train_tasks": 32,
+    "validation_tasks": 8,
+    "epochs": 6,
+    "batch_size": 2,
+    "data_seed": 12345,
+    "train_seed": 0,
+    "noise_sd": 4.0,
+    "num_layers": 2,
+    "d_model": 32,
+    "num_heads": 4,
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "threads": 1
+  },
+  "model_config": {
+    "input_dim": 5,
+    "query_dim": 2,
+    "d_model": 32,
+    "num_heads": 4,
+    "num_layers": 2,
+    "ffn_dim": 128,
+    "dropout": 0.0,
+    "gmm_n_components": 5,
+    "gmm_min_sigma": 0.001,
+    "gmm_pi_temperature": 1.0
+  },
+  "data_identity": "7bdab8a385a8a43f21a8b33ff222c5d3327d83c70e473d0795749de089c93091",
+  "data_prior": {
+    "schema": 5,
+    "outcome_prior": "linear_b_random_a",
+    "formula": "1-X-3*neighbor_x+(a+0.2*exp(X))*T-0.9*E+epsilon",
+    "a_distribution": {
+      "name": "uniform",
+      "low": 4.0,
+      "high": 8.0,
+      "scope": "one per dataset"
+    },
+    "prediction_protocol": "majority_cepo_four_gmm_v2",
+    "cepo_order": [
+      "mu00",
+      "mu01",
+      "mu10",
+      "mu11"
+    ],
+    "dgp_version": "linear_b_random_a_four_cepo_v2",
+    "data_seed": 12345,
+    "noise_sd": 4.0,
+    "treatment_prob": 0.5,
+    "graph_sha256": "df22ac22826655d22fe20edc830d4f981815a4339f28b7d92fbc5f5c329fbe13",
+    "sources": {
+      "linear_b_dgp.py": "978fb0d2e35ca506b3c45cc379221095bf8ac943ef5754e77456ea59099a389e",
+      "causalfm_dgp_v1/dgp.py": "ca4e28a62dc806b39b7e72dee6d5c05129330393fba83a14adfb249f082b88b1",
+      "estimands.py": "cad6d1daa8f65f6d64f13edcc59fdb2ffea8cd861465df97dd8d2c6b7963f0c7",
+      "random_lpe_prior.py": "cf958eec5c344066911be35298c0c832f8dc0fe8ced001d77a3133de75b42e7b",
+      "cepo.py": "df557956d91807a16d9448448307088bcfe00b673d8d44a56dce0da7a6437349",
+      "causalfm_experiment/data.py": "55fa539cb3aec738ccce9587553a78773d43e7eb18eb0df9822f443faaf5503f"
+    }
+  },
+  "world_size": 1,
+  "effective_batch_size": 2,
+  "parameters": 41280,
+  "model_name": "PFN with interference"
+}

@@ -1,0 +1,30 @@
+{
+  "source_archive": "er_estimation_demo_1000.zip",
+  "graph_n": 1000,
+  "graph_edges": 9914,
+  "graph_sha256": "df22ac22826655d22fe20edc830d4f981815a4339f28b7d92fbc5f5c329fbe13",
+  "dgp": "1-X-3*neighbor_x+(a+0.2*exp(X))*T-0.9*E+epsilon",
+  "model_label": "PFN (2 layers, 32 dims)",
+  "model_layers": 2,
+  "model_width": 32,
+  "model_best_epoch": 5,
+  "train_tasks": 32,
+  "validation_tasks": 8,
+  "test_datasets": 10,
+  "nodes_per_dataset": 1000,
+  "arm_order": [
+    "mu00",
+    "mu01",
+    "mu10",
+    "mu11"
+  ],
+  "checks": {
+    "graph_hash": true,
+    "analytic_mu_matches_simulator": true,
+    "effect_additivity": true,
+    "inference_preserves_parameters": true,
+    "ten_dataset_counts": true,
+    "sbm_taskbank_roundtrip": true
+  },
+  "scope": "Executed teaching comparison; not the full formal baseline benchmark."
+}

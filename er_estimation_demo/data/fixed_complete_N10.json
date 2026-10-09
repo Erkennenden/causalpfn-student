@@ -1,0 +1,13 @@
+{
+  "protocol": "fixed_complete_v1",
+  "graph_family": "complete",
+  "n_units": 10,
+  "edge_probability": 1.0,
+  "seed": 0,
+  "upper_hex": "fffffffffff8",
+  "adjacency_sha256": "24a63d677804827227564fafc20cd440bd130540ba773a9fa9c8b089999e6755",
+  "unique_graph_count": 1,
+  "realized_mean_degree": 9.0,
+  "edge_count": 45,
+  "no_isolates": true
+}

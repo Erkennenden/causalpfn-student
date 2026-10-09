@@ -1,0 +1,13 @@
+# Teaching notebook only. Formal baselines also need the original requirements.txt.
+numpy
+scipy
+torch
+networkx
+pandas
+matplotlib>=3.7,<4
+scikit-learn
+jupyterlab
+ipykernel
+nbformat
+nbclient
+nbconvert

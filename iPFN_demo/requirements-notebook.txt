@@ -1,0 +1,4 @@
+-r code/sparse_j/requirements.txt
+pandas==2.3.3
+ipykernel==7.4.0
+jupyterlab==4.6.4

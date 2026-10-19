@@ -1,0 +1,51 @@
+{
+  "primary": "j",
+  "N": 200,
+  "families": 7,
+  "mechanisms_per_family": 8,
+  "assignment_noise_repeats": 12,
+  "observed_outcomes": [
+    20,
+    50,
+    100
+  ],
+  "arm_order": [
+    "00",
+    "01",
+    "10",
+    "11"
+  ],
+  "effects": [
+    "direct10-00",
+    "treated_spillover11-10",
+    "total11-00"
+  ],
+  "deep_fit_seed": "651013+1000*family_id+100*mechanism_id+repeat_id",
+  "factual_keys": [
+    "x",
+    "adjacency",
+    "treatment",
+    "observed_indices",
+    "outcomes_observed"
+  ],
+  "support": "Unavailable effects remain NaN with explicit false masks; no zero imputation.",
+  "primary_checkpoint": "models/iPFN_J.pt",
+  "old_kernel_protocol": "models/kernel_components.json",
+  "old_kernel_selection": "models/kernel_mixture.json",
+  "new_kernel_checkpoint": "models/kernel_calibration.pt",
+  "transform": "models/feature_transform.npz",
+  "frozen_assets_sha256": {
+    "models/iPFN_J.pt": "a0dde8e928d7d48c0ef8581b81cf38fecd9525408bff7179b4df7ee761fed7a6",
+    "models/feature_transform.npz": "b261372fea1cb241e4acbd9734eab5b9506f6478e90d90c0f5f3e633b7a3a737",
+    "models/kernel_subspace_prior.npz": "02734745ee96c712da1494ced0960538a5ac4b8eeb31b2dfa70c90ccf5ebe130",
+    "models/kernel_linear_prior.npz": "90e040ecdf4eba9d92e90f98c457dbffc24821498cc0f189c8f77cc52239806c",
+    "models/kernel_components.json": "594aca0221f35e364d012e2067546f0ea4c61bb6cf89db8a87cbdd9f6b19fb3d",
+    "models/kernel_mixture.json": "3e8a76ab443649831824c61e3157be497345c66d9c8548852dcf8d5320da3981",
+    "models/kernel_calibration.pt": "6273c1abb1255a7d8159fbbd6558c56490915e60ebd312c7c36b33c26b064a2e"
+  },
+  "CausalPFN_external_checkpoint": {
+    "path": "checkpoints/causalpfn_v0.pt",
+    "bytes": 75419490,
+    "sha256": "4f0f53717f1c62426fe98faa0459d33bc8f9862a87e8484ca3869ca899e7841d"
+  }
+}

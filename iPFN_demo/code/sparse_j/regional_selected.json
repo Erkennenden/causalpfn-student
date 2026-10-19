@@ -1,0 +1,29 @@
+{
+  "gate": {
+    "max_N_exclusive": 50,
+    "require_all_outcomes": true
+  },
+  "settings": {
+    "j": {
+      "covariance_scale": 1.0,
+      "noise_variance_scale": 2.0,
+      "nonlinear_representation_odds": 2.0
+    },
+    "kernel-old": {
+      "covariance_scale": 2.0,
+      "noise_variance_scale": 2.0,
+      "nonlinear_representation_odds": 0.5
+    },
+    "kernel-new": {
+      "covariance_scale": 2.0,
+      "noise_variance_scale": 2.0,
+      "nonlinear_representation_odds": 2.0
+    }
+  },
+  "primary_weights": {
+    "j": 0.25,
+    "kernel-old": 0.375,
+    "kernel-new": 0.375
+  },
+  "inference_sha256": "4268901d8875510d29d1b1b99014085b0ebe64838f53a6fc33b36b0369ebd81e"
+}

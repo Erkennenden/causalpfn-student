@@ -1,0 +1,16 @@
+{
+  "components": [
+    {
+      "selection": {
+        "value": 1.0,
+        "prior_file": "models/kernel_subspace_prior.npz"
+      }
+    },
+    {
+      "selection": {
+        "value": 0.3,
+        "prior_file": "models/kernel_linear_prior.npz"
+      }
+    }
+  ]
+}

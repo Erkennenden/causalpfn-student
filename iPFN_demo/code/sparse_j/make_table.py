@@ -39,6 +39,9 @@ def read_results(directory):
             row[key] = int(row[key])
         for key in FLOAT_FIELDS:
             row[key] = float(row[key])
+        if row['prediction_failure'] not in ('True', 'False'):
+            raise ValueError('Invalid prediction_failure flag; rerun evaluate.py.')
+        row['prediction_failure'] = row['prediction_failure'] == 'True'
         if not (0 <= row['point_valid'] <= row['point_requested']
                 and 0 <= row['covered'] <= row['interval_valid'] <= row['interval_requested']
                 and np.isfinite([row[k] for k in FLOAT_FIELDS]).all()
@@ -173,7 +176,8 @@ def main():
     (args.output / 'provenance.json').write_text(json.dumps(dict(
         context_metrics_sha256=digest, observed_budgets=budgets,
         metrics='Equal mechanism weighting; complete mechanisms only; R-1 sample variance.',
-        coverage='All requested intervals, including failures; unsupported intervals excluded.'), indent=2), encoding='utf-8')
+        coverage='Covered / valid intervals; failed intervals excluded.',
+        coverage_including_failures='Covered / all requested intervals, including failures; unsupported intervals excluded.'), indent=2), encoding='utf-8')
     print(args.output)
 
 

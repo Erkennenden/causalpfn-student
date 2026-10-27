@@ -60,12 +60,14 @@ def build_figure(rows, metric):
                 estimate = aggregate(members, metric)
                 requested = sum(r[prefix + '_requested'] for r in members)
                 valid = sum(r[prefix + '_valid'] for r in members)
+                failures = sum(r.get('prediction_failure', False) for r in members)
                 partial = requested > 0 and (valid < requested
                     or any(r[prefix + '_requested'] == 0 for r in members)
                     or {r['context_id'] for r in members} != contexts)
                 base = dict(method=method, estimand=estimand, effect=effect, metric=metric)
                 exports.append(dict(**base, scope='pooled', family='', mechanism='', estimate=estimate,
-                    requested=requested, valid=valid, contexts=len(members), partial_support=partial))
+                    requested=requested, valid=valid, contexts=len(members),
+                    prediction_failure_contexts=failures, partial_support=partial))
                 values = []
                 for (family, mechanism), group in sorted(groups.items()):
                     value = aggregate(group, metric)
@@ -75,6 +77,7 @@ def build_figure(rows, metric):
                     group_valid = sum(r[prefix + '_valid'] for r in group)
                     exports.append(dict(**base, scope='mechanism', family=family, mechanism=mechanism,
                         estimate=value, requested=group_requested, valid=group_valid, contexts=len(group),
+                        prediction_failure_contexts=sum(r.get('prediction_failure', False) for r in group),
                         partial_support=group_requested > 0 and (group_valid < group_requested
                             or any(r[prefix + '_requested'] == 0 for r in group)
                             or {r['context_id'] for r in group} != mechanism_contexts[family, mechanism])))
@@ -87,7 +90,9 @@ def build_figure(rows, metric):
                                facecolors='none' if partial else color, edgecolors=color, linewidths=.8, zorder=3)
                     all_values.extend(values + [estimate])
                 else:
-                    ax.text(.5, y, 'Unsupported' if not requested else 'No valid estimate',
+                    label = ('Prediction failed' if metric == 'rmse' and failures
+                             else 'Unsupported' if not requested else 'No valid estimate')
+                    ax.text(.5, y, label,
                             transform=ax.get_yaxis_transform(), ha='center', va='center', fontsize=6)
             if metric == 'rmse':
                 # A perfect estimate is kept at zero on a linear axis, never clipped or shifted.

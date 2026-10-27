@@ -68,6 +68,39 @@ benchmark 中不支持区间的方法标记为 `*_interval_supported=False`，�
 `execution.json` 分别记录点预测失败与区间失败、运行时间及支持标记。
 旧实验如果未保存区间，需要重新运行 benchmark 才能得到覆盖率。
 
+### 绘图和制表
+
+在 `iPFN_demo/code/sparse_j` 目录运行，`--input` 指向 benchmark 的输出目录，
+`--output` 必须是尚不存在的目录：
+
+```bash
+python make_figures.py --input /tmp/ipfn-coverage95-full --output /tmp/ipfn-figures
+python make_table.py --input /tmp/ipfn-coverage95-full --output /tmp/ipfn-tables
+```
+
+两个脚本均可加 `--observed 100`，只展示指定观测数量；默认保留全部观测数量。
+它们读取 `evaluation/context_metrics.csv`，不需要论文原始数据文件。
+如果手动修改过预测文件，应先运行 `evaluate.py` 更新评测结果。
+
+- `make_figures.py` 输出 `accuracy` 和 `coverage` 两张图，每张含
+  ITE/ATE × direct/spillover/total 六个面板，提供 PDF、SVG、300 dpi PNG 和对应数据 CSV。
+  小点表示各独立机制的汇总值，菱形表示总体汇总；小点不是置信区间端点。
+  RMSE 图沿用论文的点图布局、字体和配色，数值由本次实验决定。
+  覆盖率图使用 `coverage_including_failures` 的口径，标出名义水平和 90% 参考线。
+  不支持的指标显示为 Unsupported，失败或不完整支持用空心菱形标出。
+- `make_table.py` 按观测数量输出 ATE 的 CSV 和 LaTeX 表，沿用论文的
+  **绝对条件偏差、方差、RMSE** 三列及排名底色。先在同一机制的重复实验中
+  计算偏差、样本方差（分母 R−1）和 MSE，再按机制等权汇总，最后对 MSE 开方。
+  这里的绝对条件偏差是“各机制偏差绝对值的平均”，与 `summary.csv` 的
+  总体有符号 `bias` 不同。不完整的方法仅汇总重复实验全部有效的机制，标 † 且不排名；
+  无有效机制或不足两次重复时，相应指标显示 `--`。CSV 同时保留支持数量和覆盖率。
+  LaTeX 表需要 `booktabs` 和 `\usepackage[table]{xcolor}`。
+
+三个误差指标越小越好，覆盖率需单独检查；本轮以名义 95% 区间的实际覆盖率
+至少 90% 为参考要求。比较应使用相同设置与对应效应，不能直接比较不同效应的数值大小。
+原论文的耗时图使用单独的重复计时协议，当前脚本不将 benchmark 单次耗时冒充该结果。
+脚本不附带原始实验数据；更换图结构或实验设置后，图表数值不应预期与论文一致。
+
 ### 单独生成区间
 
 ```bash

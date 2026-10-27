@@ -33,7 +33,7 @@ def main():
     parser.add_argument("--input", required=True)
     parser.add_argument("--output", required=True)
     parser.add_argument("--interval-level", type=float, default=None,
-                        help="Also return marginal posterior intervals, e.g. 0.95")
+                        help="Also return marginal ATE posterior intervals, e.g. 0.95")
     args = parser.parse_args()
     if args.interval_level is not None and not 0 < args.interval_level < 1:
         parser.error('--interval-level must be between 0 and 1')

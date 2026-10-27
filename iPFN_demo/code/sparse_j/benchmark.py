@@ -118,7 +118,7 @@ def main():
     parser.add_argument("--observed", type=int, choices=(20, 50, 100), default=50)
     parser.add_argument("--output", type=Path, required=True, help="A fresh output directory")
     parser.add_argument("--interval-level", type=float, default=.95,
-                        help="Marginal frozen J posterior interval level (default: 0.95)")
+                        help="Marginal frozen J ATE posterior interval level (default: 0.95)")
     args = parser.parse_args()
     if len(set(args.methods)) != len(args.methods):
         raise ValueError("Duplicate methods")
@@ -161,10 +161,9 @@ def main():
                         elapsed = time.perf_counter() - began
                         interval_began = time.perf_counter()
                         interval_failure = None
-                        intervals = dict(ite_lower=np.full((len(inputs['x']), 3), np.nan),
-                            ite_upper=np.full((len(inputs['x']), 3), np.nan), ate_lower=np.full(3, np.nan),
+                        intervals = dict(ate_lower=np.full(3, np.nan),
                             ate_upper=np.full(3, np.nan), interval_level=np.array(args.interval_level),
-                            interval_kind=np.array('unsupported'), ite_interval_supported=np.full(3, name == 'j'),
+                            interval_kind=np.array('unsupported'),
                             ate_interval_supported=np.full(3, name == 'j'))
                         if name == 'j':
                             try:
@@ -180,7 +179,6 @@ def main():
                             arm_supported=prediction["arm_supported"].tolist(), ite_supported=prediction["ite_supported"].tolist(),
                             ate_supported=prediction["ate_supported"].tolist(), failure=failure,
                             interval_level=args.interval_level, interval_seconds=interval_seconds, interval_failure=interval_failure,
-                            ite_interval_supported=intervals['ite_interval_supported'].tolist(),
                             ate_interval_supported=intervals['ate_interval_supported'].tolist()))
     (destination / "execution.json").write_text(json.dumps(dict(config=config, methods=args.methods, cohort=args.cohort,
         model_load_seconds=load_seconds, torch_threads=1, BLAS_threads=1, receipts=receipts,

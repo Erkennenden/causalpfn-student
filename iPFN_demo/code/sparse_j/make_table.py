@@ -23,14 +23,14 @@ METRICS = ('absolute_conditional_bias', 'variance_unbiased', 'rmse')
 
 
 def read_results(directory):
-    """Read evaluator output, requiring all six rows for every saved receipt."""
+    """Read three ATE rows per receipt, ignoring ITE rows in older reports."""
     directory = Path(directory)
     path = directory / 'evaluation' / 'context_metrics.csv'
     manifest = json.loads((directory / 'execution.json').read_text(encoding='utf-8'))
     with path.open(encoding='utf-8', newline='') as handle:
-        rows = list(csv.DictReader(handle))
-    expected = {(r['context_id'], r['method'], level, effect)
-                for r in manifest['receipts'] for level in ('ITE', 'ATE') for effect in EFFECTS}
+        rows = [row for row in csv.DictReader(handle) if row['estimand'] != 'ITE']
+    expected = {(r['context_id'], r['method'], 'ATE', effect)
+                for r in manifest['receipts'] for effect in EFFECTS}
     identities = [(r['context_id'], r['method'], r['estimand'], r['effect']) for r in rows]
     if not rows or len(set(identities)) != len(identities) or set(identities) != expected:
         raise ValueError('Evaluation rows are missing or duplicated; rerun evaluate.py.')
@@ -156,6 +156,27 @@ def render_table(rows, observed):
     return '\n'.join(lines) + '\n'
 
 
+def render_coverage_table(rows, observed):
+    level = 100 * rows[0]['interval_level']
+    lines = [r'\begin{table}[tb]', r'\centering',
+        rf'\caption{{ATE interval coverage at nominal {level:g}\%, with {observed} observed outcomes.}}',
+        r'\begin{tabular}{lrrr}', r'\toprule',
+        r'Method & Direct & Treated spillover & Total \\', r'\midrule']
+    for method in method_order(rows):
+        cells = []
+        for effect in EFFECTS:
+            row = next(r for r in rows if r['method'] == method and r['effect'] == effect)
+            value = row['coverage_including_failures']
+            cells.append(f'{100 * value:.2f}' + r'\%' if np.isfinite(value) else '--')
+        lines.append(latex_escape(METHOD_NAMES.get(method, method)) + ' & ' + ' & '.join(cells) + r' \\')
+    lines.extend([r'\bottomrule', r'\end{tabular}', r'\par\smallskip',
+        r'\begin{minipage}{\linewidth}\scriptsize',
+        r'Coverage includes failed requested intervals in the denominator. -- means intervals are unsupported.',
+        r'These are marginal posterior intervals; nominal coverage is not a frequentist guarantee.',
+        r'\end{minipage}', r'\end{table}'])
+    return '\n'.join(lines) + '\n'
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--input', type=Path, required=True, help='Benchmark output directory')
@@ -172,7 +193,8 @@ def main():
     for observed in budgets:
         records = ate_table(rows, observed)
         write_csv(args.output / f'ate_m{observed}.csv', records)
-        (args.output / f'ate_m{observed}.tex').write_text(render_table(records, observed), encoding='utf-8')
+        (args.output / f'ate_m{observed}.tex').write_text(
+            render_table(records, observed) + '\n' + render_coverage_table(records, observed), encoding='utf-8')
     (args.output / 'provenance.json').write_text(json.dumps(dict(
         context_metrics_sha256=digest, observed_budgets=budgets,
         metrics='Equal mechanism weighting; complete mechanisms only; R-1 sample variance.',

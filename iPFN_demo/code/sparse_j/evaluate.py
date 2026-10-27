@@ -1,4 +1,4 @@
-"""Score saved causal effects and marginal intervals against separate simulation truth."""
+"""Score saved average treatment effects and intervals against simulation truth."""
 import argparse
 from collections import defaultdict
 import csv
@@ -43,9 +43,9 @@ def _metrics(row):
 
 
 def evaluate_context(truth, prediction, receipt):
-    """Six rows per context; invalid supported intervals remain in denominators.
+    """Three ATE rows per context; failed requested intervals remain in denominators.
 
-    Coverage is marginal across nodes for ITE, across simulation draws for ATE.
+    ATE coverage is measured across simulation draws.
     Unsupported estimands are explicitly excluded, never treated as zero error.
     """
     truth = np.asarray(truth, dtype=float)
@@ -59,32 +59,32 @@ def evaluate_context(truth, prediction, receipt):
     if 'interval_level' in prediction and not np.isclose(float(prediction['interval_level']), level, rtol=0, atol=1e-12):
         raise ValueError(f"Interval level disagrees with execution.json: {receipt['context_id']} / {receipt['method']}")
     rows = []
-    for estimand, target in (('ITE', effects), ('ATE', effects.mean(0, keepdims=True))):
-        prefix = estimand.lower()
-        shape = effects.shape if estimand == 'ITE' else (3,)
-        point = _array(prediction, prefix+'_effects', shape).reshape(-1, 3)
-        lo = _array(prediction, prefix+'_lower', shape).reshape(-1, 3)
-        hi = _array(prediction, prefix+'_upper', shape).reshape(-1, 3)
-        point_support = receipt.get(prefix+'_supported', prediction.get(prefix+'_supported', [False]*3))
-        support = receipt.get(prefix+'_interval_supported', prediction.get(prefix+'_interval_supported', [False]*3))
-        for index, effect in enumerate(EFFECTS):
-            valid_point = np.isfinite(point[:, index]) & bool(point_support[index]) & (not bool(receipt.get('failure')))
-            valid = (np.isfinite(lo[:, index]) & np.isfinite(hi[:, index])
-                     & (lo[:, index] <= hi[:, index]) & bool(support[index])
-                     & (not bool(receipt.get('interval_failure'))))
-            covered = valid & (lo[:, index] <= target[:, index]) & (target[:, index] <= hi[:, index])
-            error = point[valid_point, index]-target[valid_point, index]
-            requested = len(target) if support[index] else 0
-            row = dict(**metadata, context_id=receipt['context_id'], method=receipt['method'],
-                       estimand=estimand, effect=effect, interval_level=level,
-                       point_requested=len(target) if point_support[index] else 0,
-                       point_valid=int(valid_point.sum()), error_sum=float(error.sum()),
-                       squared_error_sum=float(np.square(error).sum()),
-                       interval_requested=requested, interval_valid=int(valid.sum()), covered=int(covered.sum()),
-                       width_sum=float((hi[valid, index]-lo[valid, index]).sum()),
-                       prediction_failure=bool(receipt.get('failure')),
-                       interval_status=('unsupported' if not requested else 'ok' if valid.all() else 'failed_or_invalid'))
-            rows.append(_metrics(row))
+    estimand, target = 'ATE', effects.mean(0, keepdims=True)
+    prefix = estimand.lower()
+    shape = (3,)
+    point = _array(prediction, prefix+'_effects', shape).reshape(-1, 3)
+    lo = _array(prediction, prefix+'_lower', shape).reshape(-1, 3)
+    hi = _array(prediction, prefix+'_upper', shape).reshape(-1, 3)
+    point_support = receipt.get(prefix+'_supported', prediction.get(prefix+'_supported', [False]*3))
+    support = receipt.get(prefix+'_interval_supported', prediction.get(prefix+'_interval_supported', [False]*3))
+    for index, effect in enumerate(EFFECTS):
+        valid_point = np.isfinite(point[:, index]) & bool(point_support[index]) & (not bool(receipt.get('failure')))
+        valid = (np.isfinite(lo[:, index]) & np.isfinite(hi[:, index])
+                 & (lo[:, index] <= hi[:, index]) & bool(support[index])
+                 & (not bool(receipt.get('interval_failure'))))
+        covered = valid & (lo[:, index] <= target[:, index]) & (target[:, index] <= hi[:, index])
+        error = point[valid_point, index]-target[valid_point, index]
+        requested = len(target) if support[index] else 0
+        row = dict(**metadata, context_id=receipt['context_id'], method=receipt['method'],
+                   estimand=estimand, effect=effect, interval_level=level,
+                   point_requested=len(target) if point_support[index] else 0,
+                   point_valid=int(valid_point.sum()), error_sum=float(error.sum()),
+                   squared_error_sum=float(np.square(error).sum()),
+                   interval_requested=requested, interval_valid=int(valid.sum()), covered=int(covered.sum()),
+                   width_sum=float((hi[valid, index]-lo[valid, index]).sum()),
+                   prediction_failure=bool(receipt.get('failure')),
+                   interval_status=('unsupported' if not requested else 'ok' if valid.all() else 'failed_or_invalid'))
+        rows.append(_metrics(row))
     return rows
 
 

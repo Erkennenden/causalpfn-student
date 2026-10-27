@@ -1,4 +1,4 @@
-"""Marginal posterior intervals for frozen J's latent causal mean contrasts.
+"""Marginal posterior intervals for frozen J's average treatment effects.
 
 These are equal-tail Gaussian-mixture credible intervals, not a guarantee of
 frequentist coverage. They condition on the frozen model and observed graph.
@@ -18,10 +18,10 @@ from pfn_social.sparse_frozen_gaussian import (
 
 
 def component_effect_posterior(factual, query, y, prior_mean, prior_cov, noise_variances):
-    """Return component means/variances[G,N+1,3] and log evidence[G].
+    """Return ATE component means/variances[G,3] and log evidence[G].
 
-    The last row is the all-node ATE. Form contrasts and average their design
-    rows BEFORE computing variances, preserving cross-arm/node covariance.
+    Average contrast design rows BEFORE computing variances, preserving
+    cross-arm/node covariance for the all-node ATE.
     Effect order is direct (10-00), spillover (11-10), total (11-00).
     """
     f, q, y, mu, cov, noises = [np.asarray(v, dtype=float) for v in
@@ -35,7 +35,7 @@ def component_effect_posterior(factual, query, y, prior_mean, prior_cov, noise_v
     if not all(np.isfinite(v).all() for v in (f, q, y, mu, cov, noises)) or np.any(noises <= 0):
         raise ValueError("Require finite inputs and positive noise variances")
     contrasts = np.stack((q[:, 2]-q[:, 0], q[:, 3]-q[:, 2], q[:, 3]-q[:, 0]), 1)
-    targets = np.concatenate((contrasts, contrasts.mean(0, keepdims=True))).reshape(-1, f.shape[1])
+    targets = contrasts.mean(0)
     cross = targets @ cov @ f.T
     prior_var = np.einsum('ij,ij->i', targets @ cov, targets)
     kernel = f @ cov @ f.T
@@ -48,8 +48,8 @@ def component_effect_posterior(factual, query, y, prior_mean, prior_cov, noise_v
         tolerance = 1e-9 * np.maximum(1., np.abs(prior_var))
         if np.any(variance < -tolerance):
             raise FloatingPointError("Negative posterior variance")
-        means.append((targets @ mu + cross @ solution).reshape(len(q)+1, 3))
-        variances.append(np.maximum(variance, 0.).reshape(len(q)+1, 3))
+        means.append(targets @ mu + cross @ solution)
+        variances.append(np.maximum(variance, 0.))
         logdet = 2 * np.log(np.diag(factor[0])).sum()
         evidences.append(-.5 * (logdet + residual @ solution + len(f)*math.log(2*math.pi)))
     return np.array(means), np.array(variances), np.array(evidences)
@@ -83,7 +83,7 @@ def mixture_interval(means, variances, weights, level=.95):
 @torch.no_grad()
 def predict_intervals(adapter, *, x, adjacency, treatment, observed_indices,
                       outcomes_observed, level=.95):
-    """Use the same five observed arrays, features and mixture weights as J."""
+    """Return ATE intervals using J's observed inputs and mixture weights."""
     x, a, t, indices, y = validate_factual_inputs(x=x, adjacency=adjacency,
         treatment=treatment, observed_indices=observed_indices, outcomes_observed=outcomes_observed)
     parent = adapter.model
@@ -117,6 +117,5 @@ def predict_intervals(adapter, *, x, adjacency, treatment, observed_indices,
     weights = softmax((np.stack(all_evidences) + log_prior).ravel())
     means, variances = np.concatenate(all_means), np.concatenate(all_variances)
     lo, hi = mixture_interval(means, variances, weights, level)
-    return dict(ite_lower=lo[:-1], ite_upper=hi[:-1],
-                ate_lower=lo[-1], ate_upper=hi[-1], interval_level=np.array(level),
+    return dict(ate_lower=lo, ate_upper=hi, interval_level=np.array(level),
                 interval_kind=np.array('frozen_J_marginal_posterior_credible'))

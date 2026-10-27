@@ -10,6 +10,7 @@ import numpy as np
 import torch
 from threadpoolctl import threadpool_limits
 from predict import load_selected_model
+from pfn_social.intervals import predict_intervals
 from pfn_social.phase6_limited_outcomes import generate_mechanism, make_observed_draw
 from pfn_social.phase6_sparse_classical import DesignBased, FrozenMixture, CausalPFNReference, pack
 from pfn_social.sparse_classical_calibration import load_model as load_calibrated_kernel
@@ -116,9 +117,13 @@ def main():
     parser.add_argument("--repeat", type=int, choices=range(12), default=0)
     parser.add_argument("--observed", type=int, choices=(20, 50, 100), default=50)
     parser.add_argument("--output", type=Path, required=True, help="A fresh output directory")
+    parser.add_argument("--interval-level", type=float, default=.95,
+                        help="Marginal frozen J posterior interval level (default: 0.95)")
     args = parser.parse_args()
     if len(set(args.methods)) != len(args.methods):
         raise ValueError("Duplicate methods")
+    if not 0 < args.interval_level < 1:
+        raise ValueError("Require 0 < interval-level < 1")
     destination = args.output.resolve()
     if destination.exists():
         raise FileExistsError("Choose a fresh output directory")
@@ -151,18 +156,39 @@ def main():
                         try:
                             prediction = predict_method(name, model, inputs, seed)
                         except Exception as error:
-                            prediction = pack(ite=np.full((200, 3), np.nan), ate=np.full(3, np.nan), n=200)
+                            prediction = pack(ite=np.full((len(inputs['x']), 3), np.nan), ate=np.full(3, np.nan), n=len(inputs['x']))
                             failure = {"type": type(error).__name__, "message": str(error)}
                         elapsed = time.perf_counter() - began
+                        interval_began = time.perf_counter()
+                        interval_failure = None
+                        intervals = dict(ite_lower=np.full((len(inputs['x']), 3), np.nan),
+                            ite_upper=np.full((len(inputs['x']), 3), np.nan), ate_lower=np.full(3, np.nan),
+                            ate_upper=np.full(3, np.nan), interval_level=np.array(args.interval_level),
+                            interval_kind=np.array('unsupported'), ite_interval_supported=np.full(3, name == 'j'),
+                            ate_interval_supported=np.full(3, name == 'j'))
+                        if name == 'j':
+                            try:
+                                intervals.update(predict_intervals(model, **inputs, level=args.interval_level))
+                            except Exception as error:
+                                interval_failure = {"type": type(error).__name__, "message": str(error)}
+                                intervals['interval_kind'] = np.array('frozen_J_marginal_posterior_credible')
+                        interval_seconds = time.perf_counter() - interval_began
                         np.savez_compressed(destination / "predictions" / (identity + "__" + name + ".npz"),
-                            **{key: prediction[key] for key in ("arm_means", "ite_effects", "ate_effects", "arm_supported", "ite_supported", "ate_supported")})
+                            **{key: prediction[key] for key in ("arm_means", "ite_effects", "ate_effects", "arm_supported", "ite_supported", "ate_supported")},
+                            **intervals)
                         receipts.append(dict(context_id=identity, method=name, fit_seed=seed, online_seconds=elapsed,
                             arm_supported=prediction["arm_supported"].tolist(), ite_supported=prediction["ite_supported"].tolist(),
-                            ate_supported=prediction["ate_supported"].tolist(), failure=failure))
+                            ate_supported=prediction["ate_supported"].tolist(), failure=failure,
+                            interval_level=args.interval_level, interval_seconds=interval_seconds, interval_failure=interval_failure,
+                            ite_interval_supported=intervals['ite_interval_supported'].tolist(),
+                            ate_interval_supported=intervals['ate_interval_supported'].tolist()))
     (destination / "execution.json").write_text(json.dumps(dict(config=config, methods=args.methods, cohort=args.cohort,
         model_load_seconds=load_seconds, torch_threads=1, BLAS_threads=1, receipts=receipts,
+        interval_level=args.interval_level, interval_methods=['j'] if 'j' in methods else [],
         no_training_of_pretrained_J_or_kernel_parameters=True, no_hidden_outcomes_supplied=True), indent=2))
-    print(json.dumps(dict(output=str(destination), method_contexts=len(receipts), cohort=args.cohort), indent=2))
+    from evaluate import evaluate_run
+    evaluation = evaluate_run(destination)
+    print(json.dumps(dict(output=str(destination), evaluation=str(evaluation), method_contexts=len(receipts), cohort=args.cohort), indent=2))
 
 
 if __name__ == "__main__":

@@ -32,7 +32,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", required=True)
     parser.add_argument("--output", required=True)
+    parser.add_argument("--interval-level", type=float, default=None,
+                        help="Also return marginal posterior intervals, e.g. 0.95")
     args = parser.parse_args()
+    if args.interval_level is not None and not 0 < args.interval_level < 1:
+        parser.error('--interval-level must be between 0 and 1')
     torch.set_num_threads(1)
     inputs = read_factual_input(args.input)
     model = load_selected_model()
@@ -40,7 +44,11 @@ def main():
     effects = np.stack((means[:, 2] - means[:, 0], means[:, 3] - means[:, 2], means[:, 3] - means[:, 0]), -1)
     destination = Path(args.output)
     destination.parent.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(destination, arm_means=means, ite=effects, ate=effects.mean(0))
+    intervals = {}
+    if args.interval_level is not None:
+        from pfn_social.intervals import predict_intervals
+        intervals = predict_intervals(model, **inputs, level=args.interval_level)
+    np.savez_compressed(destination, arm_means=means, ite=effects, ate=effects.mean(0), **intervals)
     print(f"N={len(means)} m={len(inputs['outcomes_observed'])}; frozen J SHA verified; four arms returned")
 
 

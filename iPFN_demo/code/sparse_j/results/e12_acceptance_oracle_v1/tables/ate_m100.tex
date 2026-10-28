@@ -1,0 +1,56 @@
+\begin{table}[tb]
+\centering
+\caption{ATE accuracy with 100 observed outcomes.}
+\begingroup\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}l*{9}{r}@{}}
+\toprule
+&\multicolumn{3}{c}{Direct}&\multicolumn{3}{c}{Treated spillover}&\multicolumn{3}{c}{Total}\\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}
+Method&$|\mathrm{Bias}|$&Variance&RMSE&$|\mathrm{Bias}|$&Variance&RMSE&$|\mathrm{Bias}|$&Variance&RMSE\\
+\midrule
+iPFN-J & \cellcolor{blue!17}0.1046 & \cellcolor{blue!7}0.0323 & \cellcolor{blue!17}0.1968 & \cellcolor{blue!7}0.1041 & \cellcolor{blue!24}\textbf{0.0110} & \cellcolor{blue!17}0.1551 & \cellcolor{blue!11}0.1337 & \cellcolor{blue!17}0.0480 & \cellcolor{blue!17}0.2453 \\
+HT & \cellcolor{blue!1}0.1661 & \cellcolor{blue!1}0.1445 & \cellcolor{blue!1}0.3766 & \cellcolor{blue!1}0.2947 & \cellcolor{blue!1}0.4832 & \cellcolor{blue!1}0.6943 & \cellcolor{blue!1}0.2863 & \cellcolor{blue!1}0.4546 & \cellcolor{blue!1}0.6728 \\
+Hajek & \cellcolor{blue!1}0.1300 & \cellcolor{blue!1}0.0903 & \cellcolor{blue!1}0.2947 & \cellcolor{blue!1}0.1677 & \cellcolor{blue!1}0.1320 & \cellcolor{blue!1}0.3655 & \cellcolor{blue!1}0.1663 & \cellcolor{blue!1}0.1334 & \cellcolor{blue!1}0.3651 \\
+F-z2 & \cellcolor{blue!1}0.1266 & \cellcolor{blue!2}0.0803 & \cellcolor{blue!2}0.2813 & \cellcolor{blue!2}0.1592 & \cellcolor{blue!2}0.1120 & \cellcolor{blue!2}0.3389 & \cellcolor{blue!2}0.1582 & \cellcolor{blue!2}0.1158 & \cellcolor{blue!2}0.3420 \\
+Lin-z2 & \cellcolor{blue!2}0.1253 & \cellcolor{blue!1}0.0823 & \cellcolor{blue!1}0.2830 & 0.1710$^{\dagger}$ & 0.2097$^{\dagger}$ & 0.4623$^{\dagger}$ & 0.1678$^{\dagger}$ & 0.2169$^{\dagger}$ & 0.4657$^{\dagger}$ \\
+Kernel prior & \cellcolor{blue!4}0.1125 & \cellcolor{blue!24}\textbf{0.0310} & \cellcolor{blue!4}0.2008 & \cellcolor{blue!11}0.1018 & \cellcolor{blue!7}0.0175 & \cellcolor{blue!4}0.1672 & \cellcolor{blue!4}0.1388 & \cellcolor{blue!7}0.0505 & \cellcolor{blue!4}0.2519 \\
+Calibrated kernel & \cellcolor{blue!7}0.1080 & \cellcolor{blue!17}0.0316 & \cellcolor{blue!7}0.1986 & \cellcolor{blue!24}\textbf{0.0960} & \cellcolor{blue!4}0.0182 & \cellcolor{blue!7}0.1620 & \cellcolor{blue!24}\textbf{0.1285} & \cellcolor{blue!4}0.0534 & \cellcolor{blue!7}0.2477 \\
+j-calibrated & \cellcolor{blue!17}0.1046 & \cellcolor{blue!7}0.0323 & \cellcolor{blue!17}0.1968 & \cellcolor{blue!7}0.1041 & \cellcolor{blue!24}\textbf{0.0110} & \cellcolor{blue!17}0.1551 & \cellcolor{blue!11}0.1337 & \cellcolor{blue!17}0.0480 & \cellcolor{blue!17}0.2453 \\
+oracle-known-dgp & \cellcolor{blue!24}\textbf{0.1021} & \cellcolor{blue!11}0.0316 & \cellcolor{blue!24}\textbf{0.1939} & \cellcolor{blue!17}0.0984 & \cellcolor{blue!11}0.0121 & \cellcolor{blue!24}\textbf{0.1511} & \cellcolor{blue!17}0.1285 & \cellcolor{blue!24}\textbf{0.0480} & \cellcolor{blue!24}\textbf{0.2412} \\
+\bottomrule
+\end{tabular*}\endgroup
+\vspace{3pt}
+\begin{minipage}{\linewidth}\scriptsize
+Bias is mean absolute conditional bias; variance uses the $R-1$ divisor within each mechanism.
+Mechanisms are equally weighted; RMSE takes the root after pooling squared errors.
+$^{\dagger}$Incomplete support: values condition on mechanisms with all recorded repeats valid and are unranked.
+-- indicates no complete supported mechanism, or fewer than two repeats for variance.
+Numeric support counts and interval coverage are provided in the accompanying CSV.
+\end{minipage}
+\end{table}
+
+\begin{table}[tb]
+\centering
+\caption{ATE interval coverage at nominal 95\%, with 100 observed outcomes.}
+\begin{tabular}{lrrr}
+\toprule
+Method & Direct & Treated spillover & Total \\
+\midrule
+iPFN-J & 96.58\% & 95.08\% & 96.11\% \\
+HT & -- & -- & -- \\
+Hajek & -- & -- & -- \\
+F-z2 & -- & -- & -- \\
+Lin-z2 & -- & -- & -- \\
+Kernel prior & -- & -- & -- \\
+Calibrated kernel & -- & -- & -- \\
+j-calibrated & 96.94\% & 95.61\% & 96.14\% \\
+oracle-known-dgp & 94.83\% & 94.89\% & 95.17\% \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\begin{minipage}{\linewidth}\scriptsize
+Coverage includes failed requested intervals in the denominator. -- means intervals are unsupported.
+These are marginal posterior intervals; nominal coverage is not a frequentist guarantee.
+\end{minipage}
+\end{table}

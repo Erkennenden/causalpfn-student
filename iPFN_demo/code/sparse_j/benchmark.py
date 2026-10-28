@@ -120,6 +120,11 @@ def main():
     parser.add_argument("--interval-level", type=float, default=.95,
                         help="Marginal frozen J ATE posterior interval level (default: 0.95)")
     args = parser.parse_args()
+    run_benchmark(args)
+
+
+def run_benchmark(args, *, case_grid=None, mechanism_factory=generate_mechanism, protocol=None):
+    """Shared evaluator; extension protocols supply explicit cases and generators."""
     if len(set(args.methods)) != len(args.methods):
         raise ValueError("Duplicate methods")
     if not 0 < args.interval_level < 1:
@@ -136,9 +141,18 @@ def main():
     with source_directory(), threadpool_limits(limits=1):
         methods = load_methods(args.methods, config)
         load_seconds = time.perf_counter() - started
-        receipts = []
-        for family, mechanism_id, repeats, masks in cases(args):
-            mechanism = generate_mechanism(family, mechanism_id)
+        receipts, graph_records = [], []
+        for family, mechanism_id, repeats, masks in (cases(args) if case_grid is None else case_grid):
+            mechanism = mechanism_factory(family, mechanism_id)
+            if protocol is not None:
+                from pfn_social.configuration_graph import degree_statistics
+                from pfn_social.phase3_hierarchical import _hash_arrays
+                graph_records.append(dict(family=family, mechanism=mechanism_id,
+                    config=json.loads(mechanism.parent.config.canonical_json()),
+                    mechanism_sha256=mechanism.parent.mechanism_sha256,
+                    truth_sha256=mechanism.parent.truth_sha256,
+                    adjacency_sha256=_hash_arrays(mechanism.parent.adjacency),
+                    **degree_statistics(mechanism.parent.adjacency)))
             # Truth is serialized separately and never supplied to any predictor.
             np.savez_compressed(destination / "truth" / f"f{family}_m{mechanism_id}.npz", arm_means=mechanism.parent.truth)
             for repeat in repeats:
@@ -180,10 +194,14 @@ def main():
                             ate_supported=prediction["ate_supported"].tolist(), failure=failure,
                             interval_level=args.interval_level, interval_seconds=interval_seconds, interval_failure=interval_failure,
                             ate_interval_supported=intervals['ate_interval_supported'].tolist()))
+    if protocol is not None:
+        (destination / 'graph_statistics.json').write_text(json.dumps(graph_records, indent=2))
+    extension = {} if protocol is None else dict(extension_protocol=protocol)
     (destination / "execution.json").write_text(json.dumps(dict(config=config, methods=args.methods, cohort=args.cohort,
         model_load_seconds=load_seconds, torch_threads=1, BLAS_threads=1, receipts=receipts,
         interval_level=args.interval_level, interval_methods=['j'] if 'j' in methods else [],
-        no_training_of_pretrained_J_or_kernel_parameters=True, no_hidden_outcomes_supplied=True), indent=2))
+        no_training_of_pretrained_J_or_kernel_parameters=True, no_hidden_outcomes_supplied=True,
+        **extension), indent=2))
     from evaluate import evaluate_run
     evaluation = evaluate_run(destination)
     print(json.dumps(dict(output=str(destination), evaluation=str(evaluation), method_contexts=len(receipts), cohort=args.cohort), indent=2))

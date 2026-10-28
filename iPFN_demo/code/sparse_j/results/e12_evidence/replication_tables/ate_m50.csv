@@ -1,0 +1,4 @@
+method,m_observed,effect,absolute_conditional_bias,variance_unbiased,rmse,mechanisms_used,mechanisms_expected,contexts_used,contexts_expected,ranked,interval_level,interval_requested,interval_valid,covered,coverage,coverage_including_failures
+j,50,direct,0.12404038549774384,0.04365933340774304,0.22787952908504563,100,100,300,300,True,0.95,300,300,294,0.98,0.98
+j,50,spillover,0.10108273089339402,0.006528817731167398,0.14265654659319932,100,100,300,300,True,0.95,300,300,282,0.94,0.94
+j,50,total,0.16151528623132336,0.056597996037322,0.27855395667001,100,100,300,300,True,0.95,300,300,293,0.9766666666666667,0.9766666666666667

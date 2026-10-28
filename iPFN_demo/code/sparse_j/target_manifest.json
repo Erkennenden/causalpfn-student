@@ -1,0 +1,41 @@
+{
+  "status": "local_proposal_not_upstream_integrated",
+  "target_id": "local-e12-proposal:finite-network-majority-p0.5-mu-v1",
+  "upstream_target_id": null,
+  "definition": "mu_i(t,s) = E_{pi}[Y_i((t,T_-i)) | S_i((t,T_-i))=s, G,X]",
+  "pi": "Independent Bernoulli(0.5) assignments; finite fixed network for each mechanism",
+  "exposure": "S_i = 1{sum_j adjacency[i,j]*T_j > degree_i/2}",
+  "original_output_shape": [
+    "N",
+    4
+  ],
+  "original_arm_order": [
+    "00",
+    "01",
+    "10",
+    "11"
+  ],
+  "adapter_output_shape": [
+    "N",
+    2,
+    2
+  ],
+  "adapter_axes": [
+    "input row (node_ids order)",
+    "own treatment t",
+    "majority exposure s"
+  ],
+  "effects": {
+    "direct": "mu(1,0)-mu(0,0)",
+    "spillover": "mu(1,1)-mu(1,0)",
+    "total": "mu(1,1)-mu(0,0)",
+    "ATE": "Unweighted mean of each effect over all N nodes"
+  },
+  "node_ids": "Local simulation arange(N); external request must supply exact row order",
+  "status_handling": "Explicit POINT/NOT_IDENTIFIED request only; adapter never determines identification",
+  "population_support": "All four states have positive probability in these positive-degree graphs under independent p=0.5",
+  "empirical_support": "Per-node direct observations only, conservative local diagnostic; cross-node borrowing definition pending team agreement",
+  "unchanged_original_files": "Manifest is an additive sidecar. It does not replace historical target labels, config split labels, seeds or experiment identity.",
+  "calibration_split_roles": "Mechanisms are split as registered in e12 calibration protocol; original LargeNetworkConfig split field remains dev to preserve identity.",
+  "screening_scope": "Mechanism IDs 4000..4011 now inspected; not eligible as untouched future validation."
+}

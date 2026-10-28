@@ -1,0 +1,40 @@
+\begin{table}[tb]
+\centering
+\caption{ATE accuracy with 50 observed outcomes.}
+\begingroup\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}l*{9}{r}@{}}
+\toprule
+&\multicolumn{3}{c}{Direct}&\multicolumn{3}{c}{Treated spillover}&\multicolumn{3}{c}{Total}\\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}
+Method&$|\mathrm{Bias}|$&Variance&RMSE&$|\mathrm{Bias}|$&Variance&RMSE&$|\mathrm{Bias}|$&Variance&RMSE\\
+\midrule
+iPFN-J & \cellcolor{blue!24}\textbf{0.1240} & \cellcolor{blue!24}\textbf{0.0437} & \cellcolor{blue!24}\textbf{0.2279} & \cellcolor{blue!24}\textbf{0.1011} & \cellcolor{blue!24}\textbf{0.0065} & \cellcolor{blue!24}\textbf{0.1427} & \cellcolor{blue!24}\textbf{0.1615} & \cellcolor{blue!24}\textbf{0.0566} & \cellcolor{blue!24}\textbf{0.2786} \\
+\bottomrule
+\end{tabular*}\endgroup
+\vspace{3pt}
+\begin{minipage}{\linewidth}\scriptsize
+Bias is mean absolute conditional bias; variance uses the $R-1$ divisor within each mechanism.
+Mechanisms are equally weighted; RMSE takes the root after pooling squared errors.
+$^{\dagger}$Incomplete support: values condition on mechanisms with all recorded repeats valid and are unranked.
+-- indicates no complete supported mechanism, or fewer than two repeats for variance.
+Numeric support counts and interval coverage are provided in the accompanying CSV.
+\end{minipage}
+\end{table}
+
+\begin{table}[tb]
+\centering
+\caption{ATE interval coverage at nominal 95\%, with 50 observed outcomes.}
+\begin{tabular}{lrrr}
+\toprule
+Method & Direct & Treated spillover & Total \\
+\midrule
+iPFN-J & 98.00\% & 94.00\% & 97.67\% \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\begin{minipage}{\linewidth}\scriptsize
+Coverage includes failed requested intervals in the denominator. -- means intervals are unsupported.
+These are marginal posterior intervals; nominal coverage is not a frequentist guarantee.
+\end{minipage}
+\end{table}

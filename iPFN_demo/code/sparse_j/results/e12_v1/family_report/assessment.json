@@ -1,0 +1,12 @@
+{
+  "context_metrics_sha256": "9482a969eec784ae8d6f9d4381c4d134686336f2babccce1520a3e9f28384c88",
+  "method_contexts": 20160,
+  "prediction_failures": 0,
+  "interval_failures": 0,
+  "target": 0.9,
+  "nominal": 0.95,
+  "evaluated_configuration_cells": 54,
+  "cells_meeting_target": 47,
+  "all_configuration_cells_meet_target": false,
+  "caveat": "Empirical rates only; 8 mechanisms per full-run family, repeats share mechanisms; not a coverage guarantee."
+}

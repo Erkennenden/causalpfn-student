@@ -1,0 +1,86 @@
+{
+  "calibration/execution.json": {
+    "sha256": "d3a1820bfe4ba66745495286cfe31308a1e3038946516e5009497f60368524c0",
+    "bytes": 1161828
+  },
+  "calibration/graph_statistics.json": {
+    "sha256": "80ad035e8cd1faf22f23c2005b35e2f9e926abbfd695575f791ce2269bbe458a",
+    "bytes": 1695303
+  },
+  "calibration/evaluation/context_metrics.csv": {
+    "sha256": "3fc8ba5e9866b6852edd46b05ce4a9fc06783a03ad8f9f88fd1c024b5123339d",
+    "bytes": 1128587
+  },
+  "calibration/evaluation/summary.csv": {
+    "sha256": "7082fc4fa22eaf78503f4d6109dab47448f21921d1a868e853ed55c7e5c02257",
+    "bytes": 2614
+  },
+  "calibration/evaluation/summary_by_family.csv": {
+    "sha256": "7965b028c095c3c6ea38551dc32f954283849f963a17b4b91aa9abacfd2454c0",
+    "bytes": 12890
+  },
+  "calibration/evaluation/summary_by_mechanism.csv": {
+    "sha256": "99a9aa7fad648dc34986c39efba6fbe2e44d545cfad285245ab114d1af231b96",
+    "bytes": 1029681
+  },
+  "test/execution.json": {
+    "sha256": "bbb3f36575db102251ce7a15e19166c5caf7e67bb5396374d81827114dbe0aad",
+    "bytes": 58499340
+  },
+  "test/graph_statistics.json": {
+    "sha256": "dce2ada7d04f165670f20bf712201faf76a4a8bdfae0e618b4a938ccc49e7961",
+    "bytes": 3390603
+  },
+  "test/evaluation/context_metrics.csv": {
+    "sha256": "ea4d84daa1254108b381b92596135041b5a8e0e79af2614c72d3c7a0d190e1b9",
+    "bytes": 51036778
+  },
+  "test/evaluation/summary.csv": {
+    "sha256": "c411d27b5a8a7017f412d472be946752cac5ccd2d391df9d470095708e9839f2",
+    "bytes": 14383
+  },
+  "test/evaluation/summary_by_family.csv": {
+    "sha256": "14241486f7aeb9a025f378bd3a4eb26d2525443eabe64fff380c02087beb1d6d",
+    "bytes": 82421
+  },
+  "test/evaluation/summary_by_mechanism.csv": {
+    "sha256": "5733ea3969565f52733d4c32834bda49dcd547ea73dc88391afbef65cb485ee9",
+    "bytes": 14870046
+  },
+  "protocol.json": {
+    "sha256": "14935df8bc0899cbda5753c058639d09105d96612e119d6176a646072c43062e",
+    "bytes": 10028
+  },
+  "frozen_calibration.json": {
+    "sha256": "796217e99235d11fcfa172bfdd1f772aa826379d8c2d41beca815c1c169d1918",
+    "bytes": 14488
+  },
+  "calibration_scores.csv": {
+    "sha256": "3841cf4a98cb2ae59755e5d01863a978376b6de6d9793df0ebda6bba98f6524c",
+    "bytes": 366069
+  },
+  "calibration_factors.csv": {
+    "sha256": "6e4ad7561ba7cd91647ac3cede24aa9e62dbc77ddfc19214dd6840aa8da0dcf6",
+    "bytes": 3001
+  },
+  "events.jsonl": {
+    "sha256": "bb28f15642dbba1bd96df441eba592adfe69796af006875ee0966c9f7424e656",
+    "bytes": 12098
+  },
+  "source/run_e12_calibration.py": {
+    "sha256": "0aedca67e50839546faba2e78edf665fee2b7de0694f23b32b05c6bf1bbb5f0e",
+    "bytes": 15239
+  },
+  "source/report_e12_calibration.py": {
+    "sha256": "bcd52ce154009b09e41bfe9ae914492e2b198e2a5a63261aeadcba5b0b6b83e9",
+    "bytes": 13340
+  },
+  "source/pfn_social/e12_interval_calibration.py": {
+    "sha256": "a639f181f9d0fbbb2bed7f0ad1a6c3b911ca2f9a6c0b7a36e6331faf7c4efde9",
+    "bytes": 2452
+  },
+  "source/tests/test_interval_calibration.py": {
+    "sha256": "f4011b6de0ac6fd86f3f924004165bb30dd43b3caf831ea9505a6faf6534c661",
+    "bytes": 3012
+  }
+}

@@ -1,0 +1,79 @@
+{"time_utc": "2026-10-28T01:36:14.683905+00:00", "stage": "run_started", "registered_protocol_sha256": "14935df8bc0899cbda5753c058639d09105d96612e119d6176a646072c43062e"}
+{"time_utc": "2026-10-28T01:36:14.684905+00:00", "stage": "stage_started", "role": "calibration", "families": [100, 101, 102, 103, 104, 105], "shards": 24, "workers": 4, "frozen_calibration_sha256": null}
+{"time_utc": "2026-10-28T01:36:45.908684+00:00", "stage": "shard_complete", "role": "calibration", "completed": 1, "total": 24, "shard": "f100_m2075"}
+{"time_utc": "2026-10-28T01:36:46.033333+00:00", "stage": "shard_complete", "role": "calibration", "completed": 2, "total": 24, "shard": "f100_m2000"}
+{"time_utc": "2026-10-28T01:36:46.082338+00:00", "stage": "shard_complete", "role": "calibration", "completed": 3, "total": 24, "shard": "f100_m2025"}
+{"time_utc": "2026-10-28T01:36:46.099406+00:00", "stage": "shard_complete", "role": "calibration", "completed": 4, "total": 24, "shard": "f100_m2050"}
+{"time_utc": "2026-10-28T01:37:03.504097+00:00", "stage": "shard_complete", "role": "calibration", "completed": 5, "total": 24, "shard": "f101_m2000"}
+{"time_utc": "2026-10-28T01:37:03.516103+00:00", "stage": "shard_complete", "role": "calibration", "completed": 6, "total": 24, "shard": "f101_m2025"}
+{"time_utc": "2026-10-28T01:37:03.517104+00:00", "stage": "shard_complete", "role": "calibration", "completed": 7, "total": 24, "shard": "f101_m2050"}
+{"time_utc": "2026-10-28T01:37:03.555237+00:00", "stage": "shard_complete", "role": "calibration", "completed": 8, "total": 24, "shard": "f101_m2075"}
+{"time_utc": "2026-10-28T01:37:24.327919+00:00", "stage": "shard_complete", "role": "calibration", "completed": 9, "total": 24, "shard": "f102_m2025"}
+{"time_utc": "2026-10-28T01:37:24.408386+00:00", "stage": "shard_complete", "role": "calibration", "completed": 10, "total": 24, "shard": "f102_m2075"}
+{"time_utc": "2026-10-28T01:37:24.462906+00:00", "stage": "shard_complete", "role": "calibration", "completed": 11, "total": 24, "shard": "f102_m2000"}
+{"time_utc": "2026-10-28T01:37:24.525912+00:00", "stage": "shard_complete", "role": "calibration", "completed": 12, "total": 24, "shard": "f102_m2050"}
+{"time_utc": "2026-10-28T01:37:53.669588+00:00", "stage": "shard_complete", "role": "calibration", "completed": 13, "total": 24, "shard": "f103_m2000"}
+{"time_utc": "2026-10-28T01:37:53.812322+00:00", "stage": "shard_complete", "role": "calibration", "completed": 14, "total": 24, "shard": "f103_m2050"}
+{"time_utc": "2026-10-28T01:37:53.964261+00:00", "stage": "shard_complete", "role": "calibration", "completed": 15, "total": 24, "shard": "f103_m2025"}
+{"time_utc": "2026-10-28T01:37:53.989374+00:00", "stage": "shard_complete", "role": "calibration", "completed": 16, "total": 24, "shard": "f103_m2075"}
+{"time_utc": "2026-10-28T01:38:24.597864+00:00", "stage": "shard_complete", "role": "calibration", "completed": 17, "total": 24, "shard": "f104_m2000"}
+{"time_utc": "2026-10-28T01:38:24.818266+00:00", "stage": "shard_complete", "role": "calibration", "completed": 18, "total": 24, "shard": "f104_m2025"}
+{"time_utc": "2026-10-28T01:38:24.830320+00:00", "stage": "shard_complete", "role": "calibration", "completed": 19, "total": 24, "shard": "f104_m2075"}
+{"time_utc": "2026-10-28T01:38:24.954104+00:00", "stage": "shard_complete", "role": "calibration", "completed": 20, "total": 24, "shard": "f104_m2050"}
+{"time_utc": "2026-10-28T01:38:57.317026+00:00", "stage": "shard_complete", "role": "calibration", "completed": 21, "total": 24, "shard": "f105_m2000"}
+{"time_utc": "2026-10-28T01:38:57.405576+00:00", "stage": "shard_complete", "role": "calibration", "completed": 22, "total": 24, "shard": "f105_m2025"}
+{"time_utc": "2026-10-28T01:38:57.433580+00:00", "stage": "shard_complete", "role": "calibration", "completed": 23, "total": 24, "shard": "f105_m2050"}
+{"time_utc": "2026-10-28T01:38:57.817599+00:00", "stage": "shard_complete", "role": "calibration", "completed": 24, "total": 24, "shard": "f105_m2075"}
+{"time_utc": "2026-10-28T01:39:10.316693+00:00", "stage": "calibration_frozen", "sha256": "796217e99235d11fcfa172bfdd1f772aa826379d8c2d41beca815c1c169d1918", "factors": 54}
+{"time_utc": "2026-10-28T01:39:10.318918+00:00", "stage": "stage_started", "role": "test", "families": [103], "shards": 8, "workers": 4, "frozen_calibration_sha256": "796217e99235d11fcfa172bfdd1f772aa826379d8c2d41beca815c1c169d1918"}
+{"time_utc": "2026-10-28T01:40:42.801996+00:00", "stage": "shard_complete", "role": "test", "completed": 1, "total": 8, "shard": "f103_m3000"}
+{"time_utc": "2026-10-28T01:40:52.267773+00:00", "stage": "shard_complete", "role": "test", "completed": 2, "total": 8, "shard": "f103_m3025"}
+{"time_utc": "2026-10-28T01:41:01.753314+00:00", "stage": "shard_complete", "role": "test", "completed": 3, "total": 8, "shard": "f103_m3075"}
+{"time_utc": "2026-10-28T01:41:11.091876+00:00", "stage": "shard_complete", "role": "test", "completed": 4, "total": 8, "shard": "f103_m3050"}
+{"time_utc": "2026-10-28T01:41:55.565567+00:00", "stage": "shard_complete", "role": "test", "completed": 5, "total": 8, "shard": "f103_m3150"}
+{"time_utc": "2026-10-28T01:42:05.226172+00:00", "stage": "shard_complete", "role": "test", "completed": 6, "total": 8, "shard": "f103_m3100"}
+{"time_utc": "2026-10-28T01:42:14.674063+00:00", "stage": "shard_complete", "role": "test", "completed": 7, "total": 8, "shard": "f103_m3125"}
+{"time_utc": "2026-10-28T01:42:24.066576+00:00", "stage": "shard_complete", "role": "test", "completed": 8, "total": 8, "shard": "f103_m3175"}
+{"time_utc": "2026-10-28T01:43:17.719279+00:00", "stage": "pilot_complete", "calibration_sha256": "796217e99235d11fcfa172bfdd1f772aa826379d8c2d41beca815c1c169d1918", "no_parameters_changed": true}
+{"time_utc": "2026-10-28T01:43:17.721437+00:00", "stage": "stage_started", "role": "test", "families": [100, 101, 102, 104, 105], "shards": 40, "workers": 4, "frozen_calibration_sha256": "796217e99235d11fcfa172bfdd1f772aa826379d8c2d41beca815c1c169d1918"}
+{"time_utc": "2026-10-28T01:44:38.938619+00:00", "stage": "shard_complete", "role": "test", "completed": 1, "total": 40, "shard": "f100_m3025"}
+{"time_utc": "2026-10-28T01:44:48.614342+00:00", "stage": "shard_complete", "role": "test", "completed": 2, "total": 40, "shard": "f100_m3000"}
+{"time_utc": "2026-10-28T01:44:58.276621+00:00", "stage": "shard_complete", "role": "test", "completed": 3, "total": 40, "shard": "f100_m3075"}
+{"time_utc": "2026-10-28T01:45:08.058815+00:00", "stage": "shard_complete", "role": "test", "completed": 4, "total": 40, "shard": "f100_m3050"}
+{"time_utc": "2026-10-28T01:45:42.284270+00:00", "stage": "shard_complete", "role": "test", "completed": 5, "total": 40, "shard": "f100_m3125"}
+{"time_utc": "2026-10-28T01:45:51.954013+00:00", "stage": "shard_complete", "role": "test", "completed": 6, "total": 40, "shard": "f100_m3100"}
+{"time_utc": "2026-10-28T01:46:01.665960+00:00", "stage": "shard_complete", "role": "test", "completed": 7, "total": 40, "shard": "f100_m3150"}
+{"time_utc": "2026-10-28T01:46:11.253573+00:00", "stage": "shard_complete", "role": "test", "completed": 8, "total": 40, "shard": "f100_m3175"}
+{"time_utc": "2026-10-28T01:46:43.418331+00:00", "stage": "shard_complete", "role": "test", "completed": 9, "total": 40, "shard": "f101_m3000"}
+{"time_utc": "2026-10-28T01:46:53.177598+00:00", "stage": "shard_complete", "role": "test", "completed": 10, "total": 40, "shard": "f101_m3075"}
+{"time_utc": "2026-10-28T01:47:02.688986+00:00", "stage": "shard_complete", "role": "test", "completed": 11, "total": 40, "shard": "f101_m3025"}
+{"time_utc": "2026-10-28T01:47:12.348166+00:00", "stage": "shard_complete", "role": "test", "completed": 12, "total": 40, "shard": "f101_m3050"}
+{"time_utc": "2026-10-28T01:47:44.027913+00:00", "stage": "shard_complete", "role": "test", "completed": 13, "total": 40, "shard": "f101_m3100"}
+{"time_utc": "2026-10-28T01:47:53.618496+00:00", "stage": "shard_complete", "role": "test", "completed": 14, "total": 40, "shard": "f101_m3125"}
+{"time_utc": "2026-10-28T01:48:03.140457+00:00", "stage": "shard_complete", "role": "test", "completed": 15, "total": 40, "shard": "f101_m3150"}
+{"time_utc": "2026-10-28T01:48:12.737078+00:00", "stage": "shard_complete", "role": "test", "completed": 16, "total": 40, "shard": "f101_m3175"}
+{"time_utc": "2026-10-28T01:48:48.316087+00:00", "stage": "shard_complete", "role": "test", "completed": 17, "total": 40, "shard": "f102_m3050"}
+{"time_utc": "2026-10-28T01:48:57.937233+00:00", "stage": "shard_complete", "role": "test", "completed": 18, "total": 40, "shard": "f102_m3025"}
+{"time_utc": "2026-10-28T01:49:07.535420+00:00", "stage": "shard_complete", "role": "test", "completed": 19, "total": 40, "shard": "f102_m3075"}
+{"time_utc": "2026-10-28T01:49:17.166559+00:00", "stage": "shard_complete", "role": "test", "completed": 20, "total": 40, "shard": "f102_m3000"}
+{"time_utc": "2026-10-28T01:49:52.552841+00:00", "stage": "shard_complete", "role": "test", "completed": 21, "total": 40, "shard": "f102_m3100"}
+{"time_utc": "2026-10-28T01:50:01.907685+00:00", "stage": "shard_complete", "role": "test", "completed": 22, "total": 40, "shard": "f102_m3125"}
+{"time_utc": "2026-10-28T01:50:11.225906+00:00", "stage": "shard_complete", "role": "test", "completed": 23, "total": 40, "shard": "f102_m3150"}
+{"time_utc": "2026-10-28T01:50:20.647327+00:00", "stage": "shard_complete", "role": "test", "completed": 24, "total": 40, "shard": "f102_m3175"}
+{"time_utc": "2026-10-28T01:51:06.867054+00:00", "stage": "shard_complete", "role": "test", "completed": 25, "total": 40, "shard": "f104_m3000"}
+{"time_utc": "2026-10-28T01:51:16.427189+00:00", "stage": "shard_complete", "role": "test", "completed": 26, "total": 40, "shard": "f104_m3050"}
+{"time_utc": "2026-10-28T01:51:26.023356+00:00", "stage": "shard_complete", "role": "test", "completed": 27, "total": 40, "shard": "f104_m3025"}
+{"time_utc": "2026-10-28T01:51:35.581621+00:00", "stage": "shard_complete", "role": "test", "completed": 28, "total": 40, "shard": "f104_m3075"}
+{"time_utc": "2026-10-28T01:52:22.539557+00:00", "stage": "shard_complete", "role": "test", "completed": 29, "total": 40, "shard": "f104_m3100"}
+{"time_utc": "2026-10-28T01:52:32.062539+00:00", "stage": "shard_complete", "role": "test", "completed": 30, "total": 40, "shard": "f104_m3125"}
+{"time_utc": "2026-10-28T01:52:41.587756+00:00", "stage": "shard_complete", "role": "test", "completed": 31, "total": 40, "shard": "f104_m3150"}
+{"time_utc": "2026-10-28T01:52:51.069891+00:00", "stage": "shard_complete", "role": "test", "completed": 32, "total": 40, "shard": "f104_m3175"}
+{"time_utc": "2026-10-28T01:53:40.202469+00:00", "stage": "shard_complete", "role": "test", "completed": 33, "total": 40, "shard": "f105_m3000"}
+{"time_utc": "2026-10-28T01:53:49.771343+00:00", "stage": "shard_complete", "role": "test", "completed": 34, "total": 40, "shard": "f105_m3025"}
+{"time_utc": "2026-10-28T01:53:59.191570+00:00", "stage": "shard_complete", "role": "test", "completed": 35, "total": 40, "shard": "f105_m3050"}
+{"time_utc": "2026-10-28T01:54:08.704055+00:00", "stage": "shard_complete", "role": "test", "completed": 36, "total": 40, "shard": "f105_m3075"}
+{"time_utc": "2026-10-28T01:54:58.597182+00:00", "stage": "shard_complete", "role": "test", "completed": 37, "total": 40, "shard": "f105_m3100"}
+{"time_utc": "2026-10-28T01:55:08.025267+00:00", "stage": "shard_complete", "role": "test", "completed": 38, "total": 40, "shard": "f105_m3125"}
+{"time_utc": "2026-10-28T01:55:17.457377+00:00", "stage": "shard_complete", "role": "test", "completed": 39, "total": 40, "shard": "f105_m3150"}
+{"time_utc": "2026-10-28T01:55:26.975210+00:00", "stage": "shard_complete", "role": "test", "completed": 40, "total": 40, "shard": "f105_m3175"}
+{"time_utc": "2026-10-28T02:01:50.390470+00:00", "stage": "complete", "calibration_sha256": "796217e99235d11fcfa172bfdd1f772aa826379d8c2d41beca815c1c169d1918", "test_contexts": 10800, "method_contexts": 86400}

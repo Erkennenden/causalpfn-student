@@ -1,0 +1,23 @@
+{
+  "method": "oracle_true_basis_known_prior_noise",
+  "simulation_only": true,
+  "knows": [
+    "true hidden basis h",
+    "coefficient prior distribution",
+    "noise variance"
+  ],
+  "fit_inputs": "factual design restricted to observed_indices and outcomes_observed only",
+  "never_fit_with": [
+    "true coefficients",
+    "true mu/ITE/ATE",
+    "unobserved outcomes"
+  ],
+  "source_execution_sha256": "34c24791cb48dd857e8ddb85835f10600f710095d32fb29f0ba4ab486d82e4e8",
+  "script_sha256": "29a9eaea9d056984817a7ada92baf12c2445c182a9ee2fd5a95a08025e1cc43c",
+  "contexts": 1728,
+  "truth_checked_mechanisms": 48,
+  "nominal_interval_level": 0.95,
+  "elapsed_seconds": 140.69879930000752,
+  "no_J_or_baseline_parameters_modified": true,
+  "limitation": "Diagnostic oracle, not a deployable method or a final team-approved oracle. Conditional coverage for each fixed mechanism is not guaranteed."
+}

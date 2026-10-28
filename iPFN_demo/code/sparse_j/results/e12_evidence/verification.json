@@ -1,0 +1,23 @@
+{
+  "tests_passed": 39,
+  "pytest_seconds": 95.2,
+  "original_v1_implementation_hashes_unchanged": true,
+  "frozen_asset_hashes_match": true,
+  "replication_mechanisms": 100,
+  "replication_contexts": 300,
+  "replication_failures": 0,
+  "replication_graphs_connected_and_exact_degree": true,
+  "truth_enumeration_max_error": 6.661338147750939e-16,
+  "original_model_or_interval_parameters_changed": false,
+  "calibration_performed": false,
+  "original_failed_cells_retained": 7,
+  "source_sha256": {
+    "audit_e12_evidence.py": "c96d0d6588b2f170e332e037c22d0e7d3eae900b70ff99847fcc856ab8a4294b",
+    "diagnose_e12_oracle.py": "630d11b86b630c9ee9604273d9bde2a7c1d59d7df5b1e8befd5912548c663c97",
+    "diagnose_e12_shrinkage.py": "12cae1c80713fb487e3f2b512e5a67af8a86c459f2ecf580a3e96a7470c58259",
+    "verify_e12_new_mechanisms.py": "0c67b064c9ac006eddf69407a0a4cf7e56cd5d73d5aeec3c14a0a2189983cd78",
+    "verify_walkthrough.py": "2e21b615b0ab835001bc43167a466d95f6a4338ce4eb495e0eaf156712310fd0",
+    "report_e12_evidence.py": "c701164d9f0098fb2ed16a997b189d3d55fc3b92353c4ff68744de0be8146eff",
+    "tests/test_evidence_audit.py": "633301246d7291d319e79eed0817cc3a3ff7a9521ceeadacd24b763f61b45748"
+  }
+}

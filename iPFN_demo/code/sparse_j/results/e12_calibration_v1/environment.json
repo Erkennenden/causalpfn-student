@@ -1,0 +1,15 @@
+{
+  "python": "3.12.14",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "versions": {
+    "numpy": "2.1.3",
+    "scipy": "1.15.3",
+    "torch": "2.8.0",
+    "networkx": "3.4.2",
+    "matplotlib": "3.10.0",
+    "pytest": "9.1.1",
+    "threadpoolctl": "3.5.0"
+  },
+  "git_base": "b3c008c3cf178b929681afd6be803a132eee5434",
+  "implementation_state": "Uncommitted; awaiting review"
+}

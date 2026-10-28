@@ -14,6 +14,12 @@ class Setting:
     representation: str = "shared_nonlinear"
 
 
+@dataclass(frozen=True)
+class ConfigurationSetting(Setting):
+    # A subclass preserves the original Setting fields and positional interface.
+    degree_spread: int = 0
+
+
 SETTINGS = (
     Setting("shared_ws20_k4_noise1", 20, "ws", 4, 1.),
     Setting("shared_ws20_k4_noise2", 20, "ws", 4, 2.),
@@ -23,6 +29,14 @@ SETTINGS = (
     Setting("shared_sbm40_degree4_noise1", 40, "sbm", 4, 1.),
     Setting("unshared_ws40_k4_noise1", 40, "ws", 4, 1., "unshared_nonlinear"),
     Setting("linear_ws80_k8_noise1", 80, "ws", 8, 1., "shared_linear"),
+)
+
+# Append-only registry: original base_setting_id 0..7 must never move.
+CONFIGURATION_BASE_IDS = tuple(range(8, 14))
+SETTINGS += tuple(
+    ConfigurationSetting(f"shared_configuration200_k{k}_spread{s}_noise1",
+                         200, "configuration", k, 1., degree_spread=s)
+    for k in (4, 8) for s in (0, k//4, k//2)
 )
 
 
@@ -43,14 +57,20 @@ def hidden_features(x, projection, representation):
 
 
 def connected_graph(setting, rng):
-    """Ring-backbone WS/ER/SBM graphs, connected without rejection sampling.
+    """Legacy ring-backbone WS/ER/SBM, or the E1.2 fixed-degree variant.
 
     WS retains all nearest-neighbor ring edges, adds ring distances 2..k/2,
     then rewires those added edges with probability .15.  ER/SBM add independent
     non-ring edges with expected total degree k; SBM has within:between ratio4.
     These are explicitly ring-connected graph variants, not textbook draws
     conditioned post hoc on connectivity.
+    Configuration graphs delegate to the separately versioned simple connected
+    generator and have no ring backbone.
     """
+    if setting.graph == "configuration":
+        from pfn_social.configuration_graph import configuration_graph
+        return configuration_graph(setting.n, setting.degree,
+                                   getattr(setting, 'degree_spread', 0), rng)
     n, k = setting.n, setting.degree
     a = np.zeros((n, n), dtype=np.uint8)
     for i in range(n):

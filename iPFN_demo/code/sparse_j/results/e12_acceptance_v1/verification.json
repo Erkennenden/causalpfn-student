@@ -1,0 +1,12 @@
+{
+  "contexts": 1512,
+  "method_contexts": 6048,
+  "graphs": 216,
+  "independent_mechanisms_per_family_condition": 12,
+  "supported_observed_queries_passed": true,
+  "deleted_state11_queries_all_blocked": true,
+  "source_and_frozen_assets_unchanged": true,
+  "oracle_truth_check": true,
+  "target_id_local_proposal": true,
+  "upstream_interface_integrated": false
+}

@@ -1,0 +1,18 @@
+{
+  "source_sha256": {
+    "runs\\e12_replication_v1\\execution.json": "bbc3b24f469a2cd68107179f73fd2e1c1aea955e2990dff0553dfeb6fbaf132e",
+    "runs\\e12_replication_v1\\evaluation\\context_metrics.csv": "f306784f45a72def58994b5ded1b9053a9d7d0d561b50257b8989e568b3d4fb2"
+  },
+  "script_sha256": "c96d0d6588b2f170e332e037c22d0e7d3eae900b70ff99847fcc856ab8a4294b",
+  "original_sources_unchanged": true,
+  "supported_mu_ite_contexts": 300,
+  "context_metric_rows": 3000,
+  "interval_context_effect_rows": 900,
+  "original_ATE_hits_and_errors_match": true,
+  "model_load_seconds": 0.24846870001056232,
+  "timing": "Original receipts; excludes model loading, graph generation, disk IO; method caches/order retained. Unsupported interval timing omitted.",
+  "tasks": "Independent (family, mechanism); repeats nested. SD is across task RMSE/bias, not within-mechanism variance.",
+  "bootstrap": "10000 whole-mechanism resamples, seed 20261028; percentile intervals descriptive, especially unstable for the original 8-mechanism groups.",
+  "support": "Global observed arm counts are not per-node empirical positivity certificates.",
+  "no_calibration_performed": true
+}

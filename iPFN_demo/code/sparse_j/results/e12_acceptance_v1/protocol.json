@@ -1,0 +1,86 @@
+{
+  "registered_utc": "2026-10-28T04:20:32.504616+00:00",
+  "specification": {
+    "name": "e12_acceptance_screening_v1",
+    "families": [
+      100,
+      101,
+      102,
+      103,
+      104,
+      105
+    ],
+    "mechanism_ids": [
+      4000,
+      4001,
+      4002,
+      4003,
+      4004,
+      4005,
+      4006,
+      4007,
+      4008,
+      4009,
+      4010,
+      4011
+    ],
+    "repeats": [
+      0,
+      1,
+      2
+    ],
+    "requested_observed": 50,
+    "conditions": [
+      "reference_n200",
+      "size_n50",
+      "size_n100",
+      "direct_coeff_x2",
+      "spill_main_coeff_x2",
+      "noise_sd2",
+      "drop_observed_11"
+    ],
+    "nodes": [
+      50,
+      100,
+      200
+    ],
+    "nominal_level": 0.95,
+    "target_id": "local-e12-proposal:finite-network-majority-p0.5-mu-v1",
+    "target_status": "POINT is a local simulation request, not an upstream identification decision",
+    "perturbations": {
+      "direct_coeff_x2": "beta[7:11]*2; main direct coefficients only",
+      "spill_main_coeff_x2": "beta[11:15] and beta[19:22] *2; main exposure/neighbor coefficients",
+      "noise_sd2": "noise SD 2 instead of 1; same standard-noise RNG",
+      "drop_observed_11": "Remove state11 from original 50 outcome rows; no replacement; treatment and target unchanged"
+    },
+    "pairing": "At N200, variants reuse graph, X, T, mask and standard noise for each mechanism/repeat.",
+    "methods": [
+      "j",
+      "ht",
+      "kernel-new",
+      "oracle-known-dgp"
+    ],
+    "oracle": "True h, correct condition-specific coefficient prior and noise; fits observed Y only.",
+    "support": "Direct unit-state observations are a conservative diagnostic, not a certified universal empirical_support definition.",
+    "ood": "Shifts relative to E1.2 reference; original training-support membership unknown.",
+    "limitation": "12 independent mechanisms per family/condition; screening, not precise population coverage certification.",
+    "source_sha256": {
+      "run_e12_acceptance.py": "d7ab56786628fcf26e22d3e0613e477d5d7bf8f902965c8676a34f659ab792f5",
+      "e12_acceptance_contract.py": "71fcf39acb7c88da400ccd09c83785c95b34346525a25072ae21e82920d00b16",
+      "diagnose_e12_oracle.py": "630d11b86b630c9ee9604273d9bde2a7c1d59d7df5b1e8befd5912548c663c97",
+      "pfn_social/phase3_hierarchical.py": "3a0e094bf67a0e4bb0fe022a3751be83c2af1833a054390e554105d45cbc5927",
+      "pfn_social/phase5_large_network.py": "fbe2424815e83261cf82223ce5b82e84df8af744fb878725f45f4a006a69301c",
+      "pfn_social/configuration_graph.py": "5847e2a7fc0fd9ead58b25018db92e0406b395e84ade7dd48720d2381d2907f1",
+      "pfn_social/intervals.py": "bbf687eabb5d2df93b34af4ade98175a754fa6668382d742885a7efb9ef9967f"
+    },
+    "frozen_assets": {
+      "models/iPFN_J.pt": "a0dde8e928d7d48c0ef8581b81cf38fecd9525408bff7179b4df7ee761fed7a6",
+      "models/feature_transform.npz": "b261372fea1cb241e4acbd9734eab5b9506f6478e90d90c0f5f3e633b7a3a737",
+      "models/kernel_subspace_prior.npz": "02734745ee96c712da1494ced0960538a5ac4b8eeb31b2dfa70c90ccf5ebe130",
+      "models/kernel_linear_prior.npz": "90e040ecdf4eba9d92e90f98c457dbffc24821498cc0f189c8f77cc52239806c",
+      "models/kernel_components.json": "594aca0221f35e364d012e2067546f0ea4c61bb6cf89db8a87cbdd9f6b19fb3d",
+      "models/kernel_mixture.json": "3e8a76ab443649831824c61e3157be497345c66d9c8548852dcf8d5320da3981",
+      "models/kernel_calibration.pt": "6273c1abb1255a7d8159fbbd6558c56490915e60ebd312c7c36b33c26b064a2e"
+    }
+  }
+}

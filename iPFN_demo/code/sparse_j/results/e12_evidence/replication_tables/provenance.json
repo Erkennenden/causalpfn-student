@@ -1,0 +1,9 @@
+{
+  "context_metrics_sha256": "f306784f45a72def58994b5ded1b9053a9d7d0d561b50257b8989e568b3d4fb2",
+  "observed_budgets": [
+    50
+  ],
+  "metrics": "Equal mechanism weighting; complete mechanisms only; R-1 sample variance.",
+  "coverage": "Covered / valid intervals; failed intervals excluded.",
+  "coverage_including_failures": "Covered / all requested intervals, including failures; unsupported intervals excluded."
+}

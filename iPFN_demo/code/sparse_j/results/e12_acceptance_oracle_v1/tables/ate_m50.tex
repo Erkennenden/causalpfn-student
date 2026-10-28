@@ -1,0 +1,56 @@
+\begin{table}[tb]
+\centering
+\caption{ATE accuracy with 50 observed outcomes.}
+\begingroup\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}l*{9}{r}@{}}
+\toprule
+&\multicolumn{3}{c}{Direct}&\multicolumn{3}{c}{Treated spillover}&\multicolumn{3}{c}{Total}\\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}
+Method&$|\mathrm{Bias}|$&Variance&RMSE&$|\mathrm{Bias}|$&Variance&RMSE&$|\mathrm{Bias}|$&Variance&RMSE\\
+\midrule
+iPFN-J & \cellcolor{blue!17}0.1487 & \cellcolor{blue!7}0.0499 & \cellcolor{blue!17}0.2616 & \cellcolor{blue!11}0.1268 & \cellcolor{blue!24}\textbf{0.0122} & \cellcolor{blue!17}0.1832 & \cellcolor{blue!11}0.1892 & \cellcolor{blue!17}0.0699 & \cellcolor{blue!17}0.3188 \\
+HT & \cellcolor{blue!1}0.2384 & \cellcolor{blue!1}0.2869 & \cellcolor{blue!1}0.5352 & \cellcolor{blue!2}0.3831 & \cellcolor{blue!2}0.7959 & \cellcolor{blue!2}0.8897 & \cellcolor{blue!2}0.3691 & \cellcolor{blue!2}0.7058 & \cellcolor{blue!2}0.8396 \\
+Hajek & \cellcolor{blue!1}0.1876 & \cellcolor{blue!1}0.1794 & \cellcolor{blue!1}0.4204 & 0.2539$^{\dagger}$ & 0.2900$^{\dagger}$ & 0.5446$^{\dagger}$ & 0.2501$^{\dagger}$ & 0.2829$^{\dagger}$ & 0.5372$^{\dagger}$ \\
+F-z2 & \cellcolor{blue!2}0.1856 & \cellcolor{blue!2}0.1666 & \cellcolor{blue!2}0.4092 & 0.2410$^{\dagger}$ & 0.2493$^{\dagger}$ & 0.5071$^{\dagger}$ & 0.2369$^{\dagger}$ & 0.2478$^{\dagger}$ & 0.5040$^{\dagger}$ \\
+Lin-z2 & 0.1946$^{\dagger}$ & 0.1962$^{\dagger}$ & 0.4408$^{\dagger}$ & 0.3612$^{\dagger}$ & 4.0629$^{\dagger}$ & 2.0320$^{\dagger}$ & 0.3560$^{\dagger}$ & 4.0681$^{\dagger}$ & 2.0295$^{\dagger}$ \\
+Kernel prior & \cellcolor{blue!4}0.1563 & \cellcolor{blue!24}\textbf{0.0482} & \cellcolor{blue!4}0.2658 & \cellcolor{blue!4}0.1292 & \cellcolor{blue!7}0.0190 & \cellcolor{blue!4}0.1992 & \cellcolor{blue!4}0.1918 & \cellcolor{blue!7}0.0744 & \cellcolor{blue!4}0.3279 \\
+Calibrated kernel & \cellcolor{blue!7}0.1527 & \cellcolor{blue!11}0.0495 & \cellcolor{blue!7}0.2642 & \cellcolor{blue!24}\textbf{0.1225} & \cellcolor{blue!4}0.0205 & \cellcolor{blue!7}0.1927 & \cellcolor{blue!24}\textbf{0.1830} & \cellcolor{blue!4}0.0788 & \cellcolor{blue!7}0.3220 \\
+j-calibrated & \cellcolor{blue!17}0.1487 & \cellcolor{blue!7}0.0499 & \cellcolor{blue!17}0.2616 & \cellcolor{blue!11}0.1268 & \cellcolor{blue!24}\textbf{0.0122} & \cellcolor{blue!17}0.1832 & \cellcolor{blue!11}0.1892 & \cellcolor{blue!17}0.0699 & \cellcolor{blue!17}0.3188 \\
+oracle-known-dgp & \cellcolor{blue!24}\textbf{0.1464} & \cellcolor{blue!17}0.0493 & \cellcolor{blue!24}\textbf{0.2588} & \cellcolor{blue!17}0.1226 & \cellcolor{blue!11}0.0130 & \cellcolor{blue!24}\textbf{0.1796} & \cellcolor{blue!17}0.1834 & \cellcolor{blue!24}\textbf{0.0698} & \cellcolor{blue!24}\textbf{0.3140} \\
+\bottomrule
+\end{tabular*}\endgroup
+\vspace{3pt}
+\begin{minipage}{\linewidth}\scriptsize
+Bias is mean absolute conditional bias; variance uses the $R-1$ divisor within each mechanism.
+Mechanisms are equally weighted; RMSE takes the root after pooling squared errors.
+$^{\dagger}$Incomplete support: values condition on mechanisms with all recorded repeats valid and are unranked.
+-- indicates no complete supported mechanism, or fewer than two repeats for variance.
+Numeric support counts and interval coverage are provided in the accompanying CSV.
+\end{minipage}
+\end{table}
+
+\begin{table}[tb]
+\centering
+\caption{ATE interval coverage at nominal 95\%, with 50 observed outcomes.}
+\begin{tabular}{lrrr}
+\toprule
+Method & Direct & Treated spillover & Total \\
+\midrule
+iPFN-J & 96.31\% & 94.89\% & 96.42\% \\
+HT & -- & -- & -- \\
+Hajek & -- & -- & -- \\
+F-z2 & -- & -- & -- \\
+Lin-z2 & -- & -- & -- \\
+Kernel prior & -- & -- & -- \\
+Calibrated kernel & -- & -- & -- \\
+j-calibrated & 96.31\% & 95.42\% & 96.42\% \\
+oracle-known-dgp & 94.75\% & 94.83\% & 95.17\% \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\begin{minipage}{\linewidth}\scriptsize
+Coverage includes failed requested intervals in the denominator. -- means intervals are unsupported.
+These are marginal posterior intervals; nominal coverage is not a frequentist guarantee.
+\end{minipage}
+\end{table}

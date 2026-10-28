@@ -1,0 +1,22 @@
+{
+  "original_sha256": "3b26456968d7dfe0b45d13830cfa05c4ccf9721bac878daf02a8d0837f4bcbf0",
+  "original_notebook": "C:\\Users\\21322\\.codex\\.chatgpt-projects\\g-p-6ac8ac2e2c848191ac7478805ca408b8\\checkout\\causalpfn-student-b3c008c3cf178b929681afd6be803a132eee5434\\iPFN_demo\\notebooks\\current_ipfn_student_walkthrough.ipynb",
+  "unchanged_cell_sources": true,
+  "executed_code_cells": 16,
+  "errors": 0,
+  "rendered_png_outputs": 8,
+  "elapsed_seconds": 71.92840050000814,
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "executable": "C:\\Users\\21322\\.codex\\.chatgpt-projects\\g-p-6ac8ac2e2c848191ac7478805ca408b8\\.venv\\Scripts\\python.exe",
+  "versions": {
+    "numpy": "2.1.3",
+    "pandas": "2.3.3",
+    "torch": "2.8.0",
+    "scipy": "1.15.3",
+    "networkx": "3.4.2",
+    "ipykernel": "7.4.0",
+    "nbclient": "0.11.0",
+    "nbformat": "5.11.1"
+  },
+  "checks": "Original assertions executed, including DGP formula/truth, ITE/ATE contrasts, baseline J agreement, small-graph ensemble, and two CLI comparisons."
+}

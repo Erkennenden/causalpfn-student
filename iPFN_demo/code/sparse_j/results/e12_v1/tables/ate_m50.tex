@@ -1,0 +1,52 @@
+\begin{table}[tb]
+\centering
+\caption{ATE accuracy with 50 observed outcomes.}
+\begingroup\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}l*{9}{r}@{}}
+\toprule
+&\multicolumn{3}{c}{Direct}&\multicolumn{3}{c}{Treated spillover}&\multicolumn{3}{c}{Total}\\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}
+Method&$|\mathrm{Bias}|$&Variance&RMSE&$|\mathrm{Bias}|$&Variance&RMSE&$|\mathrm{Bias}|$&Variance&RMSE\\
+\midrule
+iPFN-J & \cellcolor{blue!7}0.1178 & \cellcolor{blue!11}0.0460 & \cellcolor{blue!24}\textbf{0.2499} & \cellcolor{blue!11}0.1239 & \cellcolor{blue!24}\textbf{0.0116} & \cellcolor{blue!24}\textbf{0.1849} & \cellcolor{blue!17}0.1434 & \cellcolor{blue!24}\textbf{0.0666} & \cellcolor{blue!24}\textbf{0.3097} \\
+HT & \cellcolor{blue!1}0.1270 & \cellcolor{blue!1}0.2804 & \cellcolor{blue!1}0.5351 & \cellcolor{blue!7}0.2029 & \cellcolor{blue!7}0.9727 & \cellcolor{blue!7}0.9827 & \cellcolor{blue!7}0.1954 & \cellcolor{blue!7}0.8527 & \cellcolor{blue!7}0.9169 \\
+Hajek & \cellcolor{blue!11}0.0994 & \cellcolor{blue!4}0.1574 & \cellcolor{blue!4}0.4014 & 0.1192$^{\dagger}$ & 0.2887$^{\dagger}$ & 0.5362$^{\dagger}$ & 0.1287$^{\dagger}$ & 0.2744$^{\dagger}$ & 0.5238$^{\dagger}$ \\
+F-z2 & \cellcolor{blue!24}\textbf{0.0913} & \cellcolor{blue!7}0.1464 & \cellcolor{blue!7}0.3843 & 0.1131$^{\dagger}$ & 0.2421$^{\dagger}$ & 0.4907$^{\dagger}$ & 0.1228$^{\dagger}$ & 0.2406$^{\dagger}$ & 0.4912$^{\dagger}$ \\
+Lin-z2 & \cellcolor{blue!17}0.0925 & \cellcolor{blue!2}0.1636 & \cellcolor{blue!2}0.4050 & 0.1476$^{\dagger}$ & 0.3665$^{\dagger}$ & 0.6067$^{\dagger}$ & 0.1450$^{\dagger}$ & 0.3905$^{\dagger}$ & 0.6249$^{\dagger}$ \\
+Kernel prior & \cellcolor{blue!2}0.1257 & \cellcolor{blue!24}\textbf{0.0433} & \cellcolor{blue!11}0.2521 & \cellcolor{blue!17}0.1112 & \cellcolor{blue!17}0.0198 & \cellcolor{blue!11}0.1957 & \cellcolor{blue!11}0.1510 & \cellcolor{blue!17}0.0735 & \cellcolor{blue!11}0.3192 \\
+Calibrated kernel & \cellcolor{blue!4}0.1194 & \cellcolor{blue!17}0.0455 & \cellcolor{blue!17}0.2521 & \cellcolor{blue!24}\textbf{0.1073} & \cellcolor{blue!11}0.0203 & \cellcolor{blue!17}0.1922 & \cellcolor{blue!24}\textbf{0.1321} & \cellcolor{blue!11}0.0761 & \cellcolor{blue!17}0.3125 \\
+\bottomrule
+\end{tabular*}\endgroup
+\vspace{3pt}
+\begin{minipage}{\linewidth}\scriptsize
+Bias is mean absolute conditional bias; variance uses the $R-1$ divisor within each mechanism.
+Mechanisms are equally weighted; RMSE takes the root after pooling squared errors.
+$^{\dagger}$Incomplete support: values condition on mechanisms with all recorded repeats valid and are unranked.
+-- indicates no complete supported mechanism, or fewer than two repeats for variance.
+Numeric support counts and interval coverage are provided in the accompanying CSV.
+\end{minipage}
+\end{table}
+
+\begin{table}[tb]
+\centering
+\caption{ATE interval coverage at nominal 95\%, with 50 observed outcomes.}
+\begin{tabular}{lrrr}
+\toprule
+Method & Direct & Treated spillover & Total \\
+\midrule
+iPFN-J & 96.77\% & 94.90\% & 96.25\% \\
+HT & -- & -- & -- \\
+Hajek & -- & -- & -- \\
+F-z2 & -- & -- & -- \\
+Lin-z2 & -- & -- & -- \\
+Kernel prior & -- & -- & -- \\
+Calibrated kernel & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\begin{minipage}{\linewidth}\scriptsize
+Coverage includes failed requested intervals in the denominator. -- means intervals are unsupported.
+These are marginal posterior intervals; nominal coverage is not a frequentist guarantee.
+\end{minipage}
+\end{table}

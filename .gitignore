@@ -1,1 +1,12 @@
 .DS_Store
+__pycache__/
+.pytest_cache/
+iPFN_demo/code/sparse_j/runs/
+iPFN_demo/code/sparse_j/results/e12_evidence/notebook/runtime/
+iPFN_demo/code/sparse_j/results/e12_evidence/oracle/predictions/
+iPFN_demo/code/sparse_j/results/e12_evidence/metrics/context_point_metrics.csv
+iPFN_demo/code/sparse_j/results/e12_evidence/replication_metrics_incomplete/
+# Large raw/intermediate records kept local; reproducible from ignored runs/
+iPFN_demo/code/sparse_j/results/e12_calibration_v1/evaluation_records.zip
+iPFN_demo/code/sparse_j/results/e12_calibration_v1/task_metrics.csv
+iPFN_demo/code/sparse_j/results/e12_evidence/evidence_records.zip

@@ -1,0 +1,71 @@
+CELL 3
+<IPython.core.display.HTML object>
+CELL 6
+<IPython.core.display.HTML object>
+CELL 6
+本篇任务：f0_m0_r0_observed50；节点=200；观测结果=50；特征维数=20
+实际边数=400；度数范围=3—6；连通分量=1
+
+CELL 7
+<Figure size 1680x456 with 3 Axes>
+CELL 10
+<IPython.core.display.HTML object>
+CELL 10
+<Figure size 1320x444 with 2 Axes>
+CELL 13
+<IPython.core.display.HTML object>
+CELL 13
+<IPython.core.display.HTML object>
+CELL 15
+<IPython.core.display.HTML object>
+CELL 15
+<Figure size 960x396 with 1 Axes>
+CELL 15
+平均暴露： {'S=0': 0.36363636363636365, 'S=1': 0.8}
+
+CELL 17
+<IPython.core.display.HTML object>
+CELL 17
+公式与生成器真值一致。
+
+CELL 19
+<IPython.core.display.HTML object>
+CELL 19
+<IPython.core.display.HTML object>
+CELL 22
+路线： frozen J
+模型配置： Phase5Config(architecture='J', raw_p=20, hidden=64)
+四状态输出形状： (200, 4)
+本次在线调用秒数（仅作运行诊断）： 0.092538
+冻结权重 SHA256： a0dde8e928d7d48c0ef8581b81cf38fecd9525408bff7179b4df7ee761fed7a6
+
+CELL 22
+<IPython.core.display.HTML object>
+CELL 23
+<Figure size 888x336 with 2 Axes>
+CELL 26
+<IPython.core.display.HTML object>
+CELL 26
+<Figure size 960x432 with 1 Axes>
+CELL 28
+<IPython.core.display.HTML object>
+CELL 28
+<Figure size 1560x444 with 3 Axes>
+CELL 30
+<IPython.core.display.HTML object>
+CELL 30
+<Figure size 1200x432 with 2 Axes>
+CELL 32
+<IPython.core.display.HTML object>
+CELL 35
+<IPython.core.display.HTML object>
+CELL 35
+<Figure size 720x444 with 1 Axes>
+CELL 38
+Current iPFN: N=200 m=50; route=frozen J
+
+CELL 38
+Current iPFN: N=10 m=10; route=regional calibrated ensemble
+
+CELL 38
+<IPython.core.display.HTML object>

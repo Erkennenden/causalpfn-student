@@ -1,0 +1,9 @@
+{
+  "command": "python -m pytest -q",
+  "passed": 52,
+  "failed": 0,
+  "elapsed_seconds": 39.22,
+  "new_calibration_tests": 13,
+  "original_v1_implementation_hashes_unchanged": true,
+  "commit_push_pr_created": false
+}

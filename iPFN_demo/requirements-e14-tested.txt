@@ -1,0 +1,12 @@
+# Exact tested versions (torch tested with the CPU wheel).
+# For CPU: pip install torch==2.8.0 --index-url https://download.pytorch.org/whl/cpu
+numpy==2.3.5
+torch==2.8.0
+scipy==1.17.0
+networkx==3.4.2
+torch-geometric==2.6.1
+threadpoolctl==3.6.0
+matplotlib==3.10.8
+pandas==2.2.3
+nbformat==5.11.1
+ipykernel==7.4.0

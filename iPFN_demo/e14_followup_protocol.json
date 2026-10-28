@@ -1,0 +1,12 @@
+{
+  "status": "Fixed before supplemental outcomes; restored unchanged after runtime reset",
+  "original": "Preserve results/e14_rgg; do not pool initial and replication samples",
+  "replication": {"family": 9, "radius": 0.24, "distribution": "uniform", "mechanisms": 100, "split_seed": 2026102714, "primary_endpoint": "J treated-spillover coverage at M=50"},
+  "degree_matched": {"families": [13,14], "independent_pairs": 50, "split_seed": 2026102724, "common_dgp_family": 90, "n": 200, "edges": 1800, "mean_degree": 18, "radius": "midpoint between coordinate distance ranks 1800 and 1801; reject entire cloud if isolated nodes", "shared_within_pair": ["X","beta","T","noise","outcome masks"], "interpretation": "adaptive-radius fixed-edge-count geometry; other graph statistics not held fixed"},
+  "repeats": 12,
+  "observed_outcomes": [20,50,100],
+  "methods": ["j","ht","hajek","kernel-old","kernel-new"],
+  "bootstrap": {"replicates":10000,"seed":2026102734,"interval":"marginal 95% percentile, exploratory, no multiple comparison correction","unit":"whole mechanisms stratified by scenario; whole pairs for spatial contrast","contrast":"RMSE(J)-RMSE(baseline), RMSE(clustered)-RMSE(uniform)","missing_support":"shared valid contexts; retain counts and zero-support clusters"},
+  "original_baselines": "retain all nine baseline methods in paired analysis",
+  "model_changes": "none; no retraining, no recalibration, no outcome-dependent stopping"
+}

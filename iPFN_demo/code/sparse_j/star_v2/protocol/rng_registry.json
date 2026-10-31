@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "protocol_id": "e1_5_star_v2",
+  "root_seed": 20261030,
+  "protocol_code": 2026103001,
+  "rng_derivation": "SeedSequence",
+  "bit_generator": "PCG64",
+  "entropy_fields": [
+    "root_seed",
+    "protocol_code",
+    "cohort_code",
+    "mechanism_id",
+    "channel_code",
+    "pair_repeat_id"
+  ],
+  "channels": [
+    {
+      "name": "population",
+      "code": 1,
+      "scope": "mechanism"
+    },
+    {
+      "name": "x",
+      "code": 2,
+      "scope": "mechanism"
+    },
+    {
+      "name": "coefficient",
+      "code": 3,
+      "scope": "mechanism"
+    },
+    {
+      "name": "leaf_assignment",
+      "code": 4,
+      "scope": "pair"
+    },
+    {
+      "name": "noise",
+      "code": 5,
+      "scope": "pair"
+    },
+    {
+      "name": "observation_index",
+      "code": 6,
+      "scope": "pair"
+    },
+    {
+      "name": "bootstrap",
+      "code": 7,
+      "scope": "global_evaluator"
+    }
+  ],
+  "bootstrap_identity": [
+    20261030,
+    2026103001,
+    2,
+    0,
+    7,
+    0
+  ]
+}

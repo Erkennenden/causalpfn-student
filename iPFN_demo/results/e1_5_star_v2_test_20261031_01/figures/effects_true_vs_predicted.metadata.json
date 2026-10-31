@@ -1,0 +1,29 @@
+{
+  "confidence_intervals": "NOT_REQUESTED",
+  "displayed_points": 32400,
+  "effects": [
+    "Direct",
+    "Spillover",
+    "Total"
+  ],
+  "markers": {
+    "0": "circle",
+    "1": "triangle"
+  },
+  "methods": [
+    "j",
+    "kernel-old",
+    "kernel-new"
+  ],
+  "original_records": 10800,
+  "panels": 9,
+  "points_per_panel": 3600,
+  "presentation_only": true,
+  "scientific_performance_pass_claimed": false,
+  "selection": "All 1200 contexts per model/effect; no sampling, fitting or ordinal ranking",
+  "source_json": "evaluation/center_leaf_metrics.json",
+  "source_run_id": "e1_5_star_v2_test_20261031_01",
+  "source_snapshot_id": "99c8b9c9a1e75a9fac4d86d491aaf4505a47cdc5518e11525fc3092e1f73113d",
+  "source_table": "sources/effects_true_vs_predicted.csv",
+  "statistical_unit": "mechanism"
+}

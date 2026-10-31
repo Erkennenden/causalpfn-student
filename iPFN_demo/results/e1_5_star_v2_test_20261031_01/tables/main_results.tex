@@ -1,0 +1,80 @@
+% Requires booktabs; presentation only, no ordinal ranking.
+\begin{table}[tb]
+\centering
+\scriptsize
+\caption{Pair ATE accuracy: Direct. $N=200$, $M=50$.}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Method & RMSE & Signed Bias & Absolute Bias & ACB & Within variance & Between variability & Valid/requested \\
+\midrule
+State mean & 0.3135 & 0.0091 & 0.0091 & 0.1444 & 0.0994 & 0.0321 & 600/600 \\
+HT & 0.3758 & 0.0169 & 0.0169 & 0.1589 & 0.1506 & 0.0407 & 600/600 \\
+F-z2 & 0.3103 & 0.0082 & 0.0082 & 0.1449 & 0.0957 & 0.0326 & 600/600 \\
+Lin-z2 & 0.3076 & 0.0115 & 0.0115 & 0.1429 & 0.0945 & 0.0316 & 600/600 \\
+Kernel prior & 0.3112 & -0.0664 & 0.0664 & 0.2272 & 0.0255 & 0.0758 & 600/600 \\
+Calibrated kernel & 0.2959 & -0.0061 & 0.0061 & 0.2114 & 0.0319 & 0.0666 & 600/600 \\
+iPFN-J & 0.2833 & 0.0027 & 0.0027 & 0.1917 & 0.0350 & 0.0572 & 600/600 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\begin{minipage}{\linewidth}\scriptsize
+200 independent mechanisms; 3 nested pair repeats each. RMSE and bias have outcome units; both variance columns have squared outcome units. Absolute Bias is the absolute overall signed bias; ACB is mean absolute mechanism bias. Within variance uses R-1; between variability uses K-1. All entries are RANKABLE qualifications, without ordinal ranks or rank shading. Point estimates only; confidence intervals were not requested.
+\end{minipage}\end{table}
+\begin{table}[tb]
+\centering
+\scriptsize
+\caption{Pair ATE accuracy: Spillover. $N=200$, $M=50$.}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Method & RMSE & Signed Bias & Absolute Bias & ACB & Within variance & Between variability & Valid/requested \\
+\midrule
+State mean & 0.0738 & -0.0033 & 0.0033 & 0.0308 & 0.0053 & 0.0019 & 600/600 \\
+HT & 0.1554 & 0.0016 & 0.0016 & 0.0626 & 0.0244 & 0.0079 & 600/600 \\
+F-z2 & 0.0725 & -0.0037 & 0.0037 & 0.0304 & 0.0050 & 0.0019 & 600/600 \\
+Lin-z2 & 0.0501 & -0.0019 & 0.0019 & 0.0216 & 0.0025 & 0.0008 & 600/600 \\
+Kernel prior & 0.6446 & -0.1578 & 0.1578 & 0.5090 & 0.0136 & 0.3835 & 600/600 \\
+Calibrated kernel & 0.6316 & 0.0494 & 0.0494 & 0.5102 & 0.0122 & 0.3903 & 600/600 \\
+iPFN-J & 0.6210 & 0.0489 & 0.0489 & 0.4999 & 0.0086 & 0.3794 & 600/600 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\begin{minipage}{\linewidth}\scriptsize
+200 independent mechanisms; 3 nested pair repeats each. RMSE and bias have outcome units; both variance columns have squared outcome units. Absolute Bias is the absolute overall signed bias; ACB is mean absolute mechanism bias. Within variance uses R-1; between variability uses K-1. All entries are RANKABLE qualifications, without ordinal ranks or rank shading. Point estimates only; confidence intervals were not requested.
+\end{minipage}\end{table}
+\begin{table}[tb]
+\centering
+\scriptsize
+\caption{Pair ATE accuracy: Total. $N=200$, $M=50$.}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Method & RMSE & Signed Bias & Absolute Bias & ACB & Within variance & Between variability & Valid/requested \\
+\midrule
+State mean & 0.3265 & 0.0058 & 0.0058 & 0.1515 & 0.1060 & 0.0361 & 600/600 \\
+HT & 0.4421 & 0.0185 & 0.0185 & 0.1883 & 0.2061 & 0.0580 & 600/600 \\
+F-z2 & 0.3156 & 0.0045 & 0.0045 & 0.1467 & 0.0978 & 0.0345 & 600/600 \\
+Lin-z2 & 0.3139 & 0.0096 & 0.0096 & 0.1436 & 0.0992 & 0.0325 & 600/600 \\
+Kernel prior & 0.7154 & -0.2242 & 0.2242 & 0.5343 & 0.0585 & 0.4246 & 600/600 \\
+Calibrated kernel & 0.6788 & 0.0433 & 0.0433 & 0.5251 & 0.0700 & 0.4143 & 600/600 \\
+iPFN-J & 0.6585 & 0.0517 & 0.0517 & 0.5104 & 0.0675 & 0.3879 & 600/600 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\begin{minipage}{\linewidth}\scriptsize
+200 independent mechanisms; 3 nested pair repeats each. RMSE and bias have outcome units; both variance columns have squared outcome units. Absolute Bias is the absolute overall signed bias; ACB is mean absolute mechanism bias. Within variance uses R-1; between variability uses K-1. All entries are RANKABLE qualifications, without ordinal ranks or rank shading. Point estimates only; confidence intervals were not requested.
+\end{minipage}\end{table}
+\begin{table}[tb]\centering\scriptsize
+\caption{J nominal 95\% posterior interval summary.}
+\begin{tabular}{llrrrr}
+\toprule
+Scope & Effect & Coverage (\%) & Coverage 95\% CI (\%) & Mean width & Valid/requested \\
+\midrule
+overall & Direct & 97.17 & [96.00, 98.25] & 1.3581 & 1200/1200 \\
+overall & Spillover & 93.50 & [90.58, 96.00] & 2.5318 & 1200/1200 \\
+overall & Total & 95.08 & [92.83, 97.00] & 2.8387 & 1200/1200 \\
+center\_t=0 & Direct & 96.83 & [95.33, 98.17] & 1.0789 & 600/600 \\
+center\_t=0 & Spillover & 95.67 & [92.83, 98.00] & 2.9730 & 600/600 \\
+center\_t=0 & Total & 95.17 & [92.67, 97.33] & 3.3058 & 600/600 \\
+center\_t=1 & Direct & 97.50 & [95.67, 99.00] & 1.6373 & 600/600 \\
+center\_t=1 & Spillover & 91.33 & [87.50, 94.67] & 2.0907 & 600/600 \\
+center\_t=1 & Total & 95.00 & [92.00, 97.50] & 2.3717 & 600/600 \\
+\bottomrule\end{tabular}
+\par\smallskip\begin{minipage}{\linewidth}\scriptsize
+Coverage CIs are existing pointwise 95\% mechanism-block Bootstrap intervals, without multiplicity adjustment. The 90\% target applies to overall point coverage only; center strata are diagnostic. Failed intervals remain in coverage denominators. Mean widths condition on valid context posterior intervals and have no confidence interval.
+\end{minipage}\end{table}

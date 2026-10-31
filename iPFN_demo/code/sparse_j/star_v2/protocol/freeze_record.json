@@ -1,0 +1,25 @@
+{
+    "schema_version":  "1.0",
+    "protocol_id":  "e1_5_star_v2",
+    "protocol_version":  "Candidate v0.3.2",
+    "protocol_status":  "FROZEN",
+    "freeze_date":  "2026-10-30",
+    "source_commit":  "fbc0d9e09789248139ff9a201b8f89bf71ae57cf",
+    "protocol_file":  "iPFN_demo/code/sparse_j/star_v2/protocol/E1_5_Star_v2_Candidate_v0.3.2_FROZEN.md",
+    "protocol_sha256":  "fa99e65d3082d90a8675354fc4a478051b0fe3b2980d5bf78c59f29ab279209b",
+    "protocol_file_bytes":  110862,
+    "pre_freeze_source_sha256":  "8b209fed4602a8310fc16c704f688fc1fddcd2e19a0fab19706b9c25b22c52e1",
+    "hash_algorithms":  {
+                            "protocol_sha256":  "SHA256",
+                            "pre_freeze_source_sha256":  "SHA256",
+                            "source_commit":  "Git commit object ID (SHA-1), not a file SHA256"
+                        },
+    "root_seed":  20261030,
+    "protocol_code":  2026103001,
+    "rng_derivation":  "SeedSequence",
+    "bit_generator":  "PCG64",
+    "pilot_cohort_code":  1,
+    "test_cohort_code":  2,
+    "model_provenance_status":  "PROVENANCE_PARTIALLY_DOCUMENTED",
+    "model_independence_status":  "INDEPENDENCE_UNVERIFIED"
+}

@@ -1,0 +1,47 @@
+{
+  "derivation": "Stage 8.5-A Test Runner and independent engineering acceptance; infrastructure only",
+  "existing_core_files_changed": false,
+  "gate_inheritance": "FORBIDDEN; Stage 8.4 Gate pins parent only",
+  "parent_archive_sha256": "c2b153b6fa1e95a1405194e1acd0737e42a9697fdbec0c0527355e652b59fc18",
+  "parent_manifest_sha256": "65a53c06fd52cd79da82c8300f5dcbcc6a956df699ff69a9fecefc9738fa9dbf",
+  "parent_snapshot_id": "2ea9a449f061e02c3e2a851229ac7eda9a0290a7cc19af3d4d4f7466ff595d42",
+  "previous_lineage": {
+    "derivation": "Stage 8.3-C Registry index optimization",
+    "parent_archive_sha256": "9fc5e682d92d28d40a91763df4e328dbbb5363a785d3f090802baf0c9a71ea5e",
+    "parent_manifest_sha256": "81412501ced14f034382cf361ad36e4ac07faa534eb5b8fe9d35c37e1a046aba",
+    "parent_snapshot_id": "efe604640c8c7cd3e489f1290626ff2a3307b18ce66bdf729fa35ee5327612bb",
+    "previous_lineage": {
+      "derivation": "Stage 8.3-A incremental Attempt validation optimization",
+      "fixed_scientific_protocol_sha256": "fa99e65d3082d90a8675354fc4a478051b0fe3b2980d5bf78c59f29ab279209b",
+      "parent_archive_sha256": "90987c7a37618188504b483a37bfae5b2b5cffbabee832912ca9db2c6d9440cc",
+      "parent_manifest_schema_unchanged": true,
+      "parent_manifest_sha256": "dadfc350987f7d305cc76f788ba01a081f6c62a7328c54452def189d2521cb76",
+      "parent_snapshot_id": "480fd8015f56fbe6f80641b17dd3d009e8837b2997c8befc79706adad3ab0eb3",
+      "schema_version": 1,
+      "scope": [
+        "Run-local execution-record Attempt-key index",
+        "Single-writer append validation",
+        "Direct Mock tests for uniqueness, corruption, partial writes and final audit"
+      ]
+    },
+    "previous_lineage_sha256": "c5fdf419f3f6c5cbf3e7cd07cb528df13bd72a78689391bddb4f47ae50798ff9",
+    "schema_version": 1,
+    "scientific_protocol_sha256": "fa99e65d3082d90a8675354fc4a478051b0fe3b2980d5bf78c59f29ab279209b",
+    "scope": [
+      "Registry memory indexes and explicit audit boundaries",
+      "Data Artifact and Runner indexed lookups",
+      "Direct Mock tests"
+    ],
+    "serialization_and_seal_schema_unchanged": true,
+    "single_writer": "Registry process/thread affinity is enforced; cross-process shared-output writing is unsupported"
+  },
+  "previous_lineage_sha256": "5ca628caca3dcd487893bfab679be24dd5856a0f86b5175774efad738090991e",
+  "schema_version": 1,
+  "scientific_protocol_sha256": "fa99e65d3082d90a8675354fc4a478051b0fe3b2980d5bf78c59f29ab279209b",
+  "scope": [
+    "New Test runner",
+    "Independent Test engineering validator",
+    "Test-scoped Identification receipt helper",
+    "Direct deterministic Mock tests"
+  ]
+}

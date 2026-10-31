@@ -1,0 +1,31 @@
+# Normalize only the approved E1.5 Star v2 source and documentation paths.
+iPFN_demo/code/sparse_j/*.py text eol=lf diff
+iPFN_demo/code/sparse_j/pfn_social/**/*.py text eol=lf diff
+iPFN_demo/code/sparse_j/scripts/**/*.py text eol=lf diff
+iPFN_demo/code/sparse_j/star_v2/**/*.py text eol=lf diff
+iPFN_demo/code/sparse_j/tests/**/*.py text eol=lf diff
+iPFN_demo/code/sparse_j/requirements.txt text eol=lf diff
+iPFN_demo/code/sparse_j/experiment.json text eol=lf diff
+iPFN_demo/code/sparse_j/regional_selected.json text eol=lf diff
+iPFN_demo/code/sparse_j/star_v2/**/*.md text eol=lf diff
+iPFN_demo/code/sparse_j/star_v2/protocol/*.json text eol=lf diff
+iPFN_demo/E1_5_STAR_V2_README.md text eol=lf diff
+
+# Preserve the source-lineage evidence as original bytes.
+iPFN_demo/code/sparse_j/SNAPSHOT_PARENT.json -text diff !eol
+
+# Model assets use byte protection; exact LF exceptions follow.
+iPFN_demo/code/sparse_j/models/** -text -diff !eol
+
+# These text files are verified by their exact LF bytes at runtime.
+iPFN_demo/code/sparse_j/models/kernel_components.json text eol=lf
+iPFN_demo/code/sparse_j/models/kernel_mixture.json text eol=lf
+iPFN_demo/code/sparse_j/regional_inference.py text eol=lf
+iPFN_demo/code/sparse_j/regional_inference.py !diff
+
+# Public results, manifests and receipts retain original bytes and readable diffs.
+iPFN_demo/results/e1_5_star_v2_test_20261031_01/** -text diff !eol
+iPFN_demo/results/e1_5_star_v2_test_20261031_01/**/*.png -text -diff !eol
+iPFN_demo/results/e1_5_star_v2_test_20261031_01/**/*.pdf -text -diff !eol
+iPFN_demo/results/e1_5_star_v2_test_20261031_01/**/*.npz -text -diff !eol
+iPFN_demo/results/e1_5_star_v2_test_20261031_01/**/*.zip -text -diff !eol

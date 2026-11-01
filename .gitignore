@@ -1,1 +1,8 @@
 .DS_Store
+.venv/
+__pycache__/
+.pytest_cache/
+iPFN_demo/results/
+iPFN_demo/e1_6_results/*/factual/
+iPFN_demo/e1_6_results/*/predictions/
+iPFN_demo/e1_6_results/*/truth/

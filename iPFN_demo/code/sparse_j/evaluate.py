@@ -130,7 +130,7 @@ def _write_csv(path, rows):
     if not rows:
         raise ValueError('No evaluation rows')
     with path.open('w', newline='') as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(handle, fieldnames=list(rows[0]), lineterminator='\n')
         writer.writeheader()
         writer.writerows(rows)
 

@@ -1,0 +1,46 @@
+{
+  "task_id": "E1.6",
+  "topology": "complete",
+  "n": 200,
+  "degree": 199,
+  "base_setting_id": 0,
+  "setting_id": 16,
+  "split": "dev",
+  "split_seed": 331629,
+  "mask_seed": 16062026,
+  "treatment_probability": 0.5,
+  "mechanisms": 8,
+  "assignment_noise_repeats": 12,
+  "observed_outcomes": [
+    20,
+    50,
+    100
+  ],
+  "arm_order": [
+    "00",
+    "01",
+    "10",
+    "11"
+  ],
+  "effects": [
+    "direct10-00",
+    "treated_spillover11-10",
+    "total11-00"
+  ],
+  "primary_model": "j",
+  "primary_checkpoint": "models/iPFN_J.pt",
+  "interval_level": 0.95,
+  "minimum_coverage": 0.9,
+  "default_methods": [
+    "j",
+    "kernel-new",
+    "hajek",
+    "lin-z2",
+    "non-interference"
+  ],
+  "notes": [
+    "The node set, treatment design, continuous-outcome DGP, truth definition, observation masks, and evaluation targets match the supplied demo.",
+    "Only the adjacency matrix is replaced by a loopless complete graph.",
+    "The supplied frozen iPFN J checkpoint is evaluated without task-specific refitting."
+  ]
+}

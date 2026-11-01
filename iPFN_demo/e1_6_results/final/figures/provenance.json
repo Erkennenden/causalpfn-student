@@ -1,0 +1,10 @@
+{
+  "context_metrics_sha256": "ad24a2448bd48822010a43c027da12f0e8af402d2e1439417c3e9cbebb977560",
+  "observed_budgets": [
+    20,
+    50,
+    100
+  ],
+  "accuracy": "Pooled valid squared errors; hollow diamonds mark incomplete support.",
+  "points": "Mechanism summaries, not confidence limits."
+}

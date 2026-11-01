@@ -1,0 +1,50 @@
+\begin{table}[tb]
+\centering
+\caption{ATE accuracy with 20 observed outcomes.}
+\begingroup\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}l*{9}{r}@{}}
+\toprule
+&\multicolumn{3}{c}{Direct}&\multicolumn{3}{c}{Treated spillover}&\multicolumn{3}{c}{Total}\\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}
+Method&$|\mathrm{Bias}|$&Variance&RMSE&$|\mathrm{Bias}|$&Variance&RMSE&$|\mathrm{Bias}|$&Variance&RMSE\\
+\midrule
+iPFN-J & \cellcolor{blue!11}0.1697 & \cellcolor{blue!11}0.0951 & \cellcolor{blue!11}0.3611 & \cellcolor{blue!11}0.0181 & \cellcolor{blue!11}0.0001 & \cellcolor{blue!11}0.0242 & \cellcolor{blue!11}0.1802 & \cellcolor{blue!11}0.0982 & \cellcolor{blue!11}0.3761 \\
+Hajek & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} \\
+Lin-z2 & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} \\
+Non-interference OLS & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \cellcolor{blue!7}0.0354 & \cellcolor{blue!17}0.0000 & \cellcolor{blue!7}0.0410 & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} \\
+Calibrated kernel & \cellcolor{blue!17}0.1680 & \cellcolor{blue!17}0.0930 & \cellcolor{blue!17}0.3532 & \cellcolor{blue!17}0.0149 & \cellcolor{blue!7}0.0001 & \cellcolor{blue!17}0.0221 & \cellcolor{blue!17}0.1757 & \cellcolor{blue!17}0.0975 & \cellcolor{blue!17}0.3676 \\
+oracle & \cellcolor{blue!24}\textbf{0.0000} & \cellcolor{blue!24}\textbf{0.0000} & \cellcolor{blue!24}\textbf{0.0000} & \cellcolor{blue!24}\textbf{0.0000} & \cellcolor{blue!24}\textbf{0.0000} & \cellcolor{blue!24}\textbf{0.0000} & \cellcolor{blue!24}\textbf{0.0000} & \cellcolor{blue!24}\textbf{0.0000} & \cellcolor{blue!24}\textbf{0.0000} \\
+\bottomrule
+\end{tabular*}\endgroup
+\vspace{3pt}
+\begin{minipage}{\linewidth}\scriptsize
+Bias is mean absolute conditional bias; variance uses the $R-1$ divisor within each mechanism.
+Mechanisms are equally weighted; RMSE takes the root after pooling squared errors.
+$^{\dagger}$Incomplete support: values condition on mechanisms with all recorded repeats valid and are unranked.
+-- indicates no complete supported mechanism, or fewer than two repeats for variance.
+Numeric support counts and interval coverage are provided in the accompanying CSV.
+\end{minipage}
+\end{table}
+
+\begin{table}[tb]
+\centering
+\caption{ATE interval coverage at nominal 95\%, with 20 observed outcomes.}
+\begin{tabular}{lrrr}
+\toprule
+Method & Direct & Treated spillover & Total \\
+\midrule
+iPFN-J & 96.88\% & 97.92\% & 96.88\% \\
+Hajek & -- & -- & -- \\
+Lin-z2 & -- & -- & -- \\
+Non-interference OLS & -- & -- & -- \\
+Calibrated kernel & -- & -- & -- \\
+oracle & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\begin{minipage}{\linewidth}\scriptsize
+Coverage includes failed requested intervals in the denominator. -- means intervals are unsupported.
+These are marginal posterior intervals; nominal coverage is not a frequentist guarantee.
+\end{minipage}
+\end{table}
